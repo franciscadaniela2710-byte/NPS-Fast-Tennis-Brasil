@@ -1,0 +1,2657 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="manualTitleTag">NPS Fast Tennis · Manual</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+    <style id="themeCustomStyles">
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --azul: #1E46C5;
+            --verde: #19F000;
+            --branco: #FFFFFF;
+            --cinza-claro: #D9D9D9;
+            --cinza-fundo: #F4F6FA;
+            --texto-escuro: #1A1A2E;
+            --sombra: 0 8px 30px rgba(30, 70, 197, 0.10);
+            --radius: 20px;
+            --menu-bg: #FFFFFF;
+            --btn-color: #1E46C5;
+            --bg-custom-image: none;
+        }
+
+        body.dark-theme {
+            --cinza-fundo: #0F172A;
+            --branco: #1E293B;
+            --texto-escuro: #F8FAFC;
+            --cinza-claro: #334155;
+            --menu-bg: #1E293B;
+            --sombra: 0 8px 30px rgba(0, 0, 0, 0.3);
+        }
+        body.dark-theme .sidebar, body.dark-theme .section, body.dark-theme .modal-box {
+            background-color: #1E293B !important;
+            color: #F8FAFC !important;
+        }
+        body.dark-theme .subsection p, body.dark-theme .subsection li, body.dark-theme .system-card p, body.dark-theme .automation-step .step-content p {
+            color: #CBD5E1 !important;
+        }
+        body.dark-theme .card-stat, body.dark-theme .automation-step, body.dark-theme .import-step, body.dark-theme .sla-card { background: #0F172A !important; }
+
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--cinza-fundo);
+            background-image: var(--bg-custom-image);
+            background-size: cover;
+            background-attachment: fixed;
+            color: var(--texto-escuro);
+            line-height: 1.5;
+            display: flex;
+            flex-direction: column;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+        .topbar {
+            background: var(--azul);
+            color: white;
+            padding: 0.6rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 12px rgba(30, 70, 197, 0.3);
+            flex-wrap: wrap;
+            gap: 0.5rem 1rem;
+        }
+        .logo-wrapper { display: flex; align-items: center; gap: 0.75rem; cursor: default; }
+        .logo-container {
+            width: 64px; height: 64px; border-radius: 12px; background: var(--azul);
+            display: flex; align-items: center; justify-content: center; position: relative;
+            overflow: hidden; flex-shrink: 0; transition: 0.2s; cursor: pointer; user-select: none;
+        }
+        .logo-container:hover { opacity: 0.9; }
+        .logo-container svg { width: 48px; height: 48px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2)); }
+        .logo-container img { width: 100%; height: 100%; object-fit: contain; display: none; }
+        .logo-container img.loaded { display: block; }
+        .logo-container .upload-hint {
+            position: absolute; bottom: 0; left: 0; right: 0; background: rgba(0,0,0,0.6);
+            color: white; font-size: 0.55rem; text-align: center; padding: 2px 0;
+            opacity: 0; transition: 0.2s; pointer-events: none; backdrop-filter: blur(4px);
+            border-radius: 0 0 12px 12px; line-height: 1.2;
+        }
+        .logo-container:hover .upload-hint { opacity: 1; }
+        .logo-text { font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 1.4rem; letter-spacing: -0.5px; color: white !important; }
+        .logo-text span { font-weight: 300; opacity: 0.8; font-size: 0.7rem; margin-left: 0.3rem; }
+        .topbar-right-actions { display: flex; align-items: center; gap: 1rem; }
+        .topbar .badge {
+            background: rgba(255, 255, 255, 0.15); padding: 0.3rem 1rem; border-radius: 40px;
+            font-size: 0.75rem; font-weight: 600; letter-spacing: 0.3px; border: 1px solid rgba(255, 255, 255, 0.2); backdrop-filter: blur(4px);
+        }
+        .topbar .badge.green-badge { background: #19F000; color: #0A2A0A !important; font-size: 0.65rem; font-weight: 700; border: none; text-transform: uppercase; }
+        .dark-mode-toggle { background: rgba(255, 255, 255, 0.2); border: none; color: white; padding: 0.4rem 0.8rem; border-radius: 20px; cursor: pointer; font-size: 1rem; }
+
+        .container { display: flex; max-width: 1440px; margin: 0 auto; width: 100%; padding: 1.5rem 2rem; gap: 2rem; flex: 1; }
+        .sidebar {
+            width: 280px; flex-shrink: 0; background: var(--menu-bg); border-radius: var(--radius);
+            padding: 1.5rem 1rem; box-shadow: var(--sombra); height: fit-content; position: sticky;
+            top: 90px; max-height: calc(100vh - 120px); overflow-y: auto;
+        }
+        .sidebar::-webkit-scrollbar { width: 4px; }
+        .sidebar::-webkit-scrollbar-thumb { background: var(--azul); border-radius: 10px; }
+        .menu-search-box { position: relative; margin-bottom: 1rem; }
+        .menu-search-box input { width: 100%; padding: 0.4rem 0.6rem 0.4rem 1.8rem; border-radius: 8px; border: 1px solid var(--cinza-claro); font-size: 0.85rem; background: transparent; color: inherit; }
+        .menu-search-box i { position: absolute; left: 0.6rem; top: 50%; transform: translateY(-50%); font-size: 0.8rem; opacity: 0.5; }
+        .sidebar h3 { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.08em; color: #6B7280; margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 2px solid var(--cinza-claro); display: flex; justify-content: space-between; align-items: center; }
+        .sidebar h3 .config-btn { background: none; border: none; cursor: pointer; font-size: 1rem; color: var(--azul); opacity: 0.5; transition: 0.2s; padding: 0.2rem 0.4rem; border-radius: 4px; }
+        .sidebar h3 .config-btn:hover { opacity: 1; background: rgba(30, 70, 197, 0.08); }
+        .sidebar nav { display: flex; flex-direction: column; gap: 0.25rem; }
+        .sidebar nav a { display: flex; align-items: center; gap: 0.75rem; padding: 0.6rem 0.8rem; border-radius: 12px; color: inherit; text-decoration: none; font-size: 0.9rem; font-weight: 500; transition: 0.2s; border-left: 3px solid transparent; cursor: pointer; }
+        .sidebar nav a i { width: 1.25rem; color: var(--azul); font-size: 1rem; text-align: center; opacity: 0.7; }
+        .sidebar nav a:hover { background: rgba(30, 70, 197, 0.06); border-left-color: var(--azul); }
+        .sidebar nav a.active { background: rgba(30, 70, 197, 0.08); border-left-color: var(--azul); font-weight: 600; }
+        .sidebar nav a.active i { opacity: 1; }
+        .sidebar nav a.hidden-link { display: none !important; }
+        
+        .main { flex: 1; min-width: 0; }
+        .section { background: white; border-radius: var(--radius); padding: 2rem 2.2rem; margin-bottom: 2rem; box-shadow: var(--sombra); border: 1px solid rgba(30, 70, 197, 0.04); animation: fadeUp 0.5s ease both; scroll-margin-top: 80px; position: relative; transition: opacity 0.3s, transform 0.3s; }
+        .section.hidden-section { display: none !important; }
+        
+        .section h2, .section h2 i, .section h2 span { color: var(--azul) !important; font-family: 'Poppins', sans-serif; }
+        .subsection h3, .subsection h3 i, .subsection h3 span { color: var(--azul) !important; font-family: 'Poppins', sans-serif; }
+
+        @keyframes fadeUp {
+            0% { opacity: 0; transform: translateY(10px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+        .section-header { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1.5rem; }
+        .section-header i { font-size: 1.8rem; background: rgba(30, 70, 197, 0.08); padding: 0.5rem; border-radius: 14px; width: 3rem; height: 3rem; display: flex; align-items: center; justify-content: center; transition: 0.3s background, 0.3s color; }
+        .section-header .tag { margin-left: auto; background: var(--verde); color: #0A2A0A !important; font-size: 0.65rem; font-weight: 700; padding: 0.2rem 0.8rem; border-radius: 40px; text-transform: uppercase; letter-spacing: 0.04em; white-space: nowrap; }
+        .subsection { margin-top: 1.5rem; }
+        .subsection p, .subsection li { color: inherit; opacity: 0.9; line-height: 1.6; }
+        .subsection ul, .subsection ol { padding-left: 1.5rem; margin: 0.5rem 0 1rem; }
+        
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 0.8rem; }
+        .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-top: 0.8rem; }
+        .grid-container-editable { position: relative; display: grid; gap: 1.5rem; margin-top: 0.8rem; }
+        
+        .card-controls { position: absolute; top: -10px; right: -10px; display: none; gap: 5px; z-index: 10; }
+        body.edit-mode-active .card-controls { display: flex; }
+        .card-btn { width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; cursor: pointer; border: 2px solid white; font-size: 11px; box-shadow: 0 2px 5px rgba(0,0,0,0.2); transition: 0.2s; }
+        .card-btn.add { background: #10B981; }
+        .card-btn.del { background: #EF4444; }
+        .card-btn:hover { transform: scale(1.1); }
+        .add-card-btn-container { display: none; width: 100%; grid-column: 1 / -1; padding: 1rem; border: 2px dashed var(--cinza-claro); border-radius: 12px; background: transparent; color: var(--cinza-claro); font-weight: 700; cursor: pointer; transition: 0.2s; align-items: center; justify-content: center; gap: 0.5rem; text-align: center;}
+        body.edit-mode-active .add-card-btn-container { display: flex; }
+        .add-card-btn-container:hover { border-color: var(--azul); color: var(--azul); background: rgba(30, 70, 197, 0.03); }
+
+        .card-stat { background: var(--cinza-fundo); border-radius: 16px; padding: 1.2rem 1.5rem; border-left: 4px solid var(--azul); position: relative; }
+        .card-stat .num { font-size: 1.8rem; font-weight: 700; color: var(--azul); line-height: 1.2; }
+        .card-stat .label { font-size: 0.8rem; color: #64748B; font-weight: 500; text-transform: uppercase; letter-spacing: 0.02em; }
+        .card-stat.green { border-left-color: var(--verde); }
+        .card-stat.green .num { color: #0F7B0F; }
+        .card-stat.orange { border-left-color: #F59E0B; }
+        .card-stat.orange .num { color: #B45309; }
+        .card-stat.red { border-left-color: #EF4444; }
+        .card-stat.red .num { color: #B91C1C; }
+        
+        .highlight-box { background: rgba(30, 70, 197, 0.04); border: none; border-radius: 12px; padding: 1rem 1.5rem; margin: 0.8rem 0; display: flex; align-items: center; gap: 0.75rem; color: #334155; font-size: 0.95rem; position: relative; }
+        .highlight-box.blue { background: #EFF6FF; border: 1px solid #BFDBFE; color: #1E40AF; }
+        .highlight-box.blue i { color: #2563EB; }
+        .highlight-box.orange-box { background: #FFFBEB; border: 1px solid #FDE68A; color: #92400E; }
+        .highlight-box.orange-box i { color: #D97706; }
+        .highlight-box strong { font-weight: 700; }
+        
+        .table-wrap { overflow-x: auto; margin: 0.8rem 0; border-radius: 16px; border: 1px solid var(--cinza-claro); position: relative; }
+        .table-wrap table { width: 100%; border-collapse: collapse; font-size: 0.9rem; min-width: 300px; }
+        .table-wrap th { background: var(--azul); color: white; padding: 0.7rem 1rem; text-align: left; font-weight: 600; }
+        .table-wrap td { padding: 0.7rem 1rem; border-bottom: 1px solid var(--cinza-claro); color: inherit; }
+        .table-wrap tr:last-child td { border-bottom: none; }
+        
+        .system-card { background: var(--cinza-fundo); border-radius: 16px; padding: 1.2rem 1rem; text-align: center; border: 1px solid var(--cinza-claro); transition: 0.2s; display: flex; flex-direction: column; align-items: center; gap: 0.2rem; position: relative; }
+        .system-card:hover { border-color: var(--azul); box-shadow: 0 4px 12px rgba(30, 70, 197, 0.08); transform: translateY(-2px); }
+        .system-card i { font-size: 2.5rem; color: var(--azul); margin-bottom: 0.1rem; }
+        .system-card h4 { font-weight: 700; color: var(--azul); font-size: 1rem; margin: 0.1rem 0; }
+        .system-card p { font-size: 0.8rem; color: #475569; margin: 0.1rem 0 0.4rem 0; flex: 1; }
+        .system-card .btn-acessar { background: var(--btn-color); color: white; padding: 0.3rem 1.2rem; border-radius: 40px; text-decoration: none; font-size: 0.75rem; font-weight: 600; display: inline-block; border: none; cursor: pointer; }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(4px);
+            z-index: 9999;
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-overlay.active { display: flex; }
+        .modal-box { 
+            background: white; 
+            border-radius: 20px; 
+            padding: 2rem 2.2rem; 
+            max-width: 580px; 
+            width: 95%; 
+            max-height: 90vh; 
+            overflow-y: auto; 
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3); 
+            text-align: center; 
+            animation: modalFade 0.3s ease;
+        }
+        @keyframes modalFade {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        .btn-group { display: flex; gap: 0.75rem; justify-content: flex-end; margin-top: 1rem; }
+        .btn-confirm, .btn-salvar, .btn-alterar-senha { background: var(--btn-color); color: white; border: none; padding: 0.6rem 1.2rem; border-radius: 12px; font-weight: 600; cursor: pointer; font-size: 0.9rem; transition: 0.2s; }
+        .btn-cancel { background: #E2E8F0; color: #475569; border: none; padding: 0.6rem 1.2rem; border-radius: 12px; font-weight: 600; cursor: pointer; font-size: 0.9rem; transition: 0.2s; }
+        .btn-confirm:hover, .btn-salvar:hover { opacity: 0.9; }
+        .btn-cancel:hover { background: #CBD5E1; }
+
+        .admin-tab-nav { display: flex; gap: 0.25rem; border-bottom: 2px solid var(--cinza-claro); margin-bottom: 1rem; overflow-x: auto; padding-bottom: 0.3rem; }
+        .admin-tab-btn { padding: 0.5rem 0.8rem; background: none; border: none; cursor: pointer; font-size: 0.85rem; font-weight: 600; color: inherit; opacity: 0.6; white-space: nowrap; transition: 0.2s; }
+        .admin-tab-btn.active { opacity: 1; color: var(--azul); border-bottom: 3px solid var(--azul); }
+        .admin-tab-panel { display: none; text-align: left; }
+        .admin-tab-panel.active { display: block; }
+        .modal-box input, .modal-box select, .modal-box textarea { width: 100%; padding: 0.6rem 0.8rem; border: 2px solid var(--cinza-claro); border-radius: 12px; font-size: 0.95rem; outline: none; background: transparent; color: inherit; margin-bottom: 0.8rem; }
+        
+        .media-upload-wrapper { display: flex; align-items: center; gap: 0.5rem; width: 100%; margin-bottom: 0.8rem; }
+        .media-upload-wrapper input { margin-bottom: 0; }
+        .btn-clear-media { background: #EF4444; color: white; border: none; padding: 0.6rem 1rem; border-radius: 12px; cursor: pointer; font-size: 0.9rem; transition: 0.2s; display: flex; align-items: center; gap: 0.25rem; }
+        .btn-clear-media:hover { background: #DC2626; }
+
+        body.edit-mode-active .editable-active { outline: 2px dashed rgba(30, 70, 197, 0.4) !important; outline-offset: 4px; cursor: text; position: relative; transition: 0.2s; border-radius: 4px; }
+        body.edit-mode-active .editable-active:hover { background: rgba(30, 70, 197, 0.05); outline-style: solid !important; }
+        body.edit-mode-active .grid-cards-editable > div { cursor: grab; }
+        
+        .automation-steps { display: flex; flex-direction: column; gap: 0.8rem; margin-top: 0.8rem; position: relative; }
+        .automation-step, .import-step { background: #F8FAFC; border-radius: 12px; padding: 1rem 1.5rem; border-left: 4px solid var(--azul); display: flex; flex-direction: row; align-items: flex-start; gap: 1rem; box-shadow: 0 1px 3px rgba(0,0,0,0.05); position: relative; }
+        .automation-step .step-number { display: inline-flex; align-items: center; justify-content: center; background: var(--azul); color: white; width: 28px; height: 28px; border-radius: 50%; font-weight: 700; font-size: 0.8rem; flex-shrink: 0; }
+        .automation-step .step-content { flex: 1; }
+        .automation-step .step-content strong { color: var(--azul); font-size: 0.95rem; display: block; margin-bottom: 0.25rem; }
+        .automation-step .step-content p { font-size: 0.9rem; color: #334155; }
+        .automation-step .step-content .highlight { background: #EDF2F7; padding: 0.1rem 0.4rem; border-radius: 4px; font-family: monospace; font-size: 0.85rem; color: #1A202C; font-weight: 600; }
+        .automation-step .step-content ul { padding-left: 1.2rem; margin-top: 0.4rem; font-size: 0.9rem; color: #4A5568; }
+        .automation-step .step-content ul li { margin-bottom: 0.2rem; }
+        
+        .import-step .step-title { font-weight: 600; color: var(--azul); margin-bottom: 0.25rem; display: block; }
+        .import-step .field-mapping { font-family: monospace; font-size: 0.85rem; background: #FFFFFF; border: 1px solid #E2E8F0; padding: 0.5rem 1rem; border-radius: 8px; line-height: 1.5; margin-top: 0.4rem; color: #4A5568; width: 100%; }
+        .import-step .field-mapping span { color: var(--azul); font-weight: 600; }
+
+        .back-to-top-wrapper { display: flex; justify-content: flex-end; margin-top: 1rem; width: 100%; }
+        .back-to-top { display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; background: var(--azul); color: white; border-radius: 50%; text-decoration: none; font-size: 0.9rem; box-shadow: 0 2px 8px rgba(30, 70, 197, 0.25); border: none; opacity: 0.7; cursor: pointer; transition: 0.2s; }
+        .back-to-top:hover { opacity: 1; transform: scale(1.1); }
+        
+        .floating-top-btn { 
+            position: fixed; 
+            bottom: 30px; 
+            right: 30px;
+            width: 48px; 
+            height: 48px; 
+            font-size: 1.3rem; 
+            box-shadow: 0 6px 20px rgba(30, 70, 197, 0.4); 
+            z-index: 999; 
+            opacity: 0; 
+            visibility: hidden; 
+            transform: scale(0.8); 
+            transition: 0.3s; 
+            background: var(--azul); 
+            color: white; 
+            border-radius: 50%; 
+            border: none; 
+            cursor: pointer;
+        }
+        .floating-top-btn.visible { opacity: 1; visibility: visible; transform: scale(1); }
+
+        .sortable-item { 
+            display: flex; 
+            align-items: center; 
+            justify-content: space-between; 
+            background: var(--cinza-fundo); 
+            padding: 0.6rem 1rem; 
+            margin-bottom: 0.5rem; 
+            border-radius: 8px; 
+            cursor: move; 
+            gap: 1rem;
+        }
+
+        .footer-branding { text-align: center; padding: 2rem; font-size: 0.85rem; opacity: 0.7; border-top: 1px solid var(--cinza-claro); margin-top: 2rem; }
+
+        .cadeados-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-top: 0.8rem; position: relative; }
+        .cadeado-item { background: #F8FAFC; border-radius: 12px; padding: 0.6rem 1rem; display: flex; align-items: center; gap: 0.75rem; font-size: 0.95rem; color: #334155; position: relative; }
+        .cadeado-item span { font-size: 1.25rem; }
+        .sla-grid { display: flex; gap: 1rem; margin: 1rem 0; width: 100%; position: relative; }
+        .sla-card { background: #F8FAFC; border-radius: 12px; padding: 1rem; flex: 1; text-align: center; border-bottom: 4px solid var(--azul); position: relative; }
+        .sla-card.step-2 { border-bottom-color: #F59E0B; }
+        .sla-card.step-3 { border-bottom-color: #19F000; }
+        .sla-card .num { font-size: 1.5rem; font-weight: 700; color: #1A1A2E; margin-bottom: 0.2rem; }
+        .sla-card .text { font-size: 0.85rem; color: #64748B; font-weight: 500; }
+        
+        .base-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 0.5rem; position: relative; }
+        .base-card { background: #F8FAFC; border-radius: 12px; padding: 1rem; border: 1px solid #E2E8F0; position: relative; }
+        .base-card h4 { display: flex; align-items: center; gap: 0.5rem; font-size: 1rem; color: var(--azul); margin-bottom: 0.5rem; }
+        .base-card h4 i { font-size: 0.95rem; }
+        .base-card ul { padding-left: 1.2rem; font-size: 0.9rem; color: #4A5568; }
+
+        .btn-copy-email, .btn-copy-script {
+            background: #E2E8F0; color: #1E293B; border: 1px solid #CBD5E1; padding: 0.5rem 1rem; 
+            border-radius: 8px; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; 
+            gap: 0.5rem; transition: 0.2s; font-size: 0.85rem;
+        }
+        .btn-copy-email:hover, .btn-copy-script:hover { background: #CBD5E1; }
+        .copied-msg { display: none; color: #10B981; }
+        .copied .copy-label { display: none; }
+        .copied .copied-msg { display: inline-flex; align-items: center; gap: 0.3rem; }
+
+        #ft-toast-container { position: fixed; bottom: 20px; left: 20px; display: flex; flex-direction: column; gap: 10px; z-index: 10000; }
+        .ft-toast { padding: 12px 20px; border-radius: 10px; color: white; font-weight: 500; font-size: 0.9rem; display: flex; align-items: center; gap: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.15); animation: slideIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        @keyframes slideIn { from { transform: translateX(-100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+
+        /* Estilos avançados do editor WYSIWYG */
+        .wysiwyg-btn { padding: 4px 8px; border: 1px solid transparent; background: transparent; cursor: pointer; color: #475569; border-radius: 4px; font-size: 0.9rem; display: flex; align-items: center; justify-content: center; }
+        .wysiwyg-btn:hover { background: #E2E8F0; border-color: #CBD5E1; color: #1E293B; }
+        .wysiwyg-select { padding: 4px; border: 1px solid transparent; border-radius: 4px; background: transparent; color: #475569; font-size: 0.85rem; cursor: pointer; }
+        .wysiwyg-select:hover { background: #E2E8F0; border-color: #CBD5E1; }
+        .wysiwyg-divider { width: 1px; background: #CBD5E1; margin: 0 4px; height: 20px; }
+
+        @media (max-width: 1024px) {
+            .container { flex-direction: column; padding: 1rem; }
+            .sidebar { width: 100%; position: relative; top: 0; max-height: none; padding: 1rem; }
+            .sidebar nav { flex-direction: row; flex-wrap: wrap; gap: 0.2rem; }
+            .sidebar nav a { padding: 0.4rem 0.8rem; font-size: 0.8rem; border-left: none; border-bottom: 2px solid transparent; border-radius: 8px; }
+            .grid-2, .grid-3, .cadeados-grid, .base-grid { grid-template-columns: 1fr; }
+            .sla-grid { flex-direction: column; }
+            .section { padding: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+    <header class="topbar" id="top">
+        <div class="logo-wrapper">
+            <div class="logo-container" id="logoContainer" title="Duplo clique + senha para gerenciar o manual.">
+                <svg id="defaultLogo" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="20" cy="20" r="18" fill="#FFFFFF" stroke="#19F000" stroke-width="1.5" />
+                    <circle cx="20" cy="20" r="12" fill="none" stroke="#19F000" stroke-width="2" stroke-dasharray="3 3" />
+                    <path d="M13 13 L27 27 M27 13 L13 27" stroke="#1E46C5" stroke-width="2.5" stroke-linecap="round" />
+                    <text x="20" y="25" font-family="'Inter', sans-serif" font-size="13" font-weight="800" fill="#1E46C5" text-anchor="middle">FT</text>
+                </svg>
+                <img id="uploadedLogo" alt="Logo personalizada" />
+                <div class="upload-hint">🔒 Dbl clique:<br>Painel Admin</div>
+            </div>
+            <div class="logo-text" id="manualBrandingName">NPS Fast Tennis <span>· Manual</span></div>
+        </div>
+        <div class="topbar-right-actions">
+            <button class="dark-mode-toggle" id="btnDarkModeToggle" title="Alternar Modo Escuro">🌙</button>
+            <div class="badge green-badge">We Help</div>
+        </div>
+        <input type="file" id="logoUpload" accept="image/*" style="display: none;">
+    </header>
+
+    <div class="modal-overlay" id="senhaModal">
+        <div class="modal-box">
+            <h3 id="modalAuthTitulo"><i class="fas fa-lock"></i> Autenticação</h3>
+            <p id="modalAuthDescricao" style="margin-bottom: 1rem; font-size: 0.9rem; opacity: 0.8;">Digite a senha para prosseguir.</p>
+            <input type="password" id="senhaInput" placeholder="Digite a senha" maxlength="20" autocomplete="off">
+            <div class="error-msg" id="senhaErro" style="color: #EF4444; font-size: 0.8rem; margin-top: -0.4rem; margin-bottom: 0.6rem; display: none; text-align: left;">Senha incorreta. Tente novamente.</div>
+            <div class="btn-group">
+                <button class="btn-cancel" id="btnCancelarSenha">Cancelar</button>
+                <button class="btn-confirm" id="btnConfirmarSenha">Confirmar</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="configModal">
+        <div class="modal-box" style="max-width: 750px;">
+            <h3><i class="fas fa-sliders-h"></i> Painel de Gerenciamento Avançado</h3>
+            <p style="margin-bottom: 1rem; font-size: 0.9rem; opacity: 0.8;">Ajuste as preferências estruturais do seu manual offline.</p>
+            
+            <div class="admin-tab-nav">
+                <button class="admin-tab-btn active" data-tab="tab-geral">🏠 Geral</button>
+                <button class="admin-tab-btn" data-tab="tab-personalizacao">🎨 Personalização</button>
+                <button class="admin-tab-btn" data-tab="tab-conteudo">📚 Conteúdo</button>
+                <button class="admin-tab-btn" data-tab="tab-menu">📑 Menu</button>
+                <button class="admin-tab-btn" data-tab="tab-seguranca">🔐 Segurança</button>
+                <button class="admin-tab-btn" data-tab="tab-backup">💾 Backup</button>
+            </div>
+
+            <div class="admin-tab-panel active" id="tab-geral">
+                <label style="font-weight:600; display:block; margin-bottom:0.25rem;">Nome do Manual:</label>
+                <input type="text" id="cfgManualName">
+                <label style="font-weight:600; display:block; margin-bottom:0.25rem;">Nome da Empresa:</label>
+                <input type="text" id="cfgCompanyName">
+                <button class="btn-salvar" style="margin-top: 0.5rem;" onclick="SGMAdmin.saveGeral()"><i class="fas fa-save"></i> Salvar Geral</button>
+            </div>
+
+            <div class="admin-tab-panel" id="tab-personalizacao">
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.5rem;">
+                    <div><label style="font-weight:600;">Cor Principal:</label><input type="color" id="cfgColorPrimary" style="height:40px; padding:0;"></div>
+                    <div><label style="font-weight:600;">Cor Secundária:</label><input type="color" id="cfgColorSecondary" style="height:40px; padding:0;"></div>
+                    <div><label style="font-weight:600;">Cor Botões:</label><input type="color" id="cfgColorButtons" style="height:40px; padding:0;"></div>
+                    <div><label style="font-weight:600;">Cor Menu:</label><input type="color" id="cfgColorMenu" style="height:40px; padding:0;"></div>
+                </div>
+                
+                <div style="margin-top: 0.5rem; border-top: 1px solid var(--cinza-claro); padding-top: 0.5rem;">
+                    <label><strong>Upload Favicon:</strong></label>
+                    <div class="media-upload-wrapper">
+                        <input type="file" id="cfgFaviconFile" accept="image/x-icon,image/png">
+                        <button type="button" class="btn-clear-media" onclick="SGMAdmin.clearMediaField('faviconData')"><i class="fas fa-trash-alt"></i> Apagar</button>
+                    </div>
+                    
+                    <label><strong>Upload Imagem de Fundo:</strong></label>
+                    <div class="media-upload-wrapper">
+                        <input type="file" id="cfgBgImageFile" accept="image/*">
+                        <button type="button" class="btn-clear-media" onclick="SGMAdmin.clearMediaField('bgImageData')"><i class="fas fa-trash-alt"></i> Apagar</button>
+                    </div>
+
+                    <label><strong>Upload Banner Principal:</strong></label>
+                    <div class="media-upload-wrapper">
+                        <input type="file" id="cfgBannerFile" accept="image/*">
+                        <button type="button" class="btn-clear-media" onclick="SGMAdmin.clearMediaField('bannerData')"><i class="fas fa-trash-alt"></i> Apagar</button>
+                    </div>
+                </div>
+
+                <label style="font-weight:600; display:block; margin-bottom:0.25rem;">Texto do Rodapé:</label>
+                <textarea id="cfgFooterText" rows="2"></textarea>
+                <button class="btn-salvar" onclick="SGMAdmin.savePersonalizacao()"><i class="fas fa-paint-brush"></i> Aplicar Visual</button>
+            </div>
+
+            <div class="admin-tab-panel" id="tab-conteudo">
+                <p style="margin-bottom:0.5rem;">Habilite o recurso de **Editor Visual Inline** direto nos textos, títulos e caixas (cards).</p>
+                <label style="display:flex; align-items:center; gap:0.5rem; cursor:pointer; background:var(--cinza-fundo); padding:0.8rem; border-radius:10px;">
+                    <input type="checkbox" id="cfgEnableInlineEdit" style="width:20px; height:20px; margin:0;">
+                    <span>Ativar Modo Editor de Conteúdo Profissional (Permite editar textos, colorir ícones, e duplicar/remover blocos flutuantes)</span>
+                </label>
+                <button class="btn-salvar" style="margin-top: 1rem;" onclick="SGMAdmin.saveConteudo()"><i class="fas fa-save"></i> Salvar Configurações</button>
+            </div>
+
+            <div class="admin-tab-panel" id="tab-menu">
+                <p style="margin-bottom:0.5rem;">Gerencie a visibilidade, realize a <strong>exclusão interna de seções</strong> ou reordene arrastando:</p>
+                <div class="toggle-list" id="configToggleList"></div>
+                <div style="margin-top: 1rem; border-top: 1px solid var(--cinza-claro); padding-top: 1rem;">
+                    <h4>Criar Novo Tópico</h4>
+                    <input type="text" id="newTopicTitle" placeholder="Título do novo tópico" style="margin-top:0.4rem;">
+                    <label style="font-weight:600; display:block; margin-top:0.6rem; margin-bottom:0.25rem;">Escolha o Ícone Representativo:</label>
+                    <select id="newTopicIcon" style="width: 100%; padding: 0.6rem; border-radius: 12px; border: 2px solid var(--cinza-claro);">
+                        <option value="fa-star">⭐ Estrela</option>
+                        <option value="fa-heart">❤️ Coração</option>
+                        <option value="fa-home">🏠 Casa</option>
+                        <option value="fa-tasks">📋 Prancheta</option>
+                        <option value="fa-link">🔗 Link</option>
+                        <option value="fa-clock">⏰ Relógio</option>
+                        <option value="fa-database">🗄️ Banco de Dados</option>
+                        <option value="fa-paper-plane">🚀 Avião de Papel (Disparo)</option>
+                        <option value="fa-trophy">🏆 Troféu</option>
+                        <option value="fa-reply-all">📬 E-mails / Retornos</option>
+                        <option value="fa-file-alt">📑 Documento / Arquivo</option>
+                        <option value="fa-envelope">✉️ Envelope</option>
+                        <option value="fa-chart-line">📈 Gráfico Subindo</option>
+                        <option value="fa-chart-bar">📊 Gráfico de Barras</option>
+                        <option value="fa-chart-pie">🥧 Gráfico de Pizza</option>
+                        <option value="fa-exclamation-circle">🔴 Alerta / Círculo</option>
+                        <option value="fa-palette">🎨 Paleta de Cores</option>
+                        <option value="fa-cog">⚙️ Engrenagem / Configuração</option>
+                        <option value="fa-wrench">🔧 Chave de Ferramenta</option>
+                        <option value="fa-users">👥 Pessoas / Público</option>
+                        <option value="fa-user">👤 Usuário Único</option>
+                        <option value="fa-calendar-alt">📅 Calendário</option>
+                        <option value="fa-globe">🌐 Globo / Mundo</option>
+                        <option value="fa-map-marker-alt">📍 Marcador de Mapa</option>
+                        <option value="fa-camera">📸 Câmera</option>
+                        <option value="fa-video">🎥 Vídeo</option>
+                        <option value="fa-music">🎵 Música</option>
+                        <option value="fa-folder">📁 Pasta</option>
+                        <option value="fa-folder-open">📂 Pasta Aberta</option>
+                        <option value="fa-lock">🔒 Cadeado Fechado</option>
+                        <option value="fa-unlock">🔓 Cadeado Aberto</option>
+                        <option value="fa-key">🔑 Chave</option>
+                        <option value="fa-shield-alt">🛡️ Escudo / Segurança</option>
+                        <option value="fa-shopping-cart">🛒 Carrinho de Compras</option>
+                        <option value="fa-credit-card">💳 Cartão de Crédito</option>
+                        <option value="fa-gift">🎁 Presente</option>
+                        <option value="fa-bullhorn">📣 Megafone</option>
+                        <option value="fa-bell">🔔 Sino / Notificação</option>
+                        <option value="fa-lightbulb">💡 Lâmpada / Ideia</option>
+                        <option value="fa-bolt">⚡ Raio / Energia</option>
+                        <option value="fa-flag">🚩 Bandeira</option>
+                        <option value="fa-bookmark">🔖 Marcador de Livro</option>
+                        <option value="fa-tag">🏷️ Etiqueta</option>
+                        <option value="fa-thumbs-up">👍 Joinha / Like</option>
+                        <option value="fa-medal">🏅 Medalha</option>
+                        <option value="fa-crown">👑 Coroa</option>
+                        <option value="fa-briefcase">💼 Maleta / Negócios</option>
+                        <option value="fa-building">🏢 Edifício</option>
+                        <option value="fa-plane">✈️ Avião de Viagem</option>
+                    </select>
+                    <button class="btn-confirm" style="margin-top:0.8rem;" onclick="SGMAdmin.createNewTopic()"><i class="fas fa-plus"></i> Adicionar Tópico</button>
+                </div>
+                <div class="btn-group" style="justify-content: flex-start; margin-top:1rem;">
+                    <button class="btn-salvar" id="btnConfigSalvar"><i class="fas fa-save"></i> Salvar Estrutura Menu</button>
+                    <button class="btn-cancel" onclick="SGMAdmin.restoreDefaultMenu()"><i class="fas fa-undo"></i> Restaurar Menu Padrão</button>
+                </div>
+            </div>
+
+            <div class="admin-tab-panel" id="tab-seguranca">
+                <p style="margin-bottom: 0.5rem; font-weight: 600; color: #f59e0b;"><i class="fas fa-key"></i> Alterar Senha</p>
+                <input type="password" id="configSenhaAtual" placeholder="Senha atual" maxlength="20" autocomplete="off">
+                <input type="password" id="configNovaSenha" placeholder="Nova senha" maxlength="20" autocomplete="off">
+                <input type="password" id="configConfirmarSenha" placeholder="Confirmar nova senha" maxlength="20" autocomplete="off">
+                <div class="error-msg" id="configTrocaErro" style="color:#EF4444; display:none; margin-bottom: 0.5rem;">Campos inconsistentes.</div>
+                <div class="success-msg" id="configTrocaSucesso" style="color:#0F7B0F; font-weight:bold; display:none; margin-bottom: 0.5rem;">✓ Senha alterada!</div>
+                <button class="btn-alterar-senha" id="btnConfigAlterarSenha"><i class="fas fa-key"></i> Atualizar Senha</button>
+            </div>
+
+            <div class="admin-tab-panel" id="tab-backup">
+                <p style="margin-bottom:0.8rem;">Gere relatórios de backup em formato estruturado `.json` para segurança externa.</p>
+                <div style="display:flex; flex-direction:column; gap:0.5rem;">
+                    <button class="btn-confirm" onclick="SGMBackup.exportData()"><i class="fas fa-file-export"></i> Exportar Configurações (.json)</button>
+                    <div style="background:var(--cinza-fundo); padding:0.8rem; border-radius:12px; border:1px dashed var(--azul);">
+                        <label style="font-weight:bold; display:block; margin-bottom:0.3rem;">Importar Backup:</label>
+                        <input type="file" id="importBackupFile" accept=".json" style="margin:0;">
+                    </div>
+                    <button class="btn-cancel" style="background:#EF4444; color:white;" onclick="SGMAdmin.systemReset()"><i class="fas fa-trash-alt"></i> Restaurar Padrões</button>
+                </div>
+            </div>
+
+            <div class="btn-group" style="margin-top: 1.5rem; border-top: 1px solid var(--cinza-claro); padding-top: 1rem;">
+                <button class="btn-cancel" id="btnConfigFecharPanel">Fechar Painel</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <aside class="sidebar">
+            <h3>
+                <span><i class="fas fa-compass"></i> Navegação</span>
+                <button class="config-btn" id="btnAbrirConfig" title="Acessar o Painel">⚙️</button>
+            </h3>
+            <div class="menu-search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" id="menuDynamicSearch" placeholder="Buscar tópico...">
+            </div>
+            <nav id="sidebarNav"></nav>
+        </aside>
+
+        <main class="main" id="mainContentContainer">
+            <div id="customBannerContainer" style="width:100%; height:160px; background:var(--azul); border-radius:var(--radius); margin-bottom:1.5rem; background-size:cover; background-position:center; display:none;"></div>
+
+            <section id="visao-geral" class="section">
+                <div class="section-header">
+                    <i class="fas fa-bullseye" id="icon-visao-geral"></i>
+                    <h2 class="edit-text">NPS · Net Promoter Score</h2>
+                    <span class="tag">Essencial</span>
+                </div>
+                <p style="font-size:1.05rem; margin-bottom:1rem;" class="edit-text">O NPS mede o quanto o franqueado confia na Fast Tennis a ponto de recomendá-la. Mais que uma nota, ajuda a entender o relacionamento, o que funciona e onde atuar.</p>
+                <div class="grid-3 grid-cards-editable" id="grid-stats-visao">
+                    <div class="card-stat" id="cstat-1">
+                        <div class="card-controls"><button class="card-btn add" title="Duplicar Card"><i class="fas fa-plus"></i></button><button class="card-btn del" title="Excluir Card"><i class="fas fa-trash-alt"></i></button></div>
+                        <div class="num edit-text">Promotores</div><div class="label edit-text">9–10 · leais e satisfeitos</div>
+                    </div>
+                    <div class="card-stat orange" id="cstat-2">
+                        <div class="card-controls"><button class="card-btn add" title="Duplicar Card"><i class="fas fa-plus"></i></button><button class="card-btn del" title="Excluir Card"><i class="fas fa-trash-alt"></i></button></div>
+                        <div class="num edit-text">Neutros</div><div class="label edit-text">7–8 · satisfeitos, sem vínculo</div>
+                    </div>
+                    <div class="card-stat red" id="cstat-3">
+                        <div class="card-controls"><button class="card-btn add" title="Duplicar Card"><i class="fas fa-plus"></i></button><button class="card-btn del" title="Excluir Card"><i class="fas fa-trash-alt"></i></button></div>
+                        <div class="num edit-text">Detratores</div><div class="label edit-text">0–6 · insatisfeitos</div>
+                    </div>
+                    <div class="add-card-btn-container" onclick="SGMAdmin.addCard('grid-stats-visao', 'card-stat')"><i class="fas fa-plus"></i> Adicionar Card</div>
+                </div>
+                <div class="highlight-box edit-text"><strong>Fórmula:</strong> NPS = % Promotores – % Detratores &nbsp;|&nbsp; <strong>Meta Fast Tennis:</strong> ≥ 80% (Zona de Excelência)</div>
+                <div class="subsection">
+                    <h3 class="edit-text" style="display:flex; align-items:center; gap:0.5rem;"><span style="font-size:1.4rem;">👥</span> Públicos avaliados</h3>
+                    <ul style="list-style: none; padding-left: 0;">
+                        <li class="edit-text" style="margin-bottom:0.5rem;">🏢 <strong>Franqueado (B2B)</strong> – avalia suporte, infraestrutura, comunicação, processos e relacionamento com a franqueadora.<br><span style="margin-left:1.5rem; color:#64748B;">Modalidades: Implantação e Operação.</span></li>
+                        <li class="edit-text">🎾 <strong>Aluno (B2C)</strong> – avalia atendimento, qualidade das aulas, estrutura e experiência geral (tratativa da unidade, com acompanhamento da franqueadora).</li>
+                    </ul>
+                </div>
+                <div class="back-to-top-wrapper"><button class="back-to-top" onclick="voltarAoTopo();"><i class="fas fa-arrow-up"></i></button></div>
+            </section>
+
+            <section id="fluxo-trabalho" class="section">
+                <div class="section-header">
+                    <i class="fas fa-tasks" id="icon-fluxo"></i>
+                    <h2 class="edit-text">Fluxo de Trabalho</h2>
+                    <span class="tag">Rotina</span>
+                </div>
+                <ul style="columns: 2 220px; column-gap:2rem; list-style:none; padding-left:0;">
+                    <li style="padding:0.3rem 0;" class="edit-text">✅ <strong>Onboarding com novos franqueados em operação</strong> – treinamento inicial sobre NPS e política de premiações.</li>
+                    <li style="padding:0.3rem 0;" class="edit-text">✅ <strong>Atualizar arquivo de contato franqueados da rede</strong> – manter base sempre atualizada.</li>
+                    <li style="padding:0.3rem 0;" class="edit-text">✅ Organizar e disparar pesquisas (We Help).</li>
+                    <li style="padding:0.3rem 0;" class="edit-text">✅ Exportar base e higienizar dados.</li>
+                    <li style="padding:0.3rem 0;" class="edit-text">✅ Conisolidar resultados e criar relatórios por unidade/área.</li>
+                    <li style="padding:0.3rem 0;" class="edit-text">✅ <strong>Dar retorno aos franqueados e clientes Play Fast.</strong></li>
+                    <li style="padding:0.3rem 0;" class="edit-text">✅ Cadastrar novas unidades.</li>
+                    <li style="padding:0.3rem 0;" class="edit-text">✅ Tratativa Reclame Aqui e redes sociais.</li>
+                </ul>
+                <div class="back-to-top-wrapper"><button class="back-to-top" onclick="voltarAoTopo();"><i class="fas fa-arrow-up"></i></button></div>
+            </section>
+
+            <section id="sistemas" class="section">
+                <div class="section-header">
+                    <i class="fas fa-link" id="icon-sistemas"></i>
+                    <h2 class="edit-text">Sistemas que acessamos</h2>
+                    <span class="tag">Ferramentas</span>
+                </div>
+                <p style="margin-bottom:1rem;" class="edit-text">No dia a dia, utilizamos três plataformas principais para gestão, disparo e análise de dados. Clique nos botões abaixo para acessar cada sistema.</p>
+                <div class="grid-3 grid-cards-editable" id="grid-sistemas-cards">
+                    <div class="system-card" id="sys-1">
+                        <div class="card-controls"><button class="card-btn add" title="Duplicar Card"><i class="fas fa-plus"></i></button><button class="card-btn del" title="Excluir Card"><i class="fas fa-trash-alt"></i></button></div>
+                        <i class="fas fa-building" id="sys-icon-1"></i>
+                        <h4 class="edit-text">Sults</h4>
+                        <p class="edit-text">Acesso às unidades e cadastros de colaboradores.</p>
+                        <a href="https://fasttennis.sults.com.br/" target="_blank" class="btn-acessar">Acessar Sistema →</a>
+                    </div>
+                    <div class="system-card" id="sys-2">
+                        <div class="card-controls"><button class="card-btn add" title="Duplicar Card"><i class="fas fa-plus"></i></button><button class="card-btn del" title="Excluir Card"><i class="fas fa-trash-alt"></i></button></div>
+                        <i class="fas fa-bullhorn" id="sys-icon-2"></i>
+                        <h4 class="edit-text">Wehelp</h4>
+                        <p class="edit-text">Disparo NPS, atendimentos B2B/B2C, automações, cadastro de unidades e mensagens automáticas.</p>
+                        <a href="https://app.wehelpsoftware.com/pt-BR/auth/login?callbackUrl=%2Fpt-BR%2Fdashboard%2Fnps" target="_blank" class="btn-acessar">Acessar Sistema →</a>
+                    </div>
+                    <div class="system-card" id="sys-3">
+                        <div class="card-controls"><button class="card-btn add" title="Duplicar Card"><i class="fas fa-plus"></i></button><button class="card-btn del" title="Excluir Card"><i class="fas fa-trash-alt"></i></button></div>
+                        <i class="fas fa-play-circle" id="sys-icon-3"></i>
+                        <h4 class="edit-text">Play Fast</h4>
+                        <p class="edit-text">Exportação da base de clientes, atualização de cadastros e configuração de push durante a pesquisa.</p>
+                        <a href="https://app.playfast.com.br/auth/login/" target="_blank" class="btn-acessar">Acessar Sistema →</a>
+                    </div>
+                    <div class="add-card-btn-container" onclick="SGMAdmin.addCard('grid-sistemas-cards', 'system-card')"><i class="fas fa-plus"></i> Adicionar Card</div>
+                </div>
+                <div class="highlight-box blue edit-text" style="margin-top: 1rem;">
+                    <i class="fas fa-info-circle"></i>
+                    <span><strong>Dica:</strong> Mantenha estas abas sempre abertas durante o ciclo de pesquisa para agilizar o fluxo de trabalho.</span>
+                </div>
+                <div class="back-to-top-wrapper"><button class="back-to-top" onclick="voltarAoTopo();"><i class="fas fa-arrow-up"></i></button></div>
+            </section>
+
+            <section id="cronograma" class="section">
+                <div class="section-header">
+                    <i class="fas fa-clock" id="icon-cronograma"></i>
+                    <h2 class="edit-text">Cronograma da Pesquisa</h2>
+                    <span class="tag">Bimestral</span>
+                </div>
+                <p style="margin-bottom: 0.8rem;" class="edit-text">As coletas de NPS ocorrem em janelas bimestrais, conforme os ciclos abaixo:</p>
+                <div class="table-wrap">
+                    <table>
+                        <thead><tr><th>Ciclo</th><th>Período de Coleta</th></tr></thead>
+                        <tbody>
+                            <tr><td>1º BIM</td><td>26/01 a 30/01</td></tr>
+                            <tr><td>2º BIM</td><td>30/03 a 06/04</td></tr>
+                            <tr><td>3º BIM</td><td>25/05 a 29/05</td></tr>
+                            <tr><td>4º BIM</td><td>27/07 a 02/08</td></tr>
+                            <tr><td>5º BIM</td><td>28/09 a 04/10</td></tr>
+                            <tr><td>6º BIM</td><td>30/11 a 06/12</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="subsection">
+                    <h3 class="edit-text" style="display:flex; align-items:center; gap:0.5rem;">📅 Cronograma semana anterior ao disparo</h3>
+                    <ul>
+                        <li class="edit-text"><strong>10 dias antes da pesquisa:</strong> Reunião de Onboarding com novos franqueados (30 min) – explicar NPS, importância, aplicação e papel do franqueado.</li>
+                        <li class="edit-text"><strong>Segunda-feira:</strong> Envio do e-mail para unidades com alunos sem professor (ver subseção abaixo).</li>
+                        <li class="edit-text"><strong>Quarta-feira:</strong> criação das pesquisas, automações e preparação da base.</li>
+                        <li class="edit-text"><strong>Sexta-feira:</strong> Conferência final. Revisar todos os arquivos com a base da pesquisa, configuração das pesquisas criadas e automações, para que na segunda-feira realize somente o input no sistema WeHelp.</li>
+                    </ul>
+                </div>
+                <div class="back-to-top-wrapper"><button class="back-to-top" onclick="voltarAoTopo();"><i class="fas fa-arrow-up"></i></button></div>
+            </section>
+
+            <section id="preparacao-base" class="section">
+                <div class="section-header">
+                    <i class="fas fa-database" id="icon-preparacao"></i>
+                    <h2 class="edit-text">Preparação da Base de Pesquisa</h2>
+                    <span class="tag">Quarta-feira</span>
+                </div>
+                <p style="margin-bottom:1rem;" class="edit-text">A preparação das bases ocorre na quarta-feira da semana anterior ao disparo. Neste dia, devem ser criados os 5 arquivos de base que serão utilizados para importar os contatos no WeHelp.</p>
+
+                <div class="subsection">
+                    <h3 class="edit-text">📂 Arquivos obrigatórios</h3>
+                    <ul style="list-style: none; padding-left: 0;">
+                        <li class="edit-text" style="margin-bottom: 0.3rem;">👤 <strong>B2C Adulto</strong> – clientes adultos</li>
+                        <li class="edit-text" style="margin-bottom: 0.3rem;">🧒 <strong>B2C Infantil</strong> – clientes infantis (com ID)</li>
+                        <li class="edit-text" style="margin-bottom: 0.3rem;">🏢 <strong>B2B Operação</strong> – franqueados em operação</li>
+                        <li class="edit-text" style="margin-bottom: 0.3rem;">🛠️ <strong>B2B Implantação 1/2</strong> – franqueados na primeira etapa de implantação</li>
+                        <li class="edit-text">🛠️ <strong>B2B Implantação 2/2</strong> – franqueados na segunda etapa de implantação</li>
+                    </ul>
+                </div>
+
+                <div class="subsection">
+                    <h3 class="edit-text" style="display:flex; align-items:center; gap:0.5rem;">📋 Colunas obrigatórias por arquivo</h3>
+                    <div class="base-grid grid-cards-editable" id="grid-base-cards">
+                        <div class="base-card" id="base-card-1">
+                            <div class="card-controls"><button class="card-btn add" title="Duplicar Card"><i class="fas fa-plus"></i></button><button class="card-btn del" title="Excluir Card"><i class="fas fa-trash-alt"></i></button></div>
+                            <h4 class="edit-text"><i class="fas fa-user" id="icon-base-1"></i> B2C Adulto</h4>
+                            <ul>
+                                <li class="edit-text">Nome</li><li class="edit-text">E-mail</li><li class="edit-text">Unidade</li><li class="edit-text">Persona</li><li class="edit-text">Nome dos professores</li>
+                            </ul>
+                        </div>
+                        <div class="base-card" id="base-card-2">
+                            <div class="card-controls"><button class="card-btn add" title="Duplicar Card"><i class="fas fa-plus"></i></button><button class="card-btn del" title="Excluir Card"><i class="fas fa-trash-alt"></i></button></div>
+                            <h4 class="edit-text"><i class="fas fa-child" id="icon-base-2"></i> B2C Infantil</h4>
+                            <ul>
+                                <li class="edit-text">Nome</li><li class="edit-text">ID (Nome+E-mail)</li><li class="edit-text">E-mail</li><li class="edit-text">Unidade</li><li class="edit-text">Persona</li><li class="edit-text">Nome dos professores</li>
+                            </ul>
+                        </div>
+                        <div class="base-card" id="base-card-3">
+                            <div class="card-controls"><button class="card-btn add" title="Duplicar Card"><i class="fas fa-plus"></i></button><button class="card-btn del" title="Excluir Card"><i class="fas fa-trash-alt"></i></button></div>
+                            <h4 class="edit-text"><i class="fas fa-store" id="icon-base-3"></i> B2B Operação</h4>
+                            <ul>
+                                <li class="edit-text">Cidade</li><li class="edit-text">Franqueado</li><li class="edit-text">E-mail</li><li class="edit-text">Unidade (ongoing)</li>
+                            </ul>
+                        </div>
+                        <div class="base-card" id="base-card-4">
+                            <div class="card-controls"><button class="card-btn add" title="Duplicar Card"><i class="fas fa-plus"></i></button><button class="card-btn del" title="Excluir Card"><i class="fas fa-trash-alt"></i></button></div>
+                            <h4 class="edit-text"><i class="fas fa-tools" id="icon-base-4"></i> B2B Implantação 1/2</h4>
+                            <ul>
+                                <li class="edit-text">Cidade</li><li class="edit-text">Franqueado</li><li class="edit-text">E-mail</li><li class="edit-text">Fase</li><li class="edit-text">Unidade (onboarding)</li>
+                            </ul>
+                        </div>
+                        <div class="base-card" style="grid-column: span 2;" id="base-card-5">
+                            <div class="card-controls"><button class="card-btn add" title="Duplicar Card"><i class="fas fa-plus"></i></button><button class="card-btn del" title="Excluir Card"><i class="fas fa-trash-alt"></i></button></div>
+                            <h4 class="edit-text"><i class="fas fa-tools" id="icon-base-5"></i> B2B Implantação 2/2</h4>
+                            <ul>
+                                <li class="edit-text">Cidade</li><li class="edit-text">Franqueado</li><li class="edit-text">E-mail</li><li class="edit-text">Fase</li><li class="edit-text">Unidade (onboarding)</li>
+                            </ul>
+                        </div>
+                        <div class="add-card-btn-container" onclick="SGMAdmin.addCard('grid-base-cards', 'base-card')"><i class="fas fa-plus"></i> Adicionar Card</div>
+                    </div>
+                    <div class="highlight-box blue edit-text" style="margin-top:0.8rem;">
+                        <i class="fas fa-info-circle"></i>
+                        <span><strong>Regra da Unidade:</strong> O campo Unidade deve conter o código cadastrado na WeHelp (nome da unidade junto, sem espaços, sem acentos e tudo minúsculo). Exemplo: <code>altodoipiranga</code> em vez de "Fast Tennis Alto do Ipiranga".</span>
+                    </div>
+                </div>
+
+                <div class="subsection">
+                    <h3 class="edit-text">Fórmulas obrigatórias no Excel</h3>
+                    <ul>
+                        <li class="edit-text"><code>=ARRUMAR()</code> – remove espaços no início e no final de cada célula.</li>
+                        <li class="edit-text"><code>=PRI.MAIÚSCULA()</code> – ajusta o nome para que a primeira letra fique maiúscula e as demais minúsculas.</li>
+                    </ul>
+                    <div class="highlight-box blue edit-text" style="margin-top:0.4rem;">
+                        <i class="fas fa-info-circle"></i>
+                        <span>Aplique essas fórmulas em todas as colunas de nome, cidade e professores para garantir a padronização.</span>
+                    </div>
+                </div>
+
+                <div class="subsection">
+                    <h3 class="edit-text">Validação importante</h3>
+                    <ul>
+                        <li class="edit-text">Excluir franqueados cadastrados como clientes.</li>
+                    </ul>
+                </div>
+
+                <div class="subsection">
+                    <h3 class="edit-text">Ajuste de agenda de professores</h3>
+                    <p class="edit-text">Na segunda-feira que antecede a pesquisa, deve ser enviado um e-mail para as unidades que possuem alunos cadastrados sem vínculo de professor, informando o prazo para ajuste até a quarta-feira.</p>
+                    <p style="margin-top:0.3rem;">Clique no botão abaixo para copiar a mensagem padrão com todos os emojis e estrutura:</p>
+                    <div style="margin: 0.5rem 0;">
+                        <button class="btn-copy-email" id="btnCopyEmail"><i class="fas fa-copy"></i> <span class="copy-label">Copiar e-mail</span><span class="copied-msg"><i class="fas fa-check-circle"></i> Copiado!</span></button>
+                    </div>
+                    <span id="emailTemplate" style="display:none;">SOLICITAÇÃO DE AJUSTE DE AGENDA DE PROFESSORES
+
+Olá, pessoal!
+
+Identificamos que os alunos abaixo estão sem vínculo de professor cadastrado para o próximo ciclo de NPS.
+
+⚠️ Importante:
+Caso os alunos recebam a pesquisa nessas condições, as avaliações não serão vinculadas a nenhum professor, impactando diretamente os indicadores de reconhecimento e premiação.
+
+Ação necessária:
+Solicitamos, por gentileza, a atualização dos dados cadastrais.
+
+📅 Prazo para atualização: Próxima Sexta-feira
+🚀 Disparo da pesquisa: Próxima Segunda-feira
+
+Caso não haja atualização dentro do prazo, o envio será realizado sem vínculo de professor.
+
+Alunos pendentes:
+[inserir lista]</span>
+                </div>
+
+                <div class="subsection">
+                    <h3 class="edit-text">Duplicação das pesquisas no WeHelp</h3>
+                    <p class="edit-text">Acesse "Pesquisas" → "Enviadas". Localize a pesquisa do ciclo anterior, clique nos 3 pontinhos e selecione "Duplicar". Repita para cada uma das 5 bases e renomeie conforme padrão:</p>
+                    <ul style="font-family:monospace; margin:0.5rem 0; padding-left:1.5rem; background: #F8FAFC; border-radius: 8px; padding: 0.6rem 1rem; list-style-type: none;">
+                        <li>NPS xx/xx/xx - B2B Operação</li>
+                        <li>NPS xx/xx/xx - B2C (Infantil)</li>
+                        <li>NPS xx/xx/xx - B2C (Clientes)</li>
+                        <li>NPS xx/xx/xx - B2B Implantação 1</li>
+                        <li>NPS xx/xx/xx - B2B Implantação 2</li>
+                    </ul>
+                </div>
+
+                <div class="subsection">
+                    <h3 class="edit-text" style="display:flex; align-items:center; gap:0.5rem;">🤖 Configuração das Automações</h3>
+                    <p class="edit-text">Após criar e renomear as pesquisas, iniciar a construção das automações que encerrarão de forma automática todas as avaliações sem comentários com mensagens padrão de acordo com o status NPS. Importante: Para cada pesquisa, configure 3 automações (Promotor, Neutro e Detrator), totalizando 15 automações por ciclo.</p>
+                    <div class="automation-steps grid-cards-editable" id="grid-automacao-steps">
+                        <div class="automation-step" id="auto-1">
+                            <div class="card-controls"><button class="card-btn add" title="Duplicar Card"><i class="fas fa-plus"></i></button><button class="card-btn del" title="Excluir Card"><i class="fas fa-trash-alt"></i></button></div>
+                            <span class="step-number">1</span><div class="step-content"><strong class="edit-text">Nova automação</strong><p class="edit-text">Clique em <span class="highlight">Nova automação</span> e nomeie seguindo o padrão: <code>B2B (Operação) xx/xx - Neutro | Sem comentário</code> (Crie uma para cada status: Promotor, Neutro, Detrator).</p></div>
+                        </div>
+                        <div class="automation-step" id="auto-2">
+                            <div class="card-controls"><button class="card-btn add" title="Duplicar Card"><i class="fas fa-plus"></i></button><button class="card-btn del" title="Excluir Card"><i class="fas fa-trash-alt"></i></button></div>
+                            <span class="step-number">2</span><div class="step-content"><strong class="edit-text">Método e Evento</strong><p class="edit-text"><strong>Método:</strong> <span class="highlight">Ao realizar o evento</span> → Salvar | <strong>Evento:</strong> <span class="highlight">Resposta Finalizada</span> → Salvar</p></div>
+                        </div>
+                        <div class="automation-step" id="auto-3">
+                            <div class="card-controls"><button class="card-btn add" title="Duplicar Card"><i class="fas fa-plus"></i></button><button class="card-btn del" title="Excluir Card"><i class="fas fa-trash-alt"></i></button></div>
+                            <span class="step-number">3</span><div class="step-content"><strong class="edit-text">Opções de recebimento</strong><p class="edit-text">Tem pessoas: Ambos | Unidade: Todas as unidades | Destino da pesquisa: Cliente | Grupo da pesquisa: Todos | Canais de resposta: Todos</p></div>
+                        </div>
+                        <div class="automation-step" id="auto-4">
+                            <div class="card-controls"><button class="card-btn add" title="Duplicar Card"><i class="fas fa-plus"></i></button><button class="card-btn del" title="Excluir Card"><i class="fas fa-trash-alt"></i></button></div>
+                            <span class="step-number">4</span><div class="step-content"><strong class="edit-text">Adicionar formulários (filtros)</strong><p class="edit-text"><strong>Formulário NPS:</strong> Tipo de filtro: Restringir | Status do NPS: configurar para Promotor, Neutro ou Detrator | Com comentário: Não.<br><strong>Formulário Pontos de contato:</strong> Tipo de filtro: Restringir | Formulário: Tenha pelo menos um (pois há vários pontos de contato) | Status do NPS: mesmo status da automação | Com comentário: Não.<br><strong>Formulário Problema:</strong> Tipo de filtro: Restringir | Teve problema: Não.</p></div>
+                        </div>
+                        <div class="automation-step" id="auto-5">
+                            <div class="card-controls"><button class="card-btn add" title="Duplicar Card"><i class="fas fa-plus"></i></button><button class="card-btn del" title="Excluir Card"><i class="fas fa-trash-alt"></i></button></div>
+                            <span class="step-number">5</span><div class="step-content"><strong class="edit-text">Criar ticket de atendimento</strong><p class="edit-text">Em "O que fazer com os dados", selecione <span class="highlight">Criar um ticket de atendimento</span> → Salvar.</p></div>
+                        </div>
+                        <div class="automation-step" id="auto-6">
+                            <div class="card-controls"><button class="card-btn add" title="Duplicar Card"><i class="fas fa-plus"></i></button><button class="card-btn del" title="Excluir Card"><i class="fas fa-trash-alt"></i></button></div>
+                            <span class="step-number">6</span><div class="step-content"><strong class="edit-text">Opções do ticket</strong><p class="edit-text">Responsável e Usuário: selecionar o responsável | Estágio: <span class="highlight">Fechado</span> | Prioridade: <span class="highlight">Média</span> | Responder por: <span class="highlight">E-mail</span> | Mensagem: configurar a mensagem padrão de acordo com o status.</p></div>
+                        </div>
+                        <div class="add-card-btn-container" onclick="SGMAdmin.addCard('grid-automacao-steps', 'automation-step')"><i class="fas fa-plus"></i> Adicionar Card</div>
+                    </div>
+                </div>
+                <div class="back-to-top-wrapper"><button class="back-to-top" onclick="voltarAoTopo();"><i class="fas fa-arrow-up"></i></button></div>
+            </section>
+
+            <section id="disparo" class="section">
+                <div class="section-header">
+                    <i class="fas fa-paper-plane" id="icon-disparo"></i>
+                    <h2 class="edit-text">Disparo da Pesquisa</h2>
+                    <span class="tag">We Help</span>
+                </div>
+                
+                <div class="subsection">
+                    <h3 class="edit-text" style="display:flex; align-items:center; gap:0.5rem;">📥 Importação das bases no WeHelp</h3>
+                    <p class="edit-text" style="margin-bottom: 1.5rem;">Antes de disparar, é necessário importar as planilhas criadas na preparação da base. O processo é feito diretamente na plataforma WeHelp.</p>
+                    
+                    <div class="grid-cards-editable" id="grid-import-steps">
+                        <div class="import-step" id="imp-1" style="flex-direction: column; margin-bottom: 1rem; align-items: stretch;">
+                            <div class="card-controls"><button class="card-btn add" title="Duplicar Card"><i class="fas fa-plus"></i></button><button class="card-btn del" title="Excluir Card"><i class="fas fa-trash-alt"></i></button></div>
+                            <span class="step-title edit-text">Passo 1: Acessar a importação</span>
+                            <p class="edit-text">Acesse WeHelp &rarr; <strong>Configurações</strong> &rarr; <strong>Ações</strong> &rarr; <strong>Adicionar</strong> &rarr; <strong>Planilha</strong> &rarr; <strong>Importar minha Planilha</strong>.</p>
+                        </div>
+                        
+                        <div class="import-step" id="imp-2" style="flex-direction: column; margin-bottom: 1rem; align-items: stretch;">
+                            <div class="card-controls"><button class="card-btn add" title="Duplicar Card"><i class="fas fa-plus"></i></button><button class="card-btn del" title="Excluir Card"><i class="fas fa-trash-alt"></i></button></div>
+                            <span class="step-title edit-text">Passo 2: Selecionar a planilha</span>
+                            <p class="edit-text">Selecione uma das planilhas criadas para cada público (B2C Adulto, B2C Infantil, B2B Implantação 1/2, B2B Implantação 2/2 ou B2B Operação).</p>
+                        </div>
+                        
+                        <div class="import-step" id="imp-3" style="flex-direction: column; margin-bottom: 1rem; align-items: stretch;">
+                            <div class="card-controls"><button class="card-btn add" title="Duplicar Card"><i class="fas fa-plus"></i></button><button class="card-btn del" title="Excluir Card"><i class="fas fa-trash-alt"></i></button></div>
+                            <span class="step-title edit-text">Passo 3: Preparar e relacionar a planilha</span>
+                            <p class="edit-text">Cada planilha tem um formato específico de relacionamento. Siga as orientações abaixo para cada público:</p>
+                        </div>
+
+                        <div class="import-step edit-text" id="imp-4" style="border-left-color: #F59E0B; flex-direction: column; margin-bottom: 1rem; align-items: stretch;">
+                            <div class="card-controls"><button class="card-btn add" title="Duplicar Card"><i class="fas fa-plus"></i></button><button class="card-btn del" title="Excluir Card"><i class="fas fa-trash-alt"></i></button></div>
+                            <span class="step-title" style="margin-bottom: 0.5rem;"><i class="fas fa-wrench" id="icon-imp-4" style="color: #9CA3AF; margin-right: 0.4rem;"></i> B2B Implantação (1/2 e 2/2)</span>
+                            <div class="field-mapping" style="margin-top: 0;">
+                                Cidade: <span>Ação &gt; Cidade</span><br>
+                                Franqueados: <span>*Pessoa &gt; Nome</span><br>
+                                E-mail: <span>Pessoa &gt; E-mail (selecionar Definir como ID único)</span><br>
+                                Fase: <span>Ação &gt; FASE</span><br>
+                                Unidade: <span>Ação &gt; Unidade da ação</span>
+                            </div>
+                        </div>
+
+                        <div class="import-step edit-text" id="imp-5" style="border-left-color: #19F000; flex-direction: column; margin-bottom: 1rem; align-items: stretch;">
+                            <div class="card-controls"><button class="card-btn add" title="Duplicar Card"><i class="fas fa-plus"></i></button><button class="card-btn del" title="Excluir Card"><i class="fas fa-trash-alt"></i></button></div>
+                            <span class="step-title" style="margin-bottom: 0.5rem;"><i class="fas fa-building" id="icon-imp-5" style="color: #9CA3AF; margin-right: 0.4rem;"></i> B2B Operação</span>
+                            <div class="field-mapping" style="margin-top: 0;">
+                                Cidade: <span>Ação &gt; Cidade</span><br>
+                                Franqueados: <span>*Pessoa &gt; Nome</span><br>
+                                E-mail: <span>Pessoa &gt; E-mail (selecionar Definir como ID único)</span><br>
+                                Unidade: <span>Ação &gt; Unidade da ação</span>
+                            </div>
+                        </div>
+
+                        <div class="import-step edit-text" id="imp-6" style="border-left-color: var(--azul); flex-direction: column; margin-bottom: 1rem; align-items: stretch;">
+                            <div class="card-controls"><button class="card-btn add" title="Duplicar Card"><i class="fas fa-plus"></i></button><button class="card-btn del" title="Excluir Card"><i class="fas fa-trash-alt"></i></button></div>
+                            <span class="step-title" style="margin-bottom: 0.5rem;"><i class="fas fa-user" id="icon-imp-6" style="color: #4A5568; margin-right: 0.4rem;"></i> B2C Adulto</span>
+                            <div class="field-mapping" style="margin-top: 0;">
+                                Nome: <span>*Pessoa &gt; Nome</span><br>
+                                E-mail: <span>Pessoa &gt; E-mail (selecionar Definir como ID único)</span><br>
+                                Unidade: <span>Ação &gt; Unidade da ação</span><br>
+                                Persona: <span>Ação &gt; Persona</span><br>
+                                Professor: <span>Ação &gt; Professor</span>
+                            </div>
+                        </div>
+
+                        <div class="import-step edit-text" id="imp-7" style="border-left-color: var(--azul); flex-direction: column; margin-bottom: 1rem; align-items: stretch;">
+                            <div class="card-controls"><button class="card-btn add" title="Duplicar Card"><i class="fas fa-plus"></i></button><button class="card-btn del" title="Excluir Card"><i class="fas fa-trash-alt"></i></button></div>
+                            <span class="step-title" style="margin-bottom: 0.5rem;">🧒 B2C Infantil</span>
+                            <div class="field-mapping" style="margin-top: 0;">
+                                Nome: <span>*Pessoa &gt; Nome</span><br>
+                                ID: <span>Ação &gt; Responsável (selecionar Definir como ID único)</span><br>
+                                E-mail: <span>Pessoa &gt; E-mail</span><br>
+                                Unidade: <span>Ação &gt; Unidade da ação</span><br>
+                                Persona: <span>Ação &gt; Persona</span><br>
+                                Professor: <span>Ação &gt; Professor</span>
+                            </div>
+                            <p style="font-size: 0.85rem; margin-top: 0.8rem; color: #4A5568;">ℹ️ O <strong>ID</strong> é mapeado a partir do campo <strong>Responsável</strong> da ação e definido como <strong>ID único</strong> para evitar duplicidade.</p>
+                        </div>
+
+                        <div class="import-step" id="imp-8" style="flex-direction: column; margin-bottom: 1rem; align-items: stretch;">
+                            <div class="card-controls"><button class="card-btn add" title="Duplicar Card"><i class="fas fa-plus"></i></button><button class="card-btn del" title="Excluir Card"><i class="fas fa-trash-alt"></i></button></div>
+                            <span class="step-title edit-text">Passo 4: Enviar a pesquisa</span>
+                            <p class="edit-text">Após relacionar todas as colunas, aguarde o carregamento da planilha e clique em Enviar para finalizar a importação.</p>
+                        </div>
+                        <div class="add-card-btn-container" onclick="SGMAdmin.addCard('grid-import-steps', 'import-step')"><i class="fas fa-plus"></i> Adicionar Card</div>
+                    </div>
+                    
+                    <div class="highlight-box blue edit-text" style="margin-top:0.5rem;">
+                        <i class="fas fa-info-circle"></i>
+                        <span><strong>Dica:</strong> Sempre valide se o campo E-mail ou ID (no caso do infantil) está configurado corretamente como ID único para evitar duplicidades na base.</span>
+                    </div>
+                </div>
+
+                <div class="subsection">
+                    <h3 class="edit-text">Lembretes e prazo</h3>
+                    <ul>
+                        <li class="edit-text"><strong>E-mail:</strong> 3 lembretes automáticos (24h, 48h, 72h) com título <em>NPS Fast Tennis</em>.</li>
+                        <li class="edit-text"><strong>Push:</strong> notificações via Play Fast durante o período de coleta.</li>
+                        <li class="edit-text"><strong>Duração:</strong> 7 dias corridos.</li>
+                    </ul>
+                    <div class="highlight-box blue edit-text">
+                        <i class="fas fa-clock"></i>
+                        <span><strong>Importante:</strong> a pesquisa fica disponível por <strong>20 minutos</strong> após o acesso. Após esse tempo, o formulário é encerrado automaticamente. Esse prazo não pode ser alterado, garantindo a segurança e a confiabilidade da pesquisa.</span>
+                    </div>
+                </div>
+                <div class="back-to-top-wrapper"><button class="back-to-top" onclick="voltarAoTopo();"><i class="fas fa-arrow-up"></i></button></div>
+            </section>
+
+            <section id="premiacao" class="section">
+                <div class="section-header">
+                    <i class="fas fa-trophy" id="icon-premiacao"></i>
+                    <h2 class="edit-text">Premiação &amp; Reconhecimento</h2>
+                    <span class="tag">Ciclo vigente</span>
+                </div>
+                <div class="grid-2">
+                    <div>
+                        <h3 class="edit-text">Rede Franquias</h3>
+                        <div class="table-wrap">
+                            <table>
+                                <thead><tr><th>Posição</th><th>Valor</th></tr></thead>
+                                <tbody>
+                                    <tr><td>🥇 1º Lugar</td><td>R$ 2.000</td></tr>
+                                    <tr><td>🥈 2º Lugar</td><td>R$ 1.500</td></tr>
+                                    <tr><td>🥉 3º Lugar</td><td>R$ 1.000</td></tr>
+                                    <tr><td>4º Lugar</td><td>R$ 700</td></tr>
+                                    <tr><td>5º Lugar</td><td>R$ 500</td></tr>
+                                    <tr><td>6º Lugar</td><td>R$ 300</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <p style="font-size:0.8rem; opacity:0.8;" class="edit-text"><i class="fas fa-info-circle" style="color:var(--azul);"></i> <strong>Elegibilidade:</strong> mínimo 20 respondentes com 20% de respostas.</p>
+                    </div>
+                    <div>
+                        <h3 class="edit-text">Operação Própria (OP)</h3>
+                        <div class="table-wrap">
+                            <table>
+                                <thead><tr><th>Categoria / Meta</th><th>Valor</th></tr></thead>
+                                <tbody>
+                                    <tr><td>🏅 Metodologia (1º)</td><td>R$ 500</td></tr>
+                                    <tr><td>🏅 Professor (1º)</td><td>R$ 1.000</td></tr>
+                                    <tr><td>🏅 Professor (2º)</td><td>R$ 500</td></tr>
+                                    <tr><td>📊 Atendimento (Meta 90 – 94,99%)</td><td>R$ 250</td></tr>
+                                    <tr><td>📊 Atendimento (Meta ≥ 95%)</td><td>R$ 500</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="subsection">
+                    <h3 class="edit-text">Solicitação de Troféus e Itens</h3>
+                    <ul style="columns: 2 220px; column-gap:2rem; list-style:none; padding-left:0;">
+                        <li style="padding:0.2rem 0;" class="edit-text">✅ 15 unidades (3 OP + 12 rede)</li>
+                        <li style="padding:0.2rem 0;" class="edit-text">✅ Fornecedor: NR Acrílico</li>
+                        <li style="padding:0.2rem 0;" class="edit-text">✅ Valor unitário: R$ 150</li>
+                        <li style="padding:0.2rem 0;" class="edit-text">✅ Cartões de premiação (1º ao 6º)</li>
+                        <li style="padding:0.2rem 0;" class="edit-text">✅ 2 caixas de acrílico (R$ 140,00 cada)</li>
+                        <li style="padding:0.2rem 0;" class="edit-text">✅ 2 cadeados</li>
+                        <li style="padding:0.2rem 0;" class="edit-text">✅ Registro via OMIE</li>
+                    </ul>
+                    <div class="highlight-box blue edit-text" style="margin-top:0.8rem;">
+                        <i class="fas fa-clock"></i>
+                        <span><strong>Importante:</strong> Assim que o ciclo de pesquisa for iniciado, o Analista NPS já deve <strong>abrir o chamado para o Financeiro</strong> solicitar a cotação e o pedido dos troféus, caixas de acrílico e cadeados. Isso garante que os itens cheguem a tempo para a premiação.</span>
+                    </div>
+                </div>
+
+                <div class="subsection">
+                    <h3 class="edit-text" style="display:flex; align-items:center; gap:0.5rem;">🔐 Senhas dos Cadeados — Significado Especial</h3>
+                    <p class="edit-text" style="margin-bottom:0.5rem;">Para tornar a experiência de recebimento dos troféus ainda mais especial, utilizamos combinações numéricas com significados estratégicos:</p>
+                    <div class="cadeados-grid grid-cards-editable" id="grid-cadeados-cards">
+                        <div class="cadeado-item edit-text" id="cad-1">
+                            <div class="card-controls"><button class="card-btn add" title="Duplicar Card"><i class="fas fa-plus"></i></button><button class="card-btn del" title="Excluir Card"><i class="fas fa-trash-alt"></i></button></div>
+                            <span>🔓</span> <strong>080</strong> – meta mínima da rede (80%)
+                        </div>
+                        <div class="cadeado-item edit-text" id="cad-2">
+                            <div class="card-controls"><button class="card-btn add" title="Duplicar Card"><i class="fas fa-plus"></i></button><button class="card-btn del" title="Excluir Card"><i class="fas fa-trash-alt"></i></button></div>
+                            <span>🔓</span> <strong>090</strong> – excelência NPS classe mundial (90+)
+                        </div>
+                        <div class="cadeado-item edit-text" id="cad-3">
+                            <div class="card-controls"><button class="card-btn add" title="Duplicar Card"><i class="fas fa-plus"></i></button><button class="card-btn del" title="Excluir Card"><i class="fas fa-trash-alt"></i></button></div>
+                            <span>🔓</span> <strong>100</strong> – excelência e entrega completa
+                        </div>
+                        <div class="cadeado-item edit-text" id="cad-4">
+                            <div class="card-controls"><button class="card-btn add" title="Duplicar Card"><i class="fas fa-plus"></i></button><button class="card-btn del" title="Excluir Card"><i class="fas fa-trash-alt"></i></button></div>
+                            <span>🔓</span> <strong>360</strong> – visão completa da jornada do cliente
+                        </div>
+                        <div class="cadeado-item edit-text" id="cad-5">
+                            <div class="card-controls"><button class="card-btn add" title="Duplicar Card"><i class="fas fa-plus"></i></button><button class="card-btn del" title="Excluir Card"><i class="fas fa-trash-alt"></i></button></div>
+                            <span>🔓</span> <strong>365</strong> – compromisso anual com a experiência
+                        </div>
+                        <div class="cadeado-item edit-text" id="cad-6">
+                            <div class="card-controls"><button class="card-btn add" title="Duplicar Card"><i class="fas fa-plus"></i></button><button class="card-btn del" title="Excluir Card"><i class="fas fa-trash-alt"></i></button></div>
+                            <span>🔓</span> <strong>045</strong> – referência ao ciclo (ajustável por mês)
+                        </div>
+                        <div class="cadeado-item edit-text" id="cad-7" style="grid-column: span 2;">
+                            <div class="card-controls"><button class="card-btn add" title="Duplicar Card"><i class="fas fa-plus"></i></button><button class="card-btn del" title="Excluir Card"><i class="fas fa-trash-alt"></i></button></div>
+                            <span>🔓</span> <strong>[NPS da unidade]</strong> – personalizado com o resultado exato (ex: 955 para 95,5%)
+                        </div>
+                        <div class="add-card-btn-container" onclick="SGMAdmin.addCard('grid-cadeados-cards', 'cadeado-item')"><i class="fas fa-plus"></i> Adicionar Card</div>
+                    </div>
+                </div>
+
+                <div class="subsection">
+                    <h3 class="edit-text">Regra de Ouro</h3>
+                    <div class="highlight-box orange-box edit-text">
+                        <i class="fas fa-camera"></i>
+                        <span><strong>Mantenha a foto sempre updated no SULTS</strong> – isso é fundamental para o reconhecimento dos premiados na apresentação oficial da rede.</span>
+                    </div>
+                </div>
+                <div class="back-to-top-wrapper"><button class="back-to-top" onclick="voltarAoTopo();"><i class="fas fa-arrow-up"></i></button></div>
+            </section>
+
+            <section id="retornos" class="section">
+                <div class="section-header">
+                    <i class="fas fa-reply-all" id="icon-retornos"></i>
+                    <h2 class="edit-text">Retornos e Relatórios</h2>
+                    <span class="tag">B2B / B2C</span>
+                </div>
+                <div class="subsection">
+                    <h3 class="edit-text" style="display:flex; align-items:center; gap:0.5rem;">🏢 Relatório B2B (franqueado)</h3>
+                    <ul>
+                        <li class="edit-text">Enviar relatório consolidado com comentários, plano de ação e histórico.</li>
+                        <li class="edit-text">Unidades abaixo de 80%: agendar conversa de alinhamento.</li>
+                        <li class="edit-text">Unidades acima de 90%: mensagem de parabéns.</li>
+                        <li class="edit-text">Incluir link da planilha COMENTARIOS NPS.</li>
+                    </ul>
+                </div>
+                <div class="subsection">
+                    <h3 class="edit-text" style="display:flex; align-items:center; gap:0.5rem;">🎾 Retorno B2C (aluno)</h3>
+                    <ul>
+                        <li class="edit-text">Responder individualmente os comentários com base no plano de ação.</li>
+                    </ul>
+                </div>
+                <div class="back-to-top-wrapper"><button class="back-to-top" onclick="voltarAoTopo();"><i class="fas fa-arrow-up"></i></button></div>
+            </section>
+
+            <section id="relatorios-pa" class="section">
+                <div class="section-header">
+                    <i class="fas fa-file-alt" id="icon-relatorios"></i>
+                    <h2 class="edit-text">Relatórios e Planos de Ação</h2>
+                    <span class="tag" style="background: #19F000; color: #0A2A0A !important;">PÓS-PESQUISA</span>
+                </div>
+                <p class="edit-text" style="margin-bottom: 1rem;">Após a finalização da pesquisa, o fluxo de trabalho segue a ordem cronológica abaixo:</p>
+                
+                <div class="automation-steps grid-cards-editable" id="grid-relatorios-steps" style="margin-bottom:1.5rem;">
+                    <div class="automation-step" id="relat-1" style="border-left-color: var(--azul);">
+                        <div class="card-controls"><button class="card-btn add" title="Duplicar Card"><i class="fas fa-plus"></i></button><button class="card-btn del" title="Excluir Card"><i class="fas fa-trash-alt"></i></button></div>
+                        <span class="step-number">1</span><div class="step-content"><p class="edit-text"><strong>Criar relatórios para os Heads</strong> – consolidado com os principais resultados da rede.</p></div>
+                    </div>
+                    <div class="automation-step" id="relat-2" style="border-left-color: #1E46C5;">
+                        <div class="card-controls"><button class="card-btn add" title="Duplicar Card"><i class="fas fa-plus"></i></button><button class="card-btn del" title="Excluir Card"><i class="fas fa-trash-alt"></i></button></div>
+                        <span class="step-number">2</span><div class="step-content"><p class="edit-text"><strong>Enquanto os Heads tratam o plano de ação, criar o relatório B2C das unidades</strong> – feedbacks individuais por unidade.</p></div>
+                    </div>
+                    <div class="automation-step" id="relat-3" style="border-left-color: var(--azul);">
+                        <div class="card-controls"><button class="card-btn add" title="Duplicar Card"><i class="fas fa-plus"></i></button><button class="card-btn del" title="Excluir Card"><i class="fas fa-trash-alt"></i></button></div>
+                        <span class="step-number">3</span><div class="step-content"><p class="edit-text"><strong>Ao finalizar, teremos os planos de ação para responder o público B2B</strong> – com base nos comentários e tratativas.</p></div>
+                    </div>
+                    <div class="add-card-btn-container" onclick="SGMAdmin.addCard('grid-relatorios-steps', 'automation-step')"><i class="fas fa-plus"></i> Adicionar Card</div>
+                </div>
+
+                <div class="subsection">
+                    <h3 class="edit-text">Planilha de Planos de Ação (Sheet)</h3>
+                    <p class="edit-text"><strong>Nome do arquivo:</strong> <code>PA (Plano de ação) Comentários NPS - Ciclo [vigente]/26</code><br>
+                    <strong>Exemplo:</strong> <code>PA (Plano de ação) Comentários NPS - Ciclo Abril e Maio/26</code></p>
+                    
+                    <p style="margin: 1rem 0 0.5rem 0; font-weight: 600;" class="edit-text">Abas obrigatórias (uma para cada área):</p>
+                    <div style="display: flex; flex-wrap: wrap; gap: 0.5rem 2rem; margin-bottom: 1rem;">
+                        <span class="edit-text" style="width: calc(50% - 1rem);">✅ Implantação</span>
+                        <span class="edit-text" style="width: calc(50% - 1rem);">✅ Fornecedores Homologados</span>
+                        <span class="edit-text" style="width: calc(50% - 1rem);">✅ Plug Marketing</span>
+                        <span class="edit-text" style="width: calc(50% - 1rem);">✅ Per Sports</span>
+                        <span class="edit-text" style="width: calc(50% - 1rem);">✅ RH</span>
+                        <span class="edit-text" style="width: calc(50% - 1rem);">✅ Play Fast</span>
+                        <span class="edit-text" style="width: calc(50% - 1rem);">✅ Fast Educação</span>
+                        <span class="edit-text" style="width: calc(50% - 1rem);">✅ Operação Própria</span>
+                        <span class="edit-text" style="width: 100%;">✅ Suporte de Operações</span>
+                    </div>
+                    
+                    <div class="highlight-box blue edit-text" style="margin-top:1.2rem;">
+                        <i class="fas fa-lock"></i>
+                        <span><strong>Proteção de dados:</strong> No Sheet, configure a proteção em <strong>Dados > Proteger dados</strong> para que cada aba somente o Head e indicados possam editar.</span>
+                    </div>
+                </div>
+
+                <div class="subsection">
+                    <h3 class="edit-text">Relatório Macro por Área</h3>
+                    <p class="edit-text" style="margin-bottom: 0.5rem;">Criar um relatório consolidado para cada área, com os principais indicadores e comentários.</p>
+                    <div class="import-step edit-text" style="border-left-color: #19F000; background: #F8FAFC; padding: 0.8rem 1rem;">
+                        <code><strong>Exemplo:</strong> NPS | Fast Educação - Ciclo Abril e Maio/26</code>
+                    </div>
+                </div>
+                <div class="back-to-top-wrapper"><button class="back-to-top" onclick="voltarAoTopo();"><i class="fas fa-arrow-up"></i></button></div>
+            </section>
+
+            <section id="automacao-email" class="section">
+                <div class="section-header">
+                    <i class="fas fa-envelope" id="icon-automacao"></i>
+                    <h2 class="edit-text">Automação de Relatórios por E-mail</h2>
+                    <span class="tag">App Script</span>
+                </div>
+                <p class="edit-text">Após exportar a base consolidada da WeHelp, um App Script automatiza a criação dos relatórios, gerando rascunhos no Gmail para validação antes do envio final.</p>
+                
+                <div class="grid-3 grid-cards-editable" id="grid-automacao-cards">
+                    <div class="system-card" id="autocard-1">
+                        <div class="card-controls"><button class="card-btn add" title="Duplicar Card"><i class="fas fa-plus"></i></button><button class="card-btn del" title="Excluir Card"><i class="fas fa-trash-alt"></i></button></div>
+                        <i class="fas fa-envelope-open-text" id="icon-autocard-1" style="color:var(--azul);"></i><h4 class="edit-text">Geração de Rascunhos</h4><p class="edit-text">Cria rascunhos no Gmail para validação</p>
+                    </div>
+                    <div class="system-card" id="autocard-2">
+                        <div class="card-controls"><button class="card-btn add" title="Duplicar Card"><i class="fas fa-plus"></i></button><button class="card-btn del" title="Excluir Card"><i class="fas fa-trash-alt"></i></button></div>
+                        <i class="fas fa-chart-bar" id="icon-autocard-2" style="color:var(--verde);"></i><h4 class="edit-text">Relatórios Completos</h4><p class="edit-text">Gráficos, tabelas e análises por unidade</p>
+                    </div>
+                    <div class="system-card" id="autocard-3">
+                        <div class="card-controls"><button class="card-btn add" title="Duplicar Card"><i class="fas fa-plus"></i></button><button class="card-btn del" title="Excluir Card"><i class="fas fa-trash-alt"></i></button></div>
+                        <i class="fas fa-paperclip" id="icon-autocard-3" style="color:#f59e0b;"></i><h4 class="edit-text">Anexo Automático</h4><p class="edit-text">Comentários detalhados dos clientes</p>
+                    </div>
+                    <div class="add-card-btn-container" onclick="SGMAdmin.addCard('grid-automacao-cards', 'system-card')"><i class="fas fa-plus"></i> Adicionar Card</div>
+                </div>
+
+                <div class="subsection">
+                    <h3 class="edit-text">Script do App Script</h3>
+                    <p class="edit-text" style="margin-bottom:0.4rem;">Clique no botão abaixo para copiar todo o código do App Script corporativo configurado.</p>
+                    <div style="margin: 0.8rem 0;">
+                        <button class="btn-copy-script" id="btnCopyScript"><i class="fas fa-copy"></i> <span class="copy-label">Copiar Script</span><span class="copied-msg"><i class="fas fa-check-circle"></i> Copiado!</span></button>
+                    </div>
+                    <textarea id="scriptCode" style="display:none;">function gerarRelatoriosNPS() {
+  const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+ 
+  const abaConfig = spreadsheet.getSheetByName("Config_Unidades");
+  const abaBase = spreadsheet.getSheetByName("Base_WeHelp");
+ 
+  if (!abaConfig || !abaBase) {
+    const erroMsg = "Erro: Certifique-se de que as abas 'Config_Unidades' e 'Base_WeHelp' existem.";
+    try {
+      SpreadsheetApp.getUi().alert(erroMsg);
+    } catch(e) {
+      Logger.log(erroMsg);
+    }
+    return;
+  }
+ 
+  const emailGrazi = "grazielle@fasttennis.com.br";
+  const emailLadeira = "ladeira@fasttennis.com.br";
+ 
+  const dadosConfig = abaConfig.getDataRange().getValues();
+  const dadosBase = abaBase.getDataRange().getValues();
+  const cabecalhoBase = dadosBase[0];
+ 
+  const dataHoje = new Date();
+  const dataPrazo = new Date();
+  dataPrazo.setDate(dataHoje.getDate() + 10);
+  const dataRetornoFormatada = Utilities.formatDate(dataPrazo, Session.getScriptTimeZone(), "dd/MM/yyyy");
+ 
+  let colUnidadeName = -1, colStatusNps = -1, colMes = -1, colAno = -1, colProfessor = -1, colClientName = -1, colEvaluationGeral = -1, colNpsComment = -1, colAuthorization = -1;
+ 
+  const pointsContatoMap = [
+    { nomeOriginal: "Professores", nomeCurto: "Professores", colEval: -1, colComm: -1 },
+    { nomeOriginal: "Atendimento da Unidade", nomeCurto: "Atendimento", colEval: -1, colComm: -1 },
+    { nomeOriginal: "Experiência com o aplicativo Play Fast", nomeCurto: "Experiência Play Fast", colEval: -1, colComm: -1 },
+    { nomeOriginal: "Infraestrutura da Unidade", nomeCurto: "Infraestrutura", colEval: -1, colComm: -1 },
+    { nomeOriginal: "Limpeza e Organização da Unidade", nomeCurto: "Limpeza e Organização", colEval: -1, colComm: -1 },
+    { nomeOriginal: "Metodologia de ensino Fast Tennis", nomeCurto: "Metodologia", colEval: -1, colComm: -1 }
+  ];
+ 
+  for (let c = 0; c < cabecalhoBase.length; c++) {
+    const nomeColuna = cabecalhoBase[c].toString().toLowerCase().trim();
+    if (nomeColuna.includes("response company unit name") || nomeColuna === "unidades") colUnidadeName = c;
+    if (nomeColuna.includes("nps status")) colStatusNps = c;
+    if (nomeColuna.includes("mês nps") || nomeColuna.includes("mes nps") || nomeColuna === "mês") colMes = c;
+    if (nomeColuna.includes("ano nps") || nomeColuna === "ano") colAno = c;
+    if (nomeColuna === "professor") colProfessor = c;
+    if (nomeColuna === "name") colClientName = c;
+    if (nomeColuna === "evaluation") colEvaluationGeral = c;
+    if (nomeColuna === "nps comment") colNpsComment = c;
+    if (nomeColuna.includes("authorization") || nomeColuna === "autoriza") colAuthorization = c;
+    
+    pointsContatoMap.forEach(pt => {
+      if (nomeColuna.includes(pt.nomeOriginal.toLowerCase() + ": evaluation")) pt.colEval = c;
+      if (nomeColuna.includes(pt.nomeOriginal.toLowerCase() + ": comment")) pt.colComm = c;
+    });
+  }
+
+  const mapaCiclosExistentes = {};
+  for (let j = 1; j < dadosBase.length; j++) {
+    const inlineLinhaTmp = dadosBase[j];
+    if (colMes !== -1 && inlineLinhaTmp[colMes]) {
+      const dataMapeadaTmp = inlineTratarMesEAno(inlineLinhaTmp[colMes], inlineCheckNota(inlineLinhaTmp[colAno]));
+      if (dataMapeadaTmp.mes > 0) {
+        const chaveOrd = dataMapeadaTmp.ano * 100 + dataMapeadaTmp.mes;
+        mapaCiclosExistentes[chaveOrd] = {
+          text: (dataMapeadaTmp.mes < 10 ? "0" : "") + dataMapeadaTmp.mes + "/" + dataMapeadaTmp.ano,
+          mes: dataMapeadaTmp.mes,
+          ano: dataMapeadaTmp.ano
+        };
+      }
+    }
+  }
+ 
+  let chavesOrdenadas = Object.keys(mapaCiclosExistentes).map(Number).sort((a, b) => a - b);
+  if (chavesOrdenadas.length === 0) {
+    chavesOrdenadas = [202605];
+    mapaCiclosExistentes[202605] = { text: "05/2026", mes: 5, ano: 2026 };
+  }
+ 
+  const objCicloAtual = mapaCiclosExistentes[chavesOrdenadas[chavesOrdenadas.length - 1]];
+  const cicloAtualTexto = objCicloAtual.text;
+  const cicloAnteriorTexto = chavesOrdenadas.length > 1 ? mapaCiclosExistentes[chavesOrdenadas[chavesOrdenadas.length - 2]].text : "";
+ 
+  const cicloAtualExtenso = inlineFormatarCicloBimestral(objCicloAtual.mes, objCicloAtual.ano);
+  let cicloAnteriorExtenso = "";
+  if (chavesOrdenadas.length > 1) {
+    const objAnterior = mapaCiclosExistentes[chavesOrdenadas[chavesOrdenadas.length - 2]];
+    cicloAnteriorExtexto = inlineFormatarCicloBimestral(objAnterior.mes, objAnterior.ano);
+  }
+
+  const listaCiclosHistorico = [];
+  const limiteHistorico = Math.max(0, chavesOrdenadas.length - 7);
+  for (let k = limiteHistorico; k < chavesOrdenadas.length; k++) {
+    listaCiclosHistorico.push(mapaCiclosExistentes[chavesOrdenadas[k]].text);
+  }
+
+  const listaCiclosProfessores = [];
+  const limiteProfessores = Math.max(0, chavesOrdenadas.length - 3);
+  for (let k = limiteProfessores; k < chavesOrdenadas.length; k++) {
+    listaCiclosProfessores.push(mapaCiclosExistentes[chavesOrdenadas[k]].text);
+  }
+ 
+  const mensagensApoio = [
+    "Sabemos que manter a consistência alta é um desafio diário. Este ciclo nos trouxe aprendizados valiosos através dos comentários dos alunos. Vamos analisar todos os feedbacks apresentados para entender onde podemos concentrar nossa energia e evoluir!",
+    "Os números deste mês nos mostram que temos oportunidades importantes de ajuste. Olhar com carinho para todos os feedbacks apresentados será fundamental para realinharmos os pontos críticos. Contem com o nosso suporte para apoiar a evolução da unidade.",
+    "Cada feedback é um convite para melhorarmos. Este resultado abaixo da nossa meta é uma fotografia do momento, e analisar todos os feedbacks apresentados nos ajudará a entender perfeitamente o sentimento do cliente para trazer melhorias no próximo ciclo."
+  ];
+ 
+  const coresPremiumLista = ['#D9E1F2', '#B4C6E7', '#8EA9DB', '#5B9BD5', '#41719C', '#2F5597', '#1F3864'];
+  const emoAlfinete = "&#128204;"; const emoGraficoLinha = "&#128200;"; const emoEstrela = "&#11088;"; const emoGraficoPizza = "&#128202;"; const emoChapeuProf = "&#127891;"; const emoCoracaoAzul = "&#128153;"; const emoTenis = "&#127934;";          
+ 
+  for (let i = 1; i < dadosConfig.length; i++) {
+    if (!dadosConfig[i][0]) continue;
+    
+    const unidadeProcuradaOriginal = dadosConfig[i][0].toString();
+    const unidadeProcuradaLimpa = inlineNormalizarTexto(unidadeProcuradaOriginal);
+    const unidadeProcuradaSemEspacos = unidadeProcuradaLimpa.replace(/\s+/g, "");
+    const coreProcurado = inlineObterCoreToken(unidadeProcuradaLimpa);
+    
+    const unidadeExibicao = dadosConfig[i][1].toString().trim();
+    const gestoresTextoCompleto = dadosConfig[i][2].toString().trim();
+    const emailDestinatarioReal = dadosConfig[i][3] ? dadosConfig[i][3].toString().trim() : "";
+    const emailGerenteConta = dadosConfig[i][4] ? dadosConfig[i][4].toString().trim() : "";
+    
+    if (!emailDestinatarioReal) continue;
+    
+    const saudacaoGestores = inlineExtrairPrimeirosNomes(gestoresTextoCompleto);
+    const histNpsGeral = {};
+    const histNpsPontos = {};
+    
+    listaCiclosHistorico.forEach(ciclo => {
+      histNpsGeral[ciclo] = { prom: 0, detr: 0, total: 0 };
+      histNpsPontos[ciclo] = {};
+      pointsContatoMap.forEach(pt => {
+        histNpsPontos[ciclo][pt.nomeCurto] = { prom: 0, detr: 0, total: 0 };
+      });
+    });
+    
+    const cAnterior = { resp: 0, prom: 0, neu: 0, detr: 0 };
+    const cAtual = { resp: 0, prom: 0, neu: 0, detr: 0 };   
+    const profCiclos = {};
+    const listaComentariosAnexo = [["Data", "Cliente", "Ponto de Contato (Tema)", "Nota Atribuída", "Comentário do Cliente", "Professor Associado", "Análise de Retorno"]];
+    
+    let textoAcumuladoPositivos = "";
+    let textoAcumuladoMelhorias = "";
+    
+    for (let j = 1; j < dadosBase.length; j++) {
+      const AppLinha = dadosBase[j];
+      if (colUnidadeName === -1 || !AppLinha[colUnidadeName]) continue;
+      
+      const unidadeLinhaOriginal = AppLinha[colUnidadeName].toString();
+      const unidadeLinhaLimpa = inlineNormalizarTexto(unidadeLinhaOriginal);
+      const unidadeLinhaSemEspacos = unidadeLinhaLimpa.replace(/\s+/g, "");
+      const coreLinha = inlineObterCoreToken(unidadeLinhaLimpa);
+      
+      const correspondeuUnidade = (unidadeLinhaLimpa === unidadeProcuradaLimpa ||
+          unidadeLinhaSemEspacos === unidadeProcuradaSemEspacos ||
+          unidadeProcuradaLimpa.includes(unidadeLinhaLimpa) ||
+          unidadeLinhaLimpa.includes(unidadeProcuradaLimpa) ||
+          unidadeProcuradaSemEspacos.includes(unidadeLinhaSemEspacos) ||
+          unidadeLinhaSemEspacos.includes(unidadeProcuradaSemEspacos) ||
+          (coreProcurado.length > 2 && coreLinha === coreProcurado) ||
+          (unidadeLinhaLimpa.includes("indaiatuba") && unidadeProcuradaLimpa.includes("indaiatuba")));
+      
+      if (correspondeuUnidade) {
+        const status = (AppLinha[colStatusNps] || "").toString().toUpperCase().trim();
+        const dataMapeada = inlineTratarMesEAno(AppLinha[colMes], AppLinha[colAno]);
+        const mes = dataMapeada.mes;
+        const ano = dataMapeada.ano;
+        
+        let statusFormatado = (status === "PROMOTER" || status === "PROMOTOR") ? "Promotor" : ((status === "PASSIVE" || status === "NEUTRO") ? "Neutro" : "Detrator");
+        if (colEvaluationGeral !== -1) {
+          const notaGeralBruta = parseFloat(AppLinha[colEvaluationGeral]);
+          if (!isNaN(notaGeralBruta)) {
+            if (notaGeralBruta >= 9) statusFormatado = "Promotor";
+            else if (notaGeralBruta >= 7) statusFormatado = "Neutro";
+            else statusFormatado = "Detrator";
+          }
+        }
+        
+        const chaveCiclo = (mes < 10 ? "0" : "") + mes + "/" + ano;
+        
+        if (chaveCiclo && histNpsGeral[chaveCiclo]) {
+          histNpsGeral[chaveCiclo].total++;
+          if (statusFormatado === "Promotor") histNpsGeral[chaveCiclo].prom++;
+          if (statusFormatado === "Detrator") histNpsGeral[chaveCiclo].detr++;
+        }
+        
+        if (chaveCiclo === cicloAnteriorTexto) {
+          cAnterior.resp++;
+          if (statusFormatado === "Promotor") cAnterior.prom++;
+          else if (statusFormatado === "Neutro") cAnterior.neu++;
+          else if (statusFormatado === "Detrator") cAnterior.detr++;
+        } else if (chaveCiclo === cicloAtualTexto) {
+          cAtual.resp++;
+          if (statusFormatado === "Promotor") cAtual.prom++;
+          else if (statusFormatado === "Neutro") cAtual.neu++;
+          else if (statusFormatado === "Detrator") cAtual.detr++;
+        }
+        
+        if (chaveCiclo && histNpsPontos[chaveCiclo]) {
+          pointsContatoMap.forEach(pt => {
+            const nota = inlineCheckNota(AppLinha[pt.colEval]);
+            if (nota !== "N/A" && !isNaN(parseFloat(nota))) {
+              const val = parseFloat(nota);
+              histNpsPontos[chaveCiclo][pt.nomeCurto].total++;
+              if (val >= 9) histNpsPontos[chaveCiclo][pt.nomeCurto].prom++;
+              if (val <= 6) histNpsPontos[chaveCiclo][pt.nomeCurto].detr++;
+            }
+          });
+        }
+        
+        if (AppLinha[colProfessor] && listaCiclosProfessores.indexOf(chaveCiclo) !== -1) {
+          const listaProfs = inlineProfessorSplit(AppLinha[colProfessor]);
+          const notaProf = parseFloat(AppLinha[pointsContatoMap[0].colEval]);
+          
+          if (!isNaN(notaProf)) {
+            listaProfs.forEach(pNome => {
+              const profLimpo = pNome.trim();
+              if (profLimpo) {
+                if (!profCiclos[profLimpo]) {
+                  profCiclos[profLimpo] = {};
+                  listaCiclosProfessores.forEach(hCcl => { profCiclos[profLimpo][hCcl] = {soma:0, qtd:0}; });
+                }
+                if (profCiclos[profLimpo][chaveCiclo]) {
+                  profCiclos[profLimpo][chaveCiclo].soma += notaProf;
+                  profCiclos[profLimpo][chaveCiclo].qtd++;
+                }
+              }
+            });
+          }
+        }
+        
+        if (chaveCiclo === cicloAtualTexto) {
+          const dataFormatada = (AppLinha[colMes] instanceof Date) ? Utilities.formatDate(AppLinha[colMes], Session.getScriptTimeZone(), "dd/MM/yyyy") : cicloAtualTexto;
+          const profVinculado = inlineCheckNota(AppLinha[colProfessor]);
+          const valorAutorizacaoRaw = colAuthorization !== -1 ? AppLinha[colAuthorization] : "";
+          const nomeCliente = inlineCheckSigilo(AppLinha[colClientName], valorAutorizacaoRaw);
+          
+          if (colNpsComment !== -1 && inlineCheckTextoValido(AppLinha[colNpsComment])) {
+            const txtGeral = AppLinha[colNpsComment].toString().trim();
+            let notaGeralFormatada = "N/A";
+            if (colEvaluationGeral !== -1 && inlineCheckNota(AppLinha[colEvaluationGeral]) !== "N/A") {
+              const parseGeral = parseFloat(AppLinha[colEvaluationGeral]);
+              notaGeralFormatada = !isNaN(parseGeral) ? parseGeral.toFixed(2).replace(".", ",") : "N/A";
+            }
+            
+            listaComentariosAnexo.push([dataFormatada, nomeCliente, "Comentário Geral do NPS", notaGeralFormatada, txtGeral, profVinculado, ""]);
+            if (statusFormatado === "Promotor") textoAcumuladoPositivos += " " + txtGeral;
+            else if (statusFormatado === "Detrator") textoAcumuladoMelhorias += " " + txtGeral;
+          }
+          
+          pointsContatoMap.forEach(pt => {
+            const txtComentario = inlineCheckComm(AppLinha[pt.colComm]);
+            const notaAtribuida = inlineCheckNota(AppLinha[pt.colEval]);
+            if (inlineCheckTextoValido(txtComentario)) {
+              const txtLimpo = txtComentario.toString().trim();
+              let notaTemaFormatada = "N/A";
+              if (notaAtribuida !== "N/A") {
+                const parseTema = parseFloat(notaAtribuida);
+                notaTemaFormatada = !isNaN(parseTema) ? parseTema.toFixed(2).replace(".", ",") : "N/A";
+              }
+              
+              listaComentariosAnexo.push([dataFormatada, nomeCliente, pt.nomeCurto, notaTemaFormatada, txtLimpo, profVinculado, ""]);
+              if (notaAtribuida !== "N/A" && !isNaN(parseFloat(notaAtribuida))) {
+                const nPt = parseFloat(notaAtribuida);
+                if (nPt >= 9) textoAcumuladoPositivos += " " + txtLimpo;
+                else if (nPt <= 7) textoAcumuladoMelhorias += " " + txtLimpo;
+              }
+            }
+          });
+        }
+      }
+    }
+    
+    const analisePositivosConsolidada = realizarAnaliseConsolidada(textoAcumuladoPositivos, true);
+    const analiseMelhoriasConsolidada = realizarAnaliseConsolidada(textoAcumuladoMelhorias, false);
+    
+    const npsAtual = cAtual.resp > 0 ? ((cAtual.prom - cAtual.detr) / cAtual.resp) * 100 : 0;
+    const npsFormatado = npsAtual.toFixed(2).replace(".", ",");
+    
+    let mensagemNps = "";
+    if (npsAtual >= 90) {
+      mensagemNps = "Parabéns pelo desempenho brilhante! Alcançar uma nota acima de 90% de NPS é um reflexo direto da dedicação de vocês em oferecer uma experiência excepcional, colocando a unidade em um patamar de excelência.";
+    } else if (npsAtual >= 80) {
+      mensagemNps = "Meus parabéns pelo resultado de <b>" + npsFormatado + "%</b>! É gratificante ver o esforço do time se transformando em um índice de aprovação tão alto e consistente (Zona de Qualidade).";
+    } else {
+      const indiceSorteado = Math.floor(Math.random() * mensagensApoio.length);
+      mensagemNps = mensagensApoio[indiceSorteado];
+    }
+    
+    let stringHistGeral = "";
+    const blocosHistGeral = [];
+    listaCiclosHistorico.forEach(ccl => {
+      const dadosCcl = histNpsGeral[ccl];
+      if (dadosCcl && dadosCcl.total > 0) {
+        const npsCcl = (((dadosCcl.prom - dadosCcl.detr) / dadosCcl.total) * 100).toFixed(2).replace(".", ",");
+        blocosHistGeral.push("&bull; " + ccl + ": <b>" + npsCcl + "%</b>");
+      }
+    });
+    stringHistGeral = blocosHistGeral.length > 0 ? blocosHistGeral.join(" &nbsp;&nbsp; ") : "Nenhum histórico registrado nos ciclos selecionados.";
+    
+    let htmlBlocoDestaquesFeedbacks = "<div style='margin-top:15px; margin-bottom:15px; font-family:Arial, sans-serif; max-width:680px;'>" +
+        "<div style='background-color:#f4fbf7; border-left:4px solid #28a745; padding:12px; margin-bottom:12px; border-radius:0 4px 4px 0;'>" +
+        "<span style='font-size:14px; font-weight:bold; color:#1e7e34;'>&rArr; Principais elogios e destaques identificados</span>";
+    if (analisePositivosConsolidada.length > 0) {
+      htmlBlocoDestaquesFeedbacks += "<ul style='margin:8px 0 0 0; padding-left:20px; font-size:12.5px; color:#333; line-height:1.5;'>";
+      analisePositivosConsolidada.forEach(item => { htmlBlocoDestaquesFeedbacks += "<li>" + item + "</li>"; });
+      htmlBlocoDestaquesFeedbacks += "</ul>";
+    } else {
+      htmlBlocoDestaquesFeedbacks += "<p style='margin:6px 0 0 0; font-size:12.5px; color:#666; font-style:italic;'>Nenhum ponto de destaque recorrente registrado neste período.</p>";
+    }
+    htmlBlocoDestaquesFeedbacks += "</div>";
+    if (analiseMelhoriasConsolidada.length > 0) {
+      htmlBlocoDestaquesFeedbacks += "<div style='background-color:#fff5f5; border-left:4px solid #dc3545; padding:12px; border-radius:0 4px 4px 0;'>" +
+        "<span style='font-size:14px; font-weight:bold; color:#bd2130;'>" + emoAlfinete + " Sugestões de melhorias e pontos de atenção coletados</span>" +
+        "<ul style='margin:8px 0 0 0; padding-left:20px; font-size:12.5px; color:#333; line-height:1.5;'>";
+      analiseMelhoriasConsolidada.forEach(item => { htmlBlocoDestaquesFeedbacks += "<li>" + item + "</li>"; });
+      htmlBlocoDestaquesFeedbacks += "</ul></div>";
+    }
+    htmlBlocoDestaquesFeedbacks += "</div><br>";
+    
+    let htmlBlocoDinamicoCiclos = "";
+    if (!cicloAnteriorTexto || cAnterior.resp === 0) {
+      htmlBlocoDinamicoCiclos = "<p>" + emoGraficoLinha + " <b>Resumo de Estreia (Primeiro Ciclo Oficial da Unidade):</b></p>" +
+        "<div style='background-color: #fcfcfc; border: 1px solid #e2e7f3; padding: 12px; border-radius: 4px; max-width: 650px; font-size:13px;'> " +
+          "<p style='margin-top:0;'>Compilamos abaixo os primeiros retornos absolutos coletados de seus alunos neste ciclo inicial:</p>" +
+          "&bull; Total de Clientes Respondentes: <b>" + cAtual.resp + "</b> alunos.<br>" +
+          "&bull; <span style='color:#28a745; font-weight:bold;'>Promotores (Notas 9 e 10): " + cAtual.prom + "</span><br>" +
+          "&bull; <span style='color:#ffc107; font-weight:bold;'>Neutros (Notas 7 e 8): " + cAtual.neu + "</span><br>" +
+          "&bull; <span style='color:#dc3545; font-weight:bold;'>Detratores (Notas 0 a 6): " + cAtual.detr + "</span>" +
+          "<p style='margin-bottom:0; font-style: italic; color: #555; margin-top: 10px;'><b>Nota de estreia:</b> Estrear com um indicador desse nível demonstra que a operation começou forte e alinhada com o nosso padrão de qualidade. Parabéns a todo o time pelo empenho!</p>" +
+        "</div><br>";
+    } else {
+      htmlBlocoDinamicoCiclos = "<p>" + emoGraficoLinha + " <b>Comparativo de respondentes em relação ao ciclo anterior:</b></p>" +
+        "<table cellpadding='6' style='font-family:Arial; font-size:13px; border-collapse:collapse;'>" +
+          "<tr><td><b>" + cicloAnteriorExtexto + ":</b> " + cAnterior.resp + " resp.</td>" +
+              "<td>| <span style='color:#dc3545; font-weight:bold;'>Detrator: " + cAnterior.detr + "</span></td><td>| <span style='color:#ffc107; font-weight:bold;'>Neutro: " + cAnterior.neu + "</span></td><td>| <span style='color:#28a745; font-weight:bold;'>Promotor: " + cAnterior.prom + "</span></td></tr>" +
+          "<tr><td><b>" + cicloAtualExtenso + " (Atual):</b> " + cAtual.resp + " resp.</td>" +
+              "<td>| <span style='color:#dc3545; font-weight:bold;'>Detrator: " + cAtual.detr + "</span></td><td>| <span style='color:#ffc107; font-weight:bold;'>Neutro: " + cAtual.neu + "</span></td><td>| <span style='color:#28a745; font-weight:bold;'>Promotor: " + cAtual.prom + "</span></td></tr>" +
+        "</table><br>";
+    }
+    
+    const datasetsQuickChart = [];
+    let corContador = 0;
+    listaCiclosHistorico.forEach(ccl => {
+      let cicloTemDadosNaUnidade = false;
+      pointsContatoMap.forEach(pt => { if (histNpsPontos[ccl] && histNpsPontos[ccl][pt.nomeCurto].total > 0) cicloTemDadosNaUnidade = true; });
+      if (cicloTemDadosNaUnidade) {
+        const dadosDoCiclo = [];
+        pointsContatoMap.forEach(pt => {
+          const dPt = histNpsPontos[ccl][pt.nomeCurto];
+          dadosDoCiclo.push(dPt.total > 0 ? parseFloat((((dPt.prom - dPt.detr) / dPt.total) * 100).toFixed(1)) : 0);
+        });
+        datasetsQuickChart.push({ label: ccl, backgroundColor: coresPremiumLista[corContador % coresPremiumLista.length], borderColor: '#ffffff', borderWidth: 1, data: dadosDoCiclo });
+        corContador++;
+      }
+    });
+    
+    const configJson = {
+      type: 'bar',
+      data: { labels: pointsContatoMap.map(p => p.nomeCurto), datasets: datasetsQuickChart },
+      options: {
+        title: { display: true, text: 'NPS POR PONTO DE CONTATO', fontSize: 15, fontColor: '#1F3864', fontStyle: 'bold', padding: 10 },
+        legend: { display: true, position: 'bottom', labels: { boxWidth: 11, fontColor: '#555555', padding: 8 } },
+        scales: {
+          xAxes: [{ gridLines: { display: false } }],
+          yAxes: [{ gridLines: { display: false }, ticks: { display: false, min: -25, max: 140 } }]
+        },
+        plugins: {
+          datalabels: {
+            display: true,
+            anchor: 'end',
+            align: 'top',
+            rotation: 270,
+            font: { weight: 'bold', size: 9 },
+            fontColor: '#1F3864'
+          }
+        }
+      }
+    };
+    
+    let chartString = JSON.stringify(configJson);
+    chartString = chartString.replace('"datalabels":{', '"datalabels":{"formatter":function(v){return v===null?null:v.toString().replace(".",",")+"%";},');
+
+    const imagemBlobResponse = UrlFetchApp.fetch("https://quickchart.io/chart", {
+      method: "post",
+      contentType: "application/json",
+      payload: JSON.stringify({ width: 950, height: 290, backgroundColor: "white", chart: chartString }),
+      muteHttpExceptions: true
+    });
+    const imagemGraficoBlob = imagemBlobResponse.getBlob().setName("grafico_nps");
+    
+    const arrayProfessores = [];
+    for (let p in profCiclos) {
+      const objP = { nome: p, valAtual: -1 };
+      listaCiclosProfessores.forEach((ccl, idx) => {
+        const q = profCiclos[p][ccl].qtd, s = profCiclos[p][ccl].soma;
+        objP["m" + idx] = q > 0 ? (s/q).toFixed(2).replace(".", ",") : "N/A";
+        objP["v" + idx] = q;
+        if (ccl === cicloAtualTexto && q > 0) objP.valAtual = (s/q);
+      });
+      arrayProfessores.push(objP);
+    }
+    arrayProfessores.sort((a, b) => b.valAtual - a.valAtual);
+    
+    let tableProfessoresHtml = "<table border='1' cellpadding='5' style='border-collapse: collapse; font-family: Arial; text-align: center; width:100%; max-width:650px; font-size:12px;'>" +
+                                "<tr style='background-color: #2F5597; color: white;'><th rowspan='2' style='vertical-align: middle;'>Professor</th>";
+    listaCiclosProfessores.forEach(ccl => {
+      const isAtual = (ccl === cicloAtualTexto);
+      tableProfessoresHtml += "<th colspan='2' style='" + (isAtual ? "background-color:#1f3864;" : "") + "'>" + (isAtual ? ccl + " (Atual)" : ccl) + "</th>";
+    });
+    tableProfessoresHtml += "</tr><tr style='background-color: #f1f3f5; font-size:11px;'>";
+    listaCiclosProfessores.forEach(() => { tableProfessoresHtml += "<th>Nota</th><th>Qtd</th>"; });
+    tableProfessoresHtml += "</tr>";
+    
+    arrayProfessores.forEach(pObj => {
+      tableProfessoresHtml += "<tr><td style='text-align:left; font-weight:bold;'><span style='color:#2F5597;'>&bull;</span> " + pObj.nome + "</td>";
+      listaCiclosProfessores.forEach((ccl, idx) => {
+        const isAtual = (ccl === cicloAtualTexto);
+        tableProfessoresHtml += "<td style='" + (isAtual ? "font-weight:bold; color:#2F5597; background-color:#f8f9fa;" : "") + "'>" + pObj["m" + idx] + "</td><td>" + pObj["v" + idx] + "</td>";
+      });
+      tableProfessoresHtml += "</tr>";
+    });
+    tableProfessoresHtml += "</table>";
+    
+    const nomeArquivoAnexo = "NPS " + unidadeExibicao.toUpperCase() + " - Feedbacks Detalhados " + cicloAtualTexto.replace("/","-");
+    const novaPlanilhaTmp = SpreadsheetApp.create(nomeArquivoAnexo);
+    const abaTmp = novaPlanilhaTmp.getSheets()[0];
+    abaTmp.getRange(1, 1, listaComentariosAnexo.length, listaComentariosAnexo[0].length).setValues(listaComentariosAnexo);
+    abaTmp.getRange(1, 1, 1, listaComentariosAnexo[0].length).setBackground("#2F5597").setFontColor("white").setFontWeight("bold");
+    abaTmp.autoResizeColumns(1, listaComentariosAnexo[0].length);
+    SpreadsheetApp.flush();
+    
+    const url = "https://docs.google.com/spreadsheets/d/" + novaPlanilhaTmp.getId() + "/export?format=xlsx";
+    const token = ScriptApp.getOAuthToken();
+    const response = UrlFetchApp.fetch(url, { headers: { 'Authorization': 'Bearer ' + token }, muteHttpExceptions: true });
+    const arquivoBlob = response.getBlob().setName("NPS_" + unidadeExibicao.replace(/\s+/g, '_') + "_Feedbacks_Detalhados.xlsx");
+    
+    const corpoEmail = "<html><body style='font-family: Arial; font-size: 14px; line-height: 1.6; color: #333333;'>" +
+      "<p>Olá, " + saudacaoGestores + "!</p>" +
+      "<p>" + emoEstrela + " Chegamos a mais um NPS!</p>" +
+      "<p>Encerramos o ciclo de pesquisa referente ao período de " + cicloAtualTexto + ", e a unidade alcançou o resultado de:</p>" +
+      "<div style='background-color: #f8f9fa; border-left: 6px solid #2F5597; padding: 15px; margin-bottom: 20px; max-width: 400px;'>" +
+        "<span style='font-size: 12px; text-transform: uppercase; color: #41719C; font-weight:bold;'>Ciclo " + cicloAtualTexto + "</span><br>" +
+        "<span style='font-size: 34px; font-weight: bold; color: #2F5597;'>" + npsFormatado + "%</span>" +
+      "</div>" +
+      "<p>" + mensagemNps + "</p>" +
+      htmlBlocoDinamicoCiclos +
+      htmlBlocoDestaquesFeedbacks +
+      "<p>" + emoGraficoPizza + " <b>Histórico de Evolução do NPS da Unidade:</b><br>" + stringHistGeral + "</p><br>" +
+      "<p>" + emoGraficoPizza + " <b>Evolução Histórica do NPS Real por Ponto de Contato:</b></p>" +
+      "<div><img src='cid:graficoNps' style='width:100%; max-width:950px; height:auto; display:block;' /></div><br>" +
+      "<p>" + emoChapeuProf + " <b>Histórico Comparativo por Professor (Últimos 3 meses - Ordenado por Nota Atual):</b></p>" +
+      tableProfessoresHtml + "<br>" +
+      "<p>Em anexo, você encontrará o arquivo consolidado contendo todos os comentários reais dos nossos clientes, e uma coluna para plano de ações da unidade.</p>" +
+      "<p>Caso identifiquem oportunidades de melhorias nas visões apresentadas, pedimos a gentileza de nos retornar com os alinhamentos definidos até o dia: <span style='color:blue; font-weight:bold;'>" + dataRetornoFormatada + "</span>.</p>" +
+      "<p><i>\"Quanto mais a gente cresce, mais a gente melhora\"</i><br><b>Fast Tennis é tênis para todos " + emoCoracaoAzul + " " + emoTenis + "</b></p></body></html>";
+    
+    const listaCco = [emailGrazi, emailLadeira];
+    if (emailGerenteConta) listaCco.push(emailGerenteConta);
+    
+    GmailApp.createDraft(emailDestinatarioReal, "NPS " + unidadeExibicao + " | Resultados Consolidados - Ciclo " + cicloAtualTexto, "Abra este rascunho em modo HTML.", {
+      htmlBody: corpoEmail, attachments: [arquivoBlob], inlineImages: { graficoNps: imagemGraficoBlob }, bcc: listaCco.join(",")
+    });
+    
+    DriveApp.getFileById(novaPlanilhaTmp.getId()).setTrashed(true);
+  }
+ 
+  try {
+    SpreadsheetApp.getUi().alert("Processo Finalizado com sucesso! Inteligência permanente ativada.");
+  } catch (e) {
+    Logger.log("Processo Finalizado com sucesso! Executado em segundo plano (sem UI).");
+  }
+}
+
+function inlineFormatarCicloBimestral(mes, ano) {
+  const mesesAbrev = ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"];
+  let mesAntIdx = mes - 2;
+  let anoAnt = ano;
+  if (mesAntIdx < 0) {
+    mesAntIdx += 12;
+    anoAnt -= 1;
+  }
+  let mesAtualIdx = mes - 1;
+  let strBimestreAnterior = mesesAbrev[mesAntIdx] + "/" + anoAnt.toString().slice(-2);
+  let strBimestreAtual = mesesAbrev[mesAtualIdx] + "/" + ano.toString().slice(-2);
+  let mmFormatado = (mes < 10 ? "0" : "") + mes;
+  return strBimestreAnterior + " e " + strBimestreAtual + " (" + mmFormatado + "/" + ano + ")";
+}
+
+function realizarAnaliseConsolidada(textoGeral, ehPositivo) {
+  if (!textoGeral || textoGeral.trim().length < 4) return [];
+  const textoLimpo = inlineNormalizarTexto(textoGeral);
+  const topicosMapeados = [];
+  if (ehPositivo) {
+    if (textoLimpo.includes("professor") || textoLimpo.includes("didatica") || textoLimpo.includes("atenciosos")) topicosMapeados.push("Elogios recorrentes voltados à qualificação e comprometimento dos professores.");
+    if (textoLimpo.includes("atendimento") || textoLimpo.includes("recepcao") || textoLimpo.includes("cordial")) topicosMapeados.push("Destaques positivos para o atendimento receptivo e acolhedor.");
+    if (textoLimpo.includes("estrutura") || textoLimpo.includes("quadra") || textoLimpo.includes("limp")) topicosMapeados.push("Percepção altamente positiva de limpeza, organization e conservação física.");
+    if (textoLimpo.includes("metodologia") || textoLimpo.includes("evolucao") || textoLimpo.includes("aula")) topicosMapeados.push("Alunos apontando boa percepção de evolução prática com a metodologia.");
+    if (textoLimpo.includes("aplicativo") || textoLimpo.includes("app") || textoLimpo.includes("play fast")) topicosMapeados.push("Feedbacks positivos sobre facilidade de uso do aplicativo.");
+  } else {
+    if (textoLimpo.includes("quadra") || textoLimpo.includes("descoberta") || textoLimpo.includes("cobertura")) topicosMapeados.push("Apontamentos de necessidade de melhorias estruturais ou cobertura nas quadras.");
+    if (textoLimpo.includes("metodologia") || textoLimpo.includes("aula") || textoLimpo.includes("ensino")) topicosMapeados.push("Demandas específicas de alunos solicitando ajustes no formato de aula.");
+    if (textoLimpo.includes("aplicativo") || textoLimpo.includes("app") || textoLimpo.includes("estabilidade")) topicosMapeados.push("Relatos isolados sobre instabilidade ou desejo de melhorias nas funções do App.");
+    if (textoLimpo.includes("atendimento") || textoLimpo.includes("retorno") || textoLimpo.includes("demora")) topicosMapeados.push("Pontos de atenção pedindo mais agilidade no suporte da unidade.");
+    if (textoLimpo.includes("limpeza") || textoLimpo.includes("banheiro") || textoLimpo.includes("sujo")) topicosMapeados.push("Solicitação de atenção à regularidade de limpeza e banheiros.");
+  }
+  if (topicosMapeados.length === 0) topicosMapeados.push(ehPositivo ? "Elogios gerais quanto à percepção de valor da unidade." : "Pontos diversos anotados na planilha em anexo para acompanhamento.");
+  return topicosMapeados;
+}
+
+function inlineNormalizarTexto(texto) {
+  if (!texto) return "";
+  return texto.toString().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]/g, " ").replace(/\s+/g, " ").trim();
+}
+
+function inlineObterCoreToken(textoLimpo) {
+  if (!textoLimpo) return "";
+  const palavrasRemover = ["unidade", "fast", "tennis", "filial", "bh", "sp", "rj", "franchise", "de", "da", "do"];
+  const partes = textoLimpo.split(" ");
+  const partesFiltradas = partes.filter(p => palavrasRemover.indexOf(p) === -1 && p.length > 1);
+  return partesFiltradas.join("");
+}
+
+function inlineTratarMesEAno(valorMes, valorAno) {
+  let mesRetorno = 0;
+  let anoRetorno = 2026;
+  if (valorMes instanceof Date) {
+    mesRetorno = valorMes.getMonth() + 1;
+    anoRetorno = valorMes.getFullYear();
+  } else {
+    const strMes = (valorMes || "").toString().trim();
+    if (strMes.includes("/")) {
+      const partes = strMes.split("/");
+      if (partes.length >= 2) {
+        mesRetorno = parseInt(partes[0], 10);
+        anoRetorno = parseInt(partes[1], 10);
+      }
+    } else {
+      mesRetorno = parseInt(strMes, 10);
+    }
+  }
+  if (!isNaN(parseInt(valorAno, 10)) && parseInt(valorAno, 10) > 0) {
+    const testeAno = parseInt(valorAno, 10);
+    if (testeAno > 100) anoRetorno = testeAno;
+  }
+  return { mes: isNaN(mesRetorno) ? 0 : mesRetorno, ano: isNaN(anoRetorno) ? 2026 : anoRetorno };
+}
+
+function inlineExtrairPrimeirosNomes(textoGestores) {
+  if (!textoGestores) return "Gestor";
+  const listaComponentes = textoGestores.split(",");
+  const primeirosNomes = [];
+  for (let k = 0; k < listaComponentes.length; k++) {
+    const parteLimpa = listaComponentes[k].trim();
+    if (parteLimpa) {
+      const primeiroNomeSolo = parteLimpa.split(" ")[0].trim();
+      if (primeiroNomeSolo) primeirosNomes.push(primeiroNomeSolo);
+    }
+  }
+  if (primeirosNomes.length === 0) return "Gestor";
+  if (primeirosNomes.length === 1) return primeirosNomes[0];
+  if (primeirosNomes.length === 2) return primeirosNomes[0] + " e " + primeirosNomes[1];
+  const ultimoNome = primeirosNomes.pop();
+  return primeirosNomes.join(", ") + " e " + ultimoNome;
+}
+
+function inlineProfessorSplit(prof) { if (!prof) return []; return prof.toString().split(";"); }
+function inlineCheckNota(val) { if (val === undefined || val === null || val === "") return "N/A"; return val; }
+function inlineCheckComm(val) { if (val === undefined || val === null) return ""; return val; }
+function inlineCheckTextoValido(val) { return (val && val.toString().trim() !== ""); }
+function inlineCheckSigilo(nome, valAuth) {
+  const n = nome ? nome.toString().trim() : "Anônimo";
+  const auth = valAuth ? valAuth.toString().toUpperCase().trim() : "";
+  if (auth === "NOTHING" || auth === "NAO" || auth === "FALSE" || auth.includes("NAO AUTORIZA")) return "Não autoriza contato";
+  return n;
+}</textarea>
+                <div class="back-to-top-wrapper"><button class="back-to-top" onclick="voltarAoTopo();"><i class="fas fa-arrow-up"></i></button></div>
+            </section>
+
+            <section id="benchmark" class="section">
+                <div class="section-header">
+                    <i class="fas fa-chart-line" id="icon-benchmark"></i>
+                    <h2 class="edit-text">Benchmark &amp; Reconhecimento</h2>
+                    <span class="tag" style="background: #19F000; color: #0A2A0A !important;">Academias · Tênis</span>
+                </div>
+                <p class="edit-text">O NPS não é uma pesquisa isolada. Para uma rede de academias de tênis, ele é um <strong>sistema de gestão</strong> que articula coleta padronizada, fechamento de loop, correlação com auditoria operacional e fidelização de alunos.</p>
+                
+                <div class="subsection">
+                    <h3 class="edit-text" style="display:flex; align-items:center; gap:0.5rem;">🏅 Selo de Excelência IHRSA Fitness Brasil 2024</h3>
+                    <p class="edit-text">A Fast Tennis foi premiada com o <strong>Selo de Excelência Experiência do Cliente</strong> na <strong>IHRSA Fitness Brasil 2024</strong>, o maior evento do mercado fitness da América Latina.</p>
+                    <ul style="margin: 0.5rem 0 1rem 1.5rem; list-style: none;">
+                        <li class="edit-text">✅ Foram avaliadas mais de <strong>1.100 unidades</strong> de academias e estúdios em todo o Brasil, além de academias no México e em Portugal.</li>
+                        <li class="edit-text">✅ Mais de <strong>530 mil respostas</strong> de clientes reais.</li>
+                        <li class="edit-text">✅ Apenas marcas destaque em <strong>NPS</strong> recebem o selo.</li>
+                    </ul>
+                    <div class="edit-text" style="background:#FFFFFF; border:2px solid #FFD700; padding:1.5rem; border-radius:12px; margin:1rem auto; text-align:center; max-width:480px;">
+                        <i class="fas fa-award" style="font-size: 2.5rem; color: #FFD700; margin-bottom: 0.25rem;"></i>
+                        <h4 style="font-family:'Poppins'; font-size:1.3rem; color:var(--azul);">IHRSA Fitness Brasil 2024</h4>
+                        <p style="font-size:0.85rem; color:#64748B;">Selo de Excelência · Experiência do Cliente</p>
+                    </div>
+                    <div class="import-step edit-text" style="border-left-color: var(--azul); font-style: italic; background:#FFFFFF;">
+                        <p><strong>Lucas André, CEO e fundador da Fast Tennis:</strong> "Esse selo é extremamente relevante para nós, pois foram avaliadas mais de 1.100 unidades de academias... Apenas as marcas que são destaque em Net Promoter Score (NPS) recebem o selo. E nós somos obcecados pela experiência do cliente, por isso, o NPS é o nosso principal indicador."</p>
+                    </div>
+                </div>
+                <div class="back-to-top-wrapper"><button class="back-to-top" onclick="voltarAoTopo();"><i class="fas fa-arrow-up"></i></button></div>
+            </section>
+
+            <section id="reclame-aqui" class="section">
+                <div class="section-header">
+                    <i class="fas fa-exclamation-circle" id="icon-reclame-aqui"></i>
+                    <h2 class="edit-text">Reclame Aqui</h2>
+                    <span class="tag" style="background: #19F000; color: #0A2A0A !important;">SLA · Área NPS</span>
+                </div>
+                <p class="edit-text">O Reclame Aqui é um canal complementar de manifestações, gerido pela mesma equipe responsável pelo NPS. Embora tratados pela mesma área, os processos são distintos: o NPS é uma pesquisa estruturada de satisfação, enquanto o Reclame Aqui lida com reclamações públicas e demandas específicas, cada um com seus próprios fluxos e prazos.</p>
+                
+                <div class="subsection">
+                    <h3 class="edit-text" style="display:flex; align-items:center; gap:0.5rem;">⏱️ SLA de Atendimento</h3>
+                    <div class="sla-grid grid-cards-editable" id="grid-sla-cards">
+                        <div class="sla-card" id="sla-card-1">
+                            <div class="card-controls"><button class="card-btn add" title="Duplicar Card"><i class="fas fa-plus"></i></button><button class="card-btn del" title="Excluir Card"><i class="fas fa-trash-alt"></i></button></div>
+                            <div class="num edit-text">1</div><div class="text edit-text">Analisar (24h)</div>
+                        </div>
+                        <div class="sla-card step-2" id="sla-card-2" style="border-bottom-color: #F59E0B;">
+                            <div class="card-controls"><button class="card-btn add" title="Duplicar Card"><i class="fas fa-plus"></i></button><button class="card-btn del" title="Excluir Card"><i class="fas fa-trash-alt"></i></button></div>
+                            <div class="num edit-text">2</div><div class="text edit-text">Plano de ação (48h)</div>
+                        </div>
+                        <div class="sla-card step-3" id="sla-card-3" style="border-bottom-color: #19F000;">
+                            <div class="card-controls"><button class="card-btn add" title="Duplicar Card"><i class="fas fa-plus"></i></button><button class="card-btn del" title="Excluir Card"><i class="fas fa-trash-alt"></i></button></div>
+                            <div class="num edit-text">3</div><div class="text edit-text">Resposta e encerramento (5 a 10 dias)</div>
+                        </div>
+                        <div class="add-card-btn-container" onclick="SGMAdmin.addCard('grid-sla-cards', 'sla-card')"><i class="fas fa-plus"></i> Adicionar Card</div>
+                    </div>
+                </div>
+
+                <div class="subsection">
+                    <h3 class="edit-text" style="display:flex; align-items:center; gap:0.5rem;">📌 Classificação</h3>
+                    <p class="edit-text"><strong>Origem:</strong> Franqueadora ou Franquia (unidade específica).<br><strong>Temas comuns:</strong> Implantação, Atendimento / Qualidade, Financeiro, Comunicação / Suporte.</p>
+                </div>
+
+                <div class="subsection">
+                    <h3 class="edit-text" style="display:flex; align-items:center; gap:0.5rem;">🔄 Fluxo de Tratativa</h3>
+                    <ul style="list-style-type:none; padding-left:0;">
+                        <li class="edit-text">✅ <strong>Monitoramento:</strong> mínimo 3x por semana pelo Analista de NPS.</li>
+                        <li class="edit-text">✅ <strong>Análise inicial:</strong> ler integralmente, validar histórico e, quando pertinente, correlacionar com feedbacks de NPS (unidades com baixo NPS merecem atenção redobrada).</li>
+                        <li class="edit-text">✅ <strong>Acionamento:</strong> encaminhar à área responsável com resumo, impacto e prazo.</li>
+                        <li class="edit-text">✅ <strong>Resposta pública:</strong> primeira manifestação em até 48h úteis (evitar respostas genéricas).</li>
+                        <li class="edit-text">✅ <strong>Encerramento:</strong> confirmar execução da ação e validar a resposta final. Incentivar avaliação do atendimento.</li>
+                    </ul>
+                </div>
+
+                <div class="subsection">
+                    <h3 class="edit-text" style="display:flex; align-items:center; gap:0.5rem;">📝 Registro e Consolidação</h3>
+                    <p class="edit-text">Todas as reclamações devem ser registradas em base de controle com: Data, Tema, Unidade, Área responsável, Status, SLA e Resultado.</p>
+                    <p style="margin-top:0.3rem;" class="edit-text">Arquivar separadamente por ANO/MÊS e TEMA para acompanhamento histórico.</p>
+                </div>
+
+                <div class="subsection">
+                    <h3 class="edit-text" style="display:flex; align-items:center; gap:0.5rem;">🛑 Moderação de Reclamações</h3>
+                    <p class="edit-text">Para reclamações em <strong>duplicidade</strong>, de <strong>outra empresa</strong>, com <strong>conteúdo impróprio</strong> ou de natureza <strong>trabalhista</strong>, o tratamento será feito por meio do fluxo de <strong>MODERAÇÃO</strong>.</p>
+                    <p style="margin-top:0.4rem; font-weight:600;" class="edit-text">Fluxo de Moderação:</p>
+                    <ol style="margin-left:1.5rem; margin-bottom:0.5rem;">
+                        <li class="edit-text"><strong>Cadastro:</strong> Inserir o <strong>NOME</strong> do reclamante ou protocolo no sistema.</li>
+                        <li class="edit-text"><strong>Seleção do Motivo:</strong> Escolher uma das opções: <em>Duplicidade, Outra empresa, Conteúdo impróprio</em> ou <em>Trabalhista</em>.</li>
+                        <li class="edit-text"><strong>Justificativa:</strong> Descrever detalhadamente o motivo pelo qual a reclamação deve ser moderada.</li>
+                        <li class="edit-text"><strong>Encaminhamento:</strong> Enviar o pedido para análise pela equipe responsável pela moderação.</li>
+                    </ol>
+                    <div class="import-step edit-text" style="border-left-color: var(--azul); width: 100%; max-width: 100%; background:#EFF6FF;">
+                        <p class="edit-text"><strong>Resultado:</strong> Sendo válido o pedido, o Reclame Aqui <strong>desativará</strong> ou <strong>anulará</strong> a reclamação, removendo-a da visualização pública e dos indicadores.</p>
+                    </div>
+                </div>
+                <div class="back-to-top-wrapper"><button class="back-to-top" onclick="voltarAoTopo();"><i class="fas fa-arrow-up"></i></button></div>
+            </section>
+
+            <section id="cores" class="section">
+                <div class="section-header">
+                    <i class="fas fa-palette" id="icon-cores"></i>
+                    <h2 class="edit-text">Paleta de Cores do Manual</h2>
+                    <span class="tag">Identidade</span>
+                </div>
+                <p style="margin-bottom:0.8rem;" class="edit-text">Cores utilizadas no manual para manter a identidade visual da Fast Tennis e facilitar a leitura.</p>
+                <div class="color-swatch grid-cards-editable" id="grid-cores-swatch" style="display: flex; flex-direction: column; gap: 0.5rem;">
+                    <div class="swatch edit-text" id="color-card-1" style="display:flex; align-items:center; gap:0.5rem; position:relative;">
+                        <div class="card-controls"><button class="card-btn add" title="Duplicar Card"><i class="fas fa-plus"></i></button><button class="card-btn del" title="Excluir Card"><i class="fas fa-trash-alt"></i></button></div>
+                        <div class="circle" style="width:20px; height:20px; border-radius:50%; background:#1E46C5;"></div> Azul Fast Tennis (#1E46C5)
+                    </div>
+                    <div class="swatch edit-text" id="color-card-2" style="display:flex; align-items:center; gap:0.5rem; position:relative;">
+                        <div class="card-controls"><button class="card-btn add" title="Duplicar Card"><i class="fas fa-plus"></i></button><button class="card-btn del" title="Excluir Card"><i class="fas fa-trash-alt"></i></button></div>
+                        <div class="circle" style="width:20px; height:20px; border-radius:50%; background:#19F000;"></div> Verde Destaque (#19F000)
+                    </div>
+                    <div class="swatch edit-text" id="color-card-3" style="display:flex; align-items:center; gap:0.5rem; position:relative;">
+                        <div class="card-controls"><button class="card-btn add" title="Duplicar Card"><i class="fas fa-plus"></i></button><button class="card-btn del" title="Excluir Card"><i class="fas fa-trash-alt"></i></button></div>
+                        <div class="circle" style="width:20px; height:20px; border-radius:50%; background:#FFFFFF; border:1px solid #ccc;"></div> Branco (#FFFFFF)
+                    </div>
+                    <div class="swatch edit-text" id="color-card-4" style="display:flex; align-items:center; gap:0.5rem; position:relative;">
+                        <div class="card-controls"><button class="card-btn add" title="Duplicar Card"><i class="fas fa-plus"></i></button><button class="card-btn del" title="Excluir Card"><i class="fas fa-trash-alt"></i></button></div>
+                        <div class="circle" style="width:20px; height:20px; border-radius:50%; background:#D9D9D9;"></div> Cinza Claro (#D9D9D9)
+                    </div>
+                    <div class="swatch edit-text" id="color-card-5" style="display:flex; align-items:center; gap:0.5rem; position:relative;">
+                        <div class="card-controls"><button class="card-btn add" title="Duplicar Card"><i class="fas fa-plus"></i></button><button class="card-btn del" title="Excluir Card"><i class="fas fa-trash-alt"></i></button></div>
+                        <div class="circle" style="width:20px; height:20px; border-radius:50%; background:#F4F6FA;"></div> Fundo (#F4F6FA)
+                    </div>
+                    <div class="swatch edit-text" id="color-card-6" style="display:flex; align-items:center; gap:0.5rem; position:relative;">
+                        <div class="card-controls"><button class="card-btn add" title="Duplicar Card"><i class="fas fa-plus"></i></button><button class="card-btn del" title="Excluir Card"><i class="fas fa-trash-alt"></i></button></div>
+                        <div class="circle" style="width:20px; height:20px; border-radius:50%; background:#1A1A2E;"></div> Texto Escuro (#1A1A2E)
+                    </div>
+                    <div class="add-card-btn-container" onclick="SGMAdmin.addCard('grid-cores-swatch', 'swatch edit-text')"><i class="fas fa-plus"></i> Adicionar Card</div>
+                </div>
+                <div class="back-to-top-wrapper"><button class="back-to-top" onclick="voltarAoTopo();"><i class="fas fa-arrow-up"></i></button></div>
+            </section>
+        </main>
+    </div>
+
+    <footer class="footer-branding edit-text" id="footerAppElement">
+        © 2026 Fast Tennis - Todos os direitos reservados.
+    </footer>
+
+    <button id="floatingTopBtn" class="floating-top-btn" onclick="voltarAoTopo();"><i class="fas fa-arrow-up"></i></button>
+
+    <script>
+        class SGMState {
+            static getDefaults() {
+                return {
+                    password: 'fast', theme: 'light', manualName: 'NPS Fast Tennis', companyName: 'Fast Tennis',
+                    colorPrimary: '#1E46C5', colorSecondary: '#19F000', colorButtons: '#1E46C5', colorMenu: '#FFFFFF',
+                    footerText: '© 2026 Fast Tennis - Todos os direitos reservados.', inlineEdit: false,
+                    faviconData: null, bgImageData: null, bannerData: null, logoData: null,
+                    customContent: {}, 
+                    customStyles: {},
+                    gridStructures: {}, 
+                    topicos: [
+                        { id: 'visao-geral', label: 'Visão Geral', icon: 'fa-home', visible: true },
+                        { id: 'fluxo-trabalho', label: 'Fluxo de Trabalho', icon: 'fa-tasks', visible: true },
+                        { id: 'sistemas', label: 'Sistemas', icon: 'fa-link', visible: true },
+                        { id: 'cronograma', label: 'Cronograma', icon: 'fa-clock', visible: true },
+                        { id: 'preparacao-base', label: 'Preparação da Base', icon: 'fa-database', visible: true },
+                        { id: 'disparo', label: 'Disparo da Pesquisa', icon: 'fa-paper-plane', visible: true },
+                        { id: 'premiacao', label: 'Premiação & Reconhecimento', icon: 'fa-trophy', visible: true },
+                        { id: 'retornos', label: 'Retornos e Relatórios', icon: 'fa-reply-all', visible: true },
+                        { id: 'relatorios-pa', label: 'Relatórios e PA', icon: 'fa-file-alt', visible: true },
+                        { id: 'automacao-email', label: 'Automação E-mail', icon: 'fa-envelope', visible: true },
+                        { id: 'benchmark', label: 'Benchmark', icon: 'fa-chart-line', visible: true },
+                        { id: 'reclame-aqui', label: 'Reclame Aqui', icon: 'fa-exclamation-circle', visible: true },
+                        { id: 'cores', label: 'Paleta de Cores', icon: 'fa-palette', visible: true }
+                    ]
+                };
+            }
+
+            static load() {
+                const data = localStorage.getItem('sgm_manual_store_2026_v2');
+                this.current = data ? JSON.parse(data) : this.getDefaults();
+                if(!data) this.save();
+                this.applyStateStyles();
+                return this.current;
+            }
+
+            static save() {
+                localStorage.setItem('sgm_manual_store_2026_v2', JSON.stringify(this.current));
+                this.applyStateStyles();
+            }
+
+            static applyStateStyles() {
+                const root = document.documentElement;
+                root.style.setProperty('--azul', this.current.colorPrimary);
+                root.style.setProperty('--verde', this.current.colorSecondary);
+                root.style.setProperty('--btn-color', this.current.colorButtons);
+                root.style.setProperty('--menu-bg', this.current.colorMenu);
+                root.style.setProperty('--bg-custom-image', this.current.bgImageData ? `url('${this.current.bgImageData}')` : 'none');
+
+                const bannerContainer = document.getElementById('customBannerContainer');
+                if(this.current.bannerData) {
+                    bannerContainer.style.backgroundImage = `url('${this.current.bannerData}')`;
+                    bannerContainer.style.display = 'block';
+                } else { bannerContainer.style.display = 'none'; }
+
+                document.getElementById('manualBrandingName').innerHTML = `${this.current.manualName} <span>· Manual</span>`;
+                document.getElementById('manualTitleTag').innerText = `${this.current.manualName} · Manual`;
+
+                if (this.current.faviconData) {
+                    let link = document.querySelector("link[rel~='icon']");
+                    if (!link) { link = document.createElement('link'); link.rel = 'icon'; document.head.appendChild(link); }
+                    link.href = this.current.faviconData;
+                }
+
+                if (this.current.logoData) {
+                    document.getElementById('defaultLogo').style.display = 'none';
+                    const uploadedLogo = document.getElementById('uploadedLogo');
+                    uploadedLogo.src = this.current.logoData;
+                    uploadedLogo.classList.add('loaded');
+                    uploadedLogo.style.display = 'block';
+                }
+            }
+        }
+
+        class SGMToast {
+            static show(msg, type = 'success') {
+                let container = document.getElementById('ft-toast-container') || Object.assign(document.createElement('div'), {id: 'ft-toast-container'});
+                if(!container.parentNode) document.body.appendChild(container);
+                const toast = document.createElement('div');
+                toast.className = 'ft-toast';
+                const colors = { success: '#10B981', error: '#EF4444', info: '#3B82F6', warning: '#F59E0B' };
+                const icons = { success: 'fa-check-circle', error: 'fa-exclamation-triangle', info: 'fa-info-circle', warning: 'fa-exclamation-circle' };
+                toast.style.backgroundColor = colors[type];
+                toast.innerHTML = `<i class="fas ${icons[type]}"></i> <span>${msg}</span>`;
+                container.appendChild(toast);
+                setTimeout(() => {
+                    toast.style.animation = 'slideIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) reverse';
+                    setTimeout(() => toast.remove(), 300);
+                }, 3500);
+            }
+        }
+
+        class SGMAdmin {
+            static init() {
+                this.sessionActive = false;
+                this.pendingAction = null;
+                this.bindEvents();
+                this.applyVisibility();
+                this.restoreGridStructures();
+                
+                // Restaura os estilos de todos os elementos que possuem ID salvo
+                this.restoreAllCustomStyles();
+
+                this.initCardsEditor();
+                this.initInlineEditor();
+                
+                if (SGMState.current.inlineEdit) {
+                    document.body.classList.add('edit-mode-active');
+                } else {
+                    document.body.classList.remove('edit-mode-active');
+                }
+            }
+
+            static restoreAllCustomStyles() {
+                if (!SGMState.current.customStyles) return;
+                document.querySelectorAll('[id]').forEach(el => {
+                    if (SGMState.current.customStyles[el.id]) {
+                        const st = SGMState.current.customStyles[el.id];
+                        if(st.color) el.style.color = st.color;
+                        if(st.backgroundColor) el.style.backgroundColor = st.backgroundColor;
+                        if(st.borderColor) {
+                            el.style.borderColor = st.borderColor;
+                            el.style.borderLeftColor = st.borderColor;
+                            el.style.borderBottomColor = st.borderColor;
+                        }
+                    }
+                });
+            }
+
+            static bindEvents() {
+                const logoContainer = document.getElementById('logoContainer');
+                let clickTimer;
+                
+                logoContainer.addEventListener('click', () => {
+                    clearTimeout(clickTimer);
+                    clickTimer = setTimeout(() => {
+                        this.pendingAction = 'ADMIN_PANEL';
+                        this.openAuthModal('Acesso ao Painel', 'Insira a senha de administrador.');
+                    }, 250);
+                });
+
+                logoContainer.addEventListener('dblclick', () => {
+                    clearTimeout(clickTimer);
+                    this.pendingAction = 'CHANGE_LOGO';
+                    this.openAuthModal('Alteração de Logo', 'Insira a senha mestra para trocar o logotipo.');
+                });
+
+                document.getElementById('btnAbrirConfig').addEventListener('click', () => {
+                    this.pendingAction = 'ADMIN_PANEL';
+                    this.openAuthModal('Configurações do Painel', 'Insira a credencial administrativa.');
+                });
+
+                document.getElementById('btnConfirmarSenha').addEventListener('click', () => this.handleAuth());
+                document.getElementById('senhaInput').addEventListener('keydown', (e) => { if(e.key === 'Enter') this.handleAuth(); });
+                document.getElementById('btnCancelarSenha').addEventListener('click', () => document.getElementById('senhaModal').classList.remove('active'));
+                document.getElementById('btnConfigFecharPanel').addEventListener('click', () => this.closeAdminPanel());
+
+                document.querySelectorAll('.admin-tab-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        document.querySelectorAll('.admin-tab-btn').forEach(b => b.classList.remove('active'));
+                        document.querySelectorAll('.admin-tab-panel').forEach(p => p.classList.remove('active'));
+                        e.target.classList.add('active');
+                        document.getElementById(e.target.dataset.tab).classList.add('active');
+                    });
+                });
+
+                document.getElementById('btnConfigAlterarSenha').addEventListener('click', () => this.changePassword());
+                document.getElementById('logoUpload').addEventListener('change', (e) => this.handleLogoUpload(e));
+                document.getElementById('menuDynamicSearch').addEventListener('input', (e) => this.handleMenuSearch(e));
+                document.getElementById('btnConfigSalvar').addEventListener('click', () => this.saveMenuStructure());
+            }
+
+            static openAuthModal(title, desc) {
+                if(this.sessionActive && this.pendingAction === 'ADMIN_PANEL') { this.openAdminPanel(); return; }
+                document.getElementById('modalAuthTitulo').innerText = title;
+                document.getElementById('modalAuthDescricao').innerText = desc;
+                document.getElementById('senhaErro').style.display = 'none';
+                document.getElementById('senhaInput').value = '';
+                document.getElementById('senhaModal').classList.add('active');
+                document.getElementById('senhaInput').focus();
+            }
+
+            static handleAuth() {
+                if (document.getElementById('senhaInput').value.trim() === SGMState.current.password) {
+                    document.getElementById('senhaModal').classList.remove('active');
+                    this.sessionActive = true;
+                    if (this.pendingAction === 'ADMIN_PANEL') this.openAdminPanel();
+                    if (this.pendingAction === 'CHANGE_LOGO') document.getElementById('logoUpload').click();
+                } else { document.getElementById('senhaErro').style.display = 'block'; }
+            }
+
+            static openAdminPanel() {
+                document.getElementById('cfgManualName').value = SGMState.current.manualName;
+                document.getElementById('cfgCompanyName').value = SGMState.current.companyName;
+                document.getElementById('cfgColorPrimary').value = SGMState.current.colorPrimary;
+                document.getElementById('cfgColorSecondary').value = SGMState.current.colorSecondary;
+                document.getElementById('cfgColorButtons').value = SGMState.current.colorButtons;
+                document.getElementById('cfgColorMenu').value = SGMState.current.colorMenu;
+                document.getElementById('cfgFooterText').value = SGMState.current.footerText;
+                document.getElementById('cfgEnableInlineEdit').checked = SGMState.current.inlineEdit;
+                this.renderMenuPanel();
+                document.getElementById('configModal').classList.add('active');
+            }
+
+            static closeAdminPanel() {
+                document.getElementById('configModal').classList.remove('active');
+                this.sessionActive = false; 
+                SGMToast.show('Sessão encerrada com segurança.', 'info');
+            }
+
+            static clearMediaField(fieldName) {
+                if(confirm('Deseja realmente apagar esta imagem e voltar para o visual padrão?')) {
+                    SGMState.current[fieldName] = null; SGMState.save();
+                    if(fieldName === 'logoData') window.location.reload();
+                    SGMToast.show('Imagem apagada e redefinida com sucesso.', 'warning');
+                }
+            }
+
+            static saveGeral() {
+                SGMState.current.manualName = document.getElementById('cfgManualName').value;
+                SGMState.current.companyName = document.getElementById('cfgCompanyName').value;
+                SGMState.save(); SGMToast.show('Configurações gerais salvas!');
+            }
+
+            static saveConteudo() {
+                SGMState.current.inlineEdit = document.getElementById('cfgEnableInlineEdit').checked;
+                SGMState.save();
+                window.location.reload(); 
+            }
+
+            static async processFile(inputElement) {
+                const file = inputElement.files[0]; if (!file) return null;
+                return new Promise((resolve) => {
+                    const reader = new FileReader(); reader.onload = (e) => resolve(e.target.result);
+                    reader.readAsDataURL(file);
+                });
+            }
+
+            static async savePersonalizacao() {
+                SGMState.current.colorPrimary = document.getElementById('cfgColorPrimary').value;
+                SGMState.current.colorSecondary = document.getElementById('cfgColorSecondary').value;
+                SGMState.current.colorButtons = document.getElementById('cfgColorButtons').value;
+                SGMState.current.colorMenu = document.getElementById('cfgColorMenu').value;
+                SGMState.current.footerText = document.getElementById('cfgFooterText').value;
+
+                const faviconData = await this.processFile(document.getElementById('cfgFaviconFile')); if(faviconData) SGMState.current.faviconData = faviconData;
+                const bgData = await this.processFile(document.getElementById('cfgBgImageFile')); if(bgData) SGMState.current.bgImageData = bgData;
+                const bannerData = await this.processFile(document.getElementById('cfgBannerFile')); if(bannerData) SGMState.current.bannerData = bannerData;
+
+                SGMState.save(); SGMToast.show('Configurações visuais aplicadas!');
+            }
+
+            static changePassword() {
+                const atual = document.getElementById('configSenhaAtual').value;
+                const nova = document.getElementById('configNovaSenha').value;
+                const conf = document.getElementById('configConfirmarSenha').value;
+                document.getElementById('configTrocaErro').style.display = 'none';
+                document.getElementById('configTrocaSucesso').style.display = 'none';
+
+                if (atual !== SGMState.current.password || nova !== conf || nova.length < 4) {
+                    document.getElementById('configTrocaErro').style.display = 'block'; return;
+                }
+                SGMState.current.password = nova; SGMState.save();
+                document.getElementById('configTrocaSucesso').style.display = 'block';
+                SGMToast.show('Senha mestre redefinida!');
+            }
+
+            static handleLogoUpload(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = (event) => { SGMState.current.logoData = event.target.result; SGMState.save(); SGMToast.show('Logotipo alterado!'); };
+                    reader.readAsDataURL(file);
+                }
+            }
+
+            static handleMenuSearch(e) {
+                const query = e.target.value.toLowerCase().trim();
+                document.querySelectorAll('#sidebarNav a').forEach(link => {
+                    const topicoObj = SGMState.current.topicos.find(t => t.id === link.dataset.target);
+                    if (topicoObj && topicoObj.visible !== false) {
+                        link.style.setProperty('display', link.textContent.toLowerCase().includes(query) ? 'flex' : 'none', 'important');
+                    }
+                });
+            }
+
+            static renderMenuPanel() {
+                const list = document.getElementById('configToggleList'); list.innerHTML = '';
+                SGMState.current.topicos.forEach((t, index) => {
+                    const label = document.createElement('div'); label.className = 'sortable-item'; label.draggable = true;
+                    label.innerHTML = `
+                        <div style="display:flex; align-items:center; gap:0.5rem; overflow:hidden; flex:1;">
+                            <input type="checkbox" class="menu-visibility-check" data-id="${t.id}" ${t.visible !== false ? 'checked' : ''} style="margin:0; flex-shrink:0; width:16px;">
+                            <span style="white-space:nowrap; text-overflow:ellipsis; overflow:hidden; display:flex; align-items:center; gap:0.4rem; font-size:0.95rem;">
+                                <i class="fas ${t.icon || 'fa-file'}" style="width:20px; text-align:center; color:var(--azul);"></i> ${t.label}
+                            </span>
+                        </div>
+                        <div style="display:flex; align-items:center; gap:0.75rem; flex-shrink:0;">
+                            <button onclick="SGMAdmin.deleteSection('${t.id}')" style="background:#EF4444; color:white; border:none; padding:4px 8px; font-size:0.75rem; border-radius:4px; cursor:pointer;" title="Excluir Seção Interamente"><i class="fas fa-trash-alt"></i></button>
+                            <i class="fas fa-bars" style="opacity:0.4; cursor:grab;"></i>
+                        </div>
+                    `;
+                    label.addEventListener('dragstart', (ev) => ev.dataTransfer.setData('text/plain', index));
+                    label.addEventListener('dragover', (ev) => ev.preventDefault());
+                    label.addEventListener('drop', (ev) => {
+                        ev.preventDefault(); const source = ev.dataTransfer.getData('text/plain');
+                        const item = SGMState.current.topicos.splice(source, 1)[0]; SGMState.current.topicos.splice(index, 0, item);
+                        this.renderMenuPanel();
+                    });
+                    list.appendChild(label);
+                });
+            }
+
+            static createNewTopic() {
+                const title = document.getElementById('newTopicTitle').value.trim();
+                const icon = document.getElementById('newTopicIcon').value; if(!title) return;
+                const id = title.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]/g, "-");
+                
+                const newSec = document.createElement('section'); newSec.id = id; newSec.className = 'section';
+                newSec.innerHTML = `
+                    <div class="section-header"><i class="fas ${icon}" id="icon-${id}"></i><h2 class="edit-text">${title}</h2><span class="tag">Custom</span></div>
+                    <p class="edit-text">Clique único para modificar o conteúdo do bloco...</p>
+                    
+                    <div class="grid-cards-editable grid-3" id="grid-custom-${id}" style="margin-top: 2rem;">
+                        <div class="system-card" id="card-${id}-1">
+                            <div class="card-controls"><button class="card-btn add" title="Duplicar Card"><i class="fas fa-plus"></i></button><button class="card-btn del" title="Excluir Card"><i class="fas fa-trash-alt"></i></button></div>
+                            <i class="fas fa-star" id="icon-card-${id}-1" style="color: var(--azul);"></i>
+                            <h4 class="edit-text">Novo Card</h4>
+                            <p class="edit-text">Edite este conteúdo para organizar suas informações.</p>
+                        </div>
+                        <div class="add-card-btn-container" onclick="SGMAdmin.addCard('grid-custom-${id}', 'system-card')"><i class="fas fa-plus"></i> Adicionar Card</div>
+                    </div>
+
+                    <div class="back-to-top-wrapper"><button class="back-to-top" onclick="voltarAoTopo();"><i class="fas fa-arrow-up"></i></button></div>
+                `;
+                document.getElementById('mainContentContainer').appendChild(newSec);
+                SGMState.current.topicos.push({ id, label: title, icon, visible: true });
+                this.renderMenuPanel(); 
+                this.applyVisibility(); 
+                SGMToast.show('Novo tópico acoplado!');
+            }
+
+            static saveMenuStructure() {
+                document.querySelectorAll('.menu-visibility-check').forEach(c => {
+                    const topico = SGMState.current.topicos.find(t => t.id === c.dataset.id); if(topico) topico.visible = c.checked;
+                });
+                SGMState.save(); this.applyVisibility(); document.getElementById('configModal').classList.remove('active');
+                SGMToast.show('Menus salvos!');
+            }
+
+            static applyVisibility() {
+                const nav = document.getElementById('sidebarNav'); nav.innerHTML = '';
+                const mainContainer = document.getElementById('mainContentContainer');
+                
+                SGMState.current.topicos.forEach(t => {
+                    const sec = document.getElementById(t.id);
+                    if(sec) {
+                        mainContainer.appendChild(sec);
+                        if(t.visible !== false) {
+                            sec.classList.remove('hidden-section');
+                            const a = document.createElement('a'); a.href = `#${t.id}`; a.dataset.target = t.id;
+                            a.innerHTML = `<i class="fas ${t.icon || 'fa-file'}"></i> ${t.label}`;
+                            a.addEventListener('click', (e) => {
+                                e.preventDefault(); document.getElementById(t.id).scrollIntoView({ behavior: 'smooth' });
+                                document.querySelectorAll('#sidebarNav a').forEach(l => l.classList.remove('active')); a.classList.add('active');
+                            });
+                            nav.appendChild(a);
+                        } else { 
+                            sec.classList.add('hidden-section'); 
+                        }
+                    }
+                });
+                this.restoreAllCustomStyles(); // Sempre aplica os estilos globais
+            }
+
+            static restoreDefaultMenu() {
+                if(confirm('Restaurar a organização inicial do manual?')) {
+                    SGMState.current.topicos = SGMState.getDefaults().topicos; SGMState.save();
+                    this.renderMenuPanel(); this.applyVisibility();
+                }
+            }
+
+            // --- CARDS EDITOR (DRAG & DROP) ---
+            static restoreGridStructures() {
+                if(SGMState.current.gridStructures) {
+                    Object.keys(SGMState.current.gridStructures).forEach(gridId => {
+                        const grid = document.getElementById(gridId);
+                        if(grid) grid.innerHTML = SGMState.current.gridStructures[gridId];
+                    });
+                }
+            }
+
+            static addCard(gridId, cardClass) {
+                const grid = document.getElementById(gridId);
+                const btnContainer = grid.querySelector('.add-card-btn-container');
+                const newCard = document.createElement('div');
+                newCard.className = cardClass;
+                
+                const uniqId = Math.random().toString(36).substr(2, 6);
+                newCard.id = 'card-custom-' + uniqId;
+                
+                newCard.innerHTML = `
+                    <div class="card-controls"><button class="card-btn add" title="Duplicar Card"><i class="fas fa-plus"></i></button><button class="card-btn del" title="Excluir Card"><i class="fas fa-trash-alt"></i></button></div>
+                    <i class="fas fa-star" id="icon-custom-${uniqId}" style="color:var(--azul);"></i>
+                    <h4 class="edit-text" id="edit-custom-${uniqId}-1">Novo Card</h4>
+                    <p class="edit-text" id="edit-custom-${uniqId}-2">Preencha as informações aqui.</p>
+                `;
+                
+                grid.insertBefore(newCard, btnContainer);
+                this.saveGridState(grid.id);
+                this.initCardsEditor();
+                this.initInlineEditor();
+                SGMToast.show('Novo cartão adicionado!', 'success');
+            }
+
+            static initCardsEditor() {
+                if(!SGMState.current.inlineEdit) return;
+
+                document.querySelectorAll('.grid-cards-editable').forEach(grid => {
+                    grid.ondragover = e => e.preventDefault();
+                    grid.ondrop = e => {
+                        e.preventDefault();
+                        const dragging = document.querySelector('.card-dragging');
+                        const target = e.target.closest('.card-stat, .system-card, .base-card, .sla-card, .automation-step, .import-step, .cadeado-item, .swatch');
+                        if (dragging && target && dragging !== target && dragging.parentNode === grid) {
+                            grid.insertBefore(dragging, target);
+                            this.saveGridState(grid.id);
+                        }
+                    };
+
+                    grid.querySelectorAll('.card-stat, .system-card, .base-card, .sla-card, .automation-step, .import-step, .cadeado-item, .swatch').forEach(card => {
+                        card.draggable = true;
+                        card.ondragstart = () => card.classList.add('card-dragging');
+                        card.ondragend = () => card.classList.remove('card-dragging');
+
+                        const delBtn = card.querySelector('.card-btn.del');
+                        if(delBtn) {
+                            delBtn.onclick = (e) => {
+                                e.stopPropagation();
+                                if(confirm('Excluir este card permanentemente?')) {
+                                    card.remove();
+                                    this.saveGridState(grid.id);
+                                    SGMToast.show('Card excluído!', 'warning');
+                                }
+                            };
+                        }
+
+                        const addBtn = card.querySelector('.card-btn.add');
+                        if(addBtn) {
+                            addBtn.onclick = (e) => {
+                                e.stopPropagation();
+                                const newCard = card.cloneNode(true);
+                                
+                                const uniq = Math.random().toString(36).substr(2, 6);
+                                newCard.id = 'card-custom-' + uniq;
+                                
+                                newCard.querySelectorAll('i').forEach((ic, idx) => ic.id = 'icon-custom-' + uniq + '-' + idx);
+                                newCard.querySelectorAll('.edit-text').forEach((innerEl, idx) => innerEl.id = 'ft-editable-custom-' + uniq + '-' + idx);
+                                
+                                grid.insertBefore(newCard, card.nextSibling);
+                                this.saveGridState(grid.id);
+                                SGMToast.show('Card duplicado!', 'success');
+                                
+                                this.initCardsEditor();
+                                this.initInlineEditor();
+                            };
+                        }
+                    });
+                });
+            }
+
+            static saveGridState(gridId) {
+                if(!SGMState.current.gridStructures) SGMState.current.gridStructures = {};
+                const grid = document.getElementById(gridId);
+                if(grid) {
+                    SGMState.current.gridStructures[gridId] = grid.innerHTML;
+                    SGMState.save();
+                }
+            }
+
+            // --- INLINE EDITOR & COLOR PICKERS ---
+            static initInlineEditor() {
+                this.restoreAllCustomStyles();
+
+                document.querySelectorAll('.edit-text').forEach((el, index) => {
+                    if (!el.id) el.id = 'ft-editable-' + index;
+                    
+                    if (SGMState.current.customContent && SGMState.current.customContent[el.id]) {
+                        el.innerHTML = SGMState.current.customContent[el.id];
+                    }
+
+                    if(el.nextSibling && el.nextSibling.className === 'wysiwyg-container') return;
+
+                    const newEl = el.cloneNode(true); el.parentNode.replaceChild(newEl, el);
+                    if(SGMState.current.inlineEdit) {
+                        newEl.classList.add('editable-active');
+                        newEl.addEventListener('click', (e) => {
+                            e.stopPropagation();
+                            e.preventDefault(); 
+                            
+                            if (newEl.nextSibling && newEl.nextSibling.className && typeof newEl.nextSibling.className === 'string' && newEl.nextSibling.className.includes('wysiwyg-container')) return;
+
+                            document.querySelectorAll('.wysiwyg-container').forEach(c => {
+                                if(c.previousSibling) c.previousSibling.style.display = '';
+                                c.remove();
+                            });
+
+                            const container = document.createElement('div'); container.className = 'wysiwyg-container'; container.style.marginTop = '0.5rem'; container.style.marginBottom = '1rem';
+                            const toolbar = document.createElement('div'); toolbar.className = 'wysiwyg-toolbar';
+                            toolbar.style.display = 'flex'; toolbar.style.justifyContent = 'space-between'; toolbar.style.padding = '0.5rem'; toolbar.style.background = '#F8FAFC'; toolbar.style.border = '1px solid #E2E8F0'; toolbar.style.borderBottom = 'none'; toolbar.style.borderRadius = '8px 8px 0 0'; toolbar.style.flexWrap = 'wrap';
+                            
+                            let toolbarHTML = `
+                                <div style="display:flex; gap:0.3rem; align-items:center; flex-wrap:wrap; margin-bottom: 0.4rem;">
+                                    
+                                    <select onchange="document.execCommand('formatBlock', false, this.value); this.selectedIndex=0;" class="wysiwyg-select" title="Formatar Bloco">
+                                        <option value="">Formato</option>
+                                        <option value="H2">Título 2</option>
+                                        <option value="H3">Título 3</option>
+                                        <option value="H4">Título 4</option>
+                                        <option value="P">Texto</option>
+                                    </select>
+
+                                    <select onchange="document.execCommand('fontName', false, this.value); this.selectedIndex=0;" class="wysiwyg-select" title="Família da Fonte">
+                                        <option value="">Fonte</option>
+                                        <option value="Arial">Arial</option>
+                                        <option value="Calibri">Calibri</option>
+                                        <option value="Georgia">Georgia</option>
+                                        <option value="Inter">Inter</option>
+                                        <option value="Poppins">Poppins</option>
+                                        <option value="'Segoe UI'">Segoe UI</option>
+                                        <option value="Tahoma">Tahoma</option>
+                                        <option value="Trebuchet MS">Trebuchet</option>
+                                        <option value="Verdana">Verdana</option>
+                                        <option value="Courier New">Monospace</option>
+                                    </select>
+
+                                    <select onchange="document.execCommand('fontSize', false, this.value); this.selectedIndex=0;" class="wysiwyg-select" title="Tamanho">
+                                        <option value="">Tamanho</option>
+                                        <option value="2">Pequeno</option>
+                                        <option value="3">Padrão</option>
+                                        <option value="4">Médio</option>
+                                        <option value="5">Grande</option>
+                                        <option value="6">Gigante</option>
+                                    </select>
+                                    
+                                    <div class="wysiwyg-divider"></div>
+                                    
+                                    <button type="button" class="wysiwyg-btn" onclick="document.execCommand('bold', false, null)" title="Negrito"><i class="fas fa-bold"></i></button>
+                                    <button type="button" class="wysiwyg-btn" onclick="document.execCommand('italic', false, null)" title="Itálico"><i class="fas fa-italic"></i></button>
+                                    <button type="button" class="wysiwyg-btn" onclick="document.execCommand('underline', false, null)" title="Sublinhado"><i class="fas fa-underline"></i></button>
+                                    <button type="button" class="wysiwyg-btn" onclick="document.execCommand('strikeThrough', false, null)" title="Tachado"><i class="fas fa-strikethrough"></i></button>
+                                    
+                                    <div class="wysiwyg-divider"></div>
+                                    
+                                    <div style="display:flex; align-items:center; gap:0.2rem; border:1px solid #CBD5E1; border-radius:4px; background:white; padding:0.1rem 0.3rem;" title="Cor da Letra">
+                                        <i class="fas fa-font" style="font-size:0.8rem; color:#64748B;"></i>
+                                        <input type="color" onchange="document.execCommand('foreColor', false, this.value);" style="width:16px; height:16px; padding:0; border:none; cursor:pointer; background:transparent;">
+                                    </div>
+                                    
+                                    <div style="display:flex; align-items:center; gap:0.2rem; border:1px solid #CBD5E1; border-radius:4px; background:white; padding:0.1rem 0.3rem;" title="Cor Marca-texto (Apenas Letra)">
+                                        <i class="fas fa-highlighter" style="font-size:0.8rem; color:#64748B;"></i>
+                                        <input type="color" onchange="document.execCommand('backColor', false, this.value);" style="width:16px; height:16px; padding:0; border:none; cursor:pointer; background:transparent;">
+                                    </div>
+
+                                    <div style="display:flex; align-items:center; gap:0.2rem; border:1px solid #CBD5E1; border-radius:4px; background:white; padding:0.1rem 0.3rem;" title="Cor de Fundo (Pintar Bloco Inteiro)">
+                                        <i class="fas fa-fill-drip" style="font-size:0.8rem; color:#64748B;"></i> Bloco
+                                        <input type="color" onchange="this.closest('.wysiwyg-container').querySelector('.wysiwyg-area').style.backgroundColor = this.value;" style="width:16px; height:16px; padding:0; border:none; cursor:pointer; background:transparent;">
+                                    </div>
+                            `;
+
+                            // Permite colorir o Ícone do Cabeçalho se estiver no Título Principal
+                            const headerPai = newEl.closest('.section-header');
+                            if(headerPai && headerPai.querySelector('i')) {
+                                const iconHeader = headerPai.querySelector('i');
+                                if (!iconHeader.id) iconHeader.id = 'icon-dinamico-' + Date.now();
+                                
+                                toolbarHTML += `
+                                    <div class="wysiwyg-divider"></div>
+                                    <div style="display:flex; align-items:center; gap:0.2rem; border:1px solid #CBD5E1; border-radius:4px; background:white; padding:0.1rem 0.3rem;" title="Cor do Ícone Lateral">
+                                        🚩 <input type="color" value="#1E46C5" onchange="const ic = document.getElementById('${iconHeader.id}'); if(ic){ ic.style.color = this.value; if(!SGMState.current.customStyles[ic.id]) SGMState.current.customStyles[ic.id]={}; SGMState.current.customStyles[ic.id].color = this.value; SGMState.save();}" style="width:16px; height:16px; padding:0; border:none; cursor:pointer; background:transparent;">
+                                    </div>
+                                    <div style="display:flex; align-items:center; gap:0.2rem; border:1px solid #CBD5E1; border-radius:4px; background:white; padding:0.1rem 0.3rem;" title="Fundo do Ícone Lateral">
+                                        ⭕ <input type="color" value="#F4F6FA" onchange="const ic = document.getElementById('${iconHeader.id}'); if(ic){ ic.style.backgroundColor = this.value; if(!SGMState.current.customStyles[ic.id]) SGMState.current.customStyles[ic.id]={}; SGMState.current.customStyles[ic.id].backgroundColor = this.value; SGMState.save();}" style="width:16px; height:16px; padding:0; border:none; cursor:pointer; background:transparent;">
+                                    </div>
+                                `;
+                            }
+
+                            // Permite colorir bordas e ícones dentro de Cards!
+                            const parentCard = newEl.closest('.card-stat, .system-card, .base-card, .sla-card, .automation-step, .import-step, .cadeado-item');
+                            if(parentCard) {
+                                if(!parentCard.id) parentCard.id = 'card-dyn-' + Math.random().toString(36).substr(2, 6);
+                                toolbarHTML += `
+                                    <div class="wysiwyg-divider"></div>
+                                    <div style="display:flex; align-items:center; gap:0.2rem; border:1px solid #CBD5E1; border-radius:4px; background:white; padding:0.1rem 0.3rem;" title="Cor da Borda/Destaque do Card">
+                                        🔲 Borda <input type="color" onchange="const pc = document.getElementById('${parentCard.id}'); if(pc){ pc.style.borderColor = this.value; pc.style.borderLeftColor = this.value; pc.style.borderBottomColor = this.value; if(!SGMState.current.customStyles[pc.id]) SGMState.current.customStyles[pc.id]={}; SGMState.current.customStyles[pc.id].borderColor = this.value; SGMState.save(); }" style="width:16px; height:16px; padding:0; border:none; cursor:pointer; background:transparent;">
+                                    </div>
+                                `;
+                                const cIcon = parentCard.querySelector('i.fas, i.fab, i.far');
+                                if(cIcon) {
+                                    if(!cIcon.id) cIcon.id = 'icon-dyn-' + Math.random().toString(36).substr(2, 6);
+                                    toolbarHTML += `
+                                    <div style="display:flex; align-items:center; gap:0.2rem; border:1px solid #CBD5E1; border-radius:4px; background:white; padding:0.1rem 0.3rem;" title="Cor do Ícone do Card">
+                                        🚩 Ícone <input type="color" onchange="const ic = document.getElementById('${cIcon.id}'); if(ic){ ic.style.color = this.value; if(!SGMState.current.customStyles[ic.id]) SGMState.current.customStyles[ic.id]={}; SGMState.current.customStyles[ic.id].color = this.value; SGMState.save(); }" style="width:16px; height:16px; padding:0; border:none; cursor:pointer; background:transparent;">
+                                    </div>`;
+                                }
+                            }
+
+                            toolbarHTML += `
+                                    <div class="wysiwyg-divider"></div>
+                                    <button type="button" class="wysiwyg-btn" onclick="let u = prompt('Digite a URL do link:'); if(u) document.execCommand('createLink', false, u)" title="Inserir Link"><i class="fas fa-link"></i></button>
+                                    <button type="button" class="wysiwyg-btn" onclick="document.execCommand('unlink', false, null)" title="Remover Link"><i class="fas fa-unlink"></i></button>
+
+                                    <div class="wysiwyg-divider"></div>
+                                    <button type="button" class="wysiwyg-btn" onclick="document.execCommand('justifyLeft', false, null)" title="Alinhar à Esquerda"><i class="fas fa-align-left"></i></button>
+                                    <button type="button" class="wysiwyg-btn" onclick="document.execCommand('justifyCenter', false, null)" title="Centralizar"><i class="fas fa-align-center"></i></button>
+                                    <button type="button" class="wysiwyg-btn" onclick="document.execCommand('justifyRight', false, null)" title="Alinhar à Direita"><i class="fas fa-align-right"></i></button>
+                                    <button type="button" class="wysiwyg-btn" onclick="document.execCommand('justifyFull', false, null)" title="Justificar"><i class="fas fa-align-justify"></i></button>
+
+                                    <div class="wysiwyg-divider"></div>
+                                    <button type="button" class="wysiwyg-btn" onclick="document.execCommand('insertUnorderedList', false, null)" title="Lista com Marcadores"><i class="fas fa-list-ul"></i></button>
+                                    <button type="button" class="wysiwyg-btn" onclick="document.execCommand('insertOrderedList', false, null)" title="Lista Numerada"><i class="fas fa-list-ol"></i></button>
+
+                                    <div class="wysiwyg-divider"></div>
+                                    <select onchange="if(this.value) { document.execCommand('insertText', false, this.value); this.selectedIndex=0; }" class="wysiwyg-select" title="Inserir Emoji Rápido">
+                                        <option value="">Inserir Emoji...</option>
+                                        <optgroup label="Comunicação & Sistema">
+                                            <option value="✅">✅</option><option value="❌">❌</option><option value="⚠️">⚠️</option>
+                                            <option value="🛑">🛑</option><option value="📌">📌</option><option value="📍">📍</option>
+                                            <option value="📣">📣</option><option value="💬">💬</option><option value="🔔">🔔</option>
+                                            <option value="⚙️">⚙️</option><option value="🔑">🔑</option><option value="🔒">🔒</option>
+                                            <option value="🔓">🔓</option><option value="🛡️">🛡️</option><option value="💡">💡</option>
+                                        </optgroup>
+                                        <optgroup label="Negócios & Arquivos">
+                                            <option value="📊">📊</option><option value="📈">📈</option><option value="📉">📉</option>
+                                            <option value="💼">💼</option><option value="📁">📁</option><option value="📂">📂</option>
+                                            <option value="📝">📝</option><option value="🏢">🏢</option><option value="🤝">🤝</option>
+                                            <option value="💰">💰</option><option value="💳">💳</option><option value="📑">📑</option>
+                                            <option value="📥">📥</option><option value="📤">📤</option><option value="🚀">🚀</option>
+                                        </optgroup>
+                                        <optgroup label="Reconhecimento & Esportes">
+                                            <option value="🎾">🎾</option><option value="🏆">🏆</option><option value="🏅">🏅</option>
+                                            <option value="🥇">🥇</option><option value="🥈">🥈</option><option value="🥉">🥉</option>
+                                            <option value="🎯">🎯</option><option value="⭐">⭐</option><option value="🌟">🌟</option>
+                                            <option value="👑">👑</option><option value="👏">👏</option><option value="👍">👍</option>
+                                        </optgroup>
+                                    </select>
+                                    <button type="button" class="wysiwyg-btn" onclick="alert('DICA PRO:\\n\\nPara abrir o catálogo completo com mais de 3.000 emojis (igual ao WhatsApp), use o atalho nativo do seu computador:\\n\\n▶ No Windows: Aperte as teclas [ Win ] + [ . ]\\n▶ No Mac: Aperte as teclas [ Command ] + [ Control ] + [ Espaço ]');" title="Como abrir todos os Emojis?"><i class="far fa-smile-wink" style="color:#10B981;"></i></button>
+
+                                    <div class="wysiwyg-divider"></div>
+                                    <button type="button" class="wysiwyg-btn" onclick="document.execCommand('removeFormat', false, null)" title="Limpar Formatação do Texto Selecionado"><i class="fas fa-eraser"></i></button>
+                                </div>
+                                <button type="button" class="wysiwyg-save-btn" style="background:#10B981; color:white; border:none; padding:0.4rem 1rem; border-radius:6px; font-weight:600; cursor:pointer; display:flex; align-items:center; gap:0.4rem; transition:0.2s; white-space:nowrap; margin-bottom: 0.4rem;"><i class="fas fa-save"></i> Salvar Edição</button>
+                            `;
+                            toolbar.innerHTML = toolbarHTML;
+
+                            const area = document.createElement('div'); area.className = 'wysiwyg-area'; area.contentEditable = true; area.innerHTML = newEl.innerHTML;
+                            area.style.cssText = "border:1px solid #E2E8F0; padding:12px; background:white; min-height:80px; border-radius:0 0 8px 8px; color: #1E293B !important; font-size: 1rem; line-height: 1.6; outline: none; transition: background 0.3s;";
+                            
+                            const currentBgColor = window.getComputedStyle(newEl).backgroundColor;
+                            if(currentBgColor !== 'rgba(0, 0, 0, 0)' && currentBgColor !== 'transparent') {
+                                area.style.backgroundColor = currentBgColor;
+                            }
+
+                            area.addEventListener('focus', () => area.style.borderColor = '#1E46C5');
+                            area.addEventListener('blur', () => area.style.borderColor = '#E2E8F0');
+
+                            toolbar.querySelector('.wysiwyg-save-btn').addEventListener('click', (ev) => {
+                                ev.stopPropagation(); 
+                                newEl.innerHTML = area.innerHTML; 
+                                newEl.style.backgroundColor = area.style.backgroundColor;
+                                newEl.style.display = '';
+                                container.remove(); 
+                                
+                                if(!SGMState.current.customContent) SGMState.current.customContent = {};
+                                if(!SGMState.current.customStyles) SGMState.current.customStyles = {};
+                                
+                                SGMState.current.customContent[newEl.id] = area.innerHTML;
+                                SGMState.current.customStyles[newEl.id] = { backgroundColor: area.style.backgroundColor };
+                                
+                                const parentGrid = newEl.closest('.grid-cards-editable');
+                                if (parentGrid) {
+                                    SGMAdmin.saveGridState(parentGrid.id);
+                                } else {
+                                    SGMState.save(); 
+                                }
+                                
+                                SGMToast.show('Conteúdo gravado com sucesso no navegador!', 'success');
+                            });
+                            
+                            const saveBtn = toolbar.querySelector('.wysiwyg-save-btn');
+                            saveBtn.addEventListener('mouseenter', () => saveBtn.style.opacity = '0.9');
+                            saveBtn.addEventListener('mouseleave', () => saveBtn.style.opacity = '1');
+
+                            container.appendChild(toolbar); container.appendChild(area);
+                            newEl.style.display = 'none'; newEl.parentNode.insertBefore(container, newEl.nextSibling);
+                            area.focus();
+                        });
+                    } else { newEl.classList.remove('editable-active'); }
+                });
+            }
+
+            static deleteSection(id) {
+                if(confirm('Tem certeza de que deseja excluir permanentemente esta seção e seu conteúdo?')) {
+                    const el = document.getElementById(id); if(el) el.remove();
+                    SGMState.current.topicos = SGMState.current.topicos.filter(t => t.id !== id); SGMState.save();
+                    this.renderMenuPanel(); this.applyVisibility(); SGMToast.show('Seção removida.', 'warning');
+                }
+            }
+
+            static systemReset() {
+                if(confirm('Apagar todas as configurações locais e restaurar os padrões originais?')) {
+                    localStorage.removeItem('sgm_manual_store_2026_v2'); window.location.reload();
+                }
+            }
+        }
+
+        class SGMBackup {
+            static exportData() {
+                const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(SGMState.current));
+                const anchor = document.createElement('a'); anchor.setAttribute("href", dataStr);
+                anchor.setAttribute("download", `manual_nps_fasttennis_backup.json`); document.body.appendChild(anchor);
+                anchor.click(); anchor.remove();
+            }
+
+            static initImportTrigger() {
+                document.getElementById('importBackupFile').addEventListener('change', (e) => {
+                    const file = e.target.files[0]; if (!file) return;
+                    const reader = new FileReader();
+                    reader.onload = (event) => {
+                        try {
+                            const parsed = JSON.parse(event.target.result);
+                            if (parsed.password && parsed.topicos) { SGMState.current = parsed; SGMState.save(); window.location.reload(); }
+                        } catch(err) { SGMToast.show('Arquivo inválido.', 'error'); }
+                    };
+                    reader.readAsText(file);
+                });
+            }
+        }
+
+        function voltarAoTopo() { window.scrollTo({ top: 0, behavior: 'smooth' }); }
+        
+        function copiarTexto(texto, botao) {
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(texto).then(() => {
+                    botao.classList.add('copied'); SGMToast.show('Copiado para a área de transferência!');
+                    setTimeout(() => botao.classList.remove('copied'), 3000);
+                }).catch(err => {
+                    SGMToast.show('Erro ao copiar.', 'error');
+                });
+            } else {
+                const textArea = document.createElement("textarea");
+                textArea.value = texto;
+                textArea.style.position = "fixed";  
+                textArea.style.left = "-999999px"; 
+                textArea.style.top = "-999999px"; 
+                document.body.appendChild(textArea);
+                textArea.focus();
+                textArea.select();
+                try {
+                    document.execCommand('copy');
+                    botao.classList.add('copied'); SGMToast.show('Copiado para a área de transferência!');
+                    setTimeout(() => botao.classList.remove('copied'), 3000);
+                } catch (err) {
+                    SGMToast.show('Erro ao copiar.', 'error');
+                }
+                textArea.remove();
+            }
+        }
+
+        document.getElementById('btnCopyEmail').addEventListener('click', function() { 
+            let texto = document.getElementById('emailTemplate').innerText || document.getElementById('emailTemplate').textContent;
+            copiarTexto(texto, this); 
+        });
+        
+        document.getElementById('btnCopyScript').addEventListener('click', function() { 
+            copiarTexto(document.getElementById('scriptCode').value, this); 
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            SGMState.load(); SGMAdmin.init(); SGMBackup.initImportTrigger();
+            const floatingBtn = document.getElementById('floatingTopBtn');
+            window.addEventListener('scroll', () => { floatingBtn.classList.toggle('visible', window.scrollY > 300); });
+            const btnDark = document.getElementById('btnDarkModeToggle');
+            if(SGMState.current.theme === 'dark') { document.body.classList.add('dark-theme'); btnDark.innerText = '☀️'; }
+            btnDark.addEventListener('click', () => {
+                const isDark = document.body.classList.toggle('dark-theme'); SGMState.current.theme = isDark ? 'dark' : 'light';
+                btnDark.innerText = isDark ? '☀️' : '🌙'; SGMState.save();
+            });
+        });
+    </script>
+</body>
+</html>
