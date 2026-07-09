@@ -4,9 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title id="manualTitleTag">NPS Fast Tennis · Manual</title>
-    
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -163,7 +160,7 @@
 
         .card-stat { background: var(--cinza-fundo); border-radius: 16px; padding: 1.2rem 1.5rem; border-left: 4px solid var(--azul); position: relative; }
         .card-stat .num { font-size: 1.8rem; font-weight: 700; color: var(--azul); line-height: 1.2; }
-        .card-stat .label { font-size: 0.8rem; color: #64748B; font-weight: 500; letter-spacing: 0.02em; }
+        .card-stat .label { font-size: 0.8rem; color: #64748B; font-weight: 500; text-transform: uppercase; letter-spacing: 0.02em; }
         .card-stat.green { border-left-color: var(--verde); }
         .card-stat.green .num { color: #0F7B0F; }
         .card-stat.orange { border-left-color: #F59E0B; }
@@ -531,7 +528,7 @@
                         <label style="font-weight:bold; display:block; margin-bottom:0.3rem;">Importar Backup:</label>
                         <input type="file" id="importBackupFile" accept=".json" style="margin:0;">
                     </div>
-                    <button class="btn-cancel" style="background:#EF4444; color:white;" onclick="SGMAdmin.systemReset()"><i class="fas fa-trash-alt"></i> Restaurar Padrões (CUIDADO)</button>
+                    <button class="btn-cancel" style="background:#EF4444; color:white;" onclick="SGMAdmin.systemReset()"><i class="fas fa-trash-alt"></i> Restaurar Padrões</button>
                 </div>
             </div>
 
@@ -1282,7 +1279,7 @@
                 
                 <div class="subsection">
                     <h3 style="display:flex; align-items:center; gap:0.5rem;">
-                        <span style="font-size: 1.2rem; color: var(--azul);">📌</span>
+                        <i class="fas fa-arrow-right" style="color: var(--azul);"></i>
                         <span class="edit-text" id="ed-homo-3-novo" style="flex:1;">Próximos Passos (Como faremos)</span>
                     </h3>
                     <p class="edit-text" id="ed-homo-3b" style="margin-bottom:1rem;">Não se preocupe, eu (a Inteligência Artificial) vou te fornecer o código pronto para cada etapa quando você solicitar. O processo será o seguinte:</p>
@@ -1456,14 +1453,6 @@
     <button id="floatingTopBtn" class="floating-top-btn" onclick="voltarAoTopo();"><i class="fas fa-arrow-up"></i></button>
 
     <script>
-        // ==========================================
-        // 🚀 CONFIGURAÇÕES DO SUPABASE
-        // ==========================================
-        const _SUPABASE_URL = 'https://owfxthaxmznnbkaospuc.supabase.co'; 
-        const _SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im93Znh0aGF4bXpubmJrYW9zcHVjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODMzMzU3NjcsImV4cCI6MjA5ODkxMTc2N30.wZDXzY-xPY8lxXJp65WI0rxbFOHuB-JmewLsHIY_raM';
-        
-        window.supabaseClient = supabase.createClient(_SUPABASE_URL, _SUPABASE_KEY);
-
         class SGMState {
             static getDefaults() {
                 return {
@@ -1494,53 +1483,19 @@
                 };
             }
 
-            static async load() {
-                try {
-                    // Pega o cache local para garantir que não perdemos nada
-                    const dataLocal = localStorage.getItem('sgm_manual_store_2026_v2');
-                    const localState = dataLocal ? JSON.parse(dataLocal) : null;
+            static load() {
+                const data = localStorage.getItem('sgm_manual_store_2026_v2');
+                this.current = data ? JSON.parse(data) : this.getDefaults();
+                if(!data) this.save();
 
-                    // Tenta baixar as configurações do banco de dados na nuvem
-                    const { data, error } = await window.supabaseClient.from('manual_config').select('data').eq('id', 1).single();
-                    
-                    let cloudState = (data && data.data) ? data.data : null;
-
-                    const localKeys = localState?.customContent ? Object.keys(localState.customContent).length : 0;
-                    const cloudKeys = cloudState?.customContent ? Object.keys(cloudState.customContent).length : 0;
-
-                    // LÓGICA DE SALVAMENTO INTELIGENTE: 
-                    // Se a nuvem tem menos conteúdo que o seu computador, ele faz o UPLOAD pro Supabase!
-                    if (localState && localKeys >= cloudKeys && localKeys > 0) {
-                        console.log("Resgatando dados do navegador e enviando para a nuvem...");
-                        this.current = localState;
-                        this.save(); // Força o envio pro Supabase para preencher o banco
-                    } 
-                    // Se a nuvem já tem os dados corretos, ele puxa da nuvem
-                    else if (cloudState && cloudState.topicos) {
-                        this.current = cloudState;
-                        localStorage.setItem('sgm_manual_store_2026_v2', JSON.stringify(this.current));
-                    } 
-                    // Se estiver tudo vazio, carrega o padrão
-                    else {
-                        this.current = localState ? localState : this.getDefaults();
-                    }
-
-                } catch (err) {
-                    console.warn('Erro ao ler do Supabase. Lendo do cache local por segurança.', err);
-                    const dataLocal = localStorage.getItem('sgm_manual_store_2026_v2');
-                    this.current = dataLocal ? JSON.parse(dataLocal) : this.getDefaults();
-                }
-
-                // Ajuste de segurança para o menu (ordem)
-                if (this.current && this.current.topicos) {
-                    const homoIdx = this.current.topicos.findIndex(t => t.id === 'homologacao-manual');
-                    const raIdx = this.current.topicos.findIndex(t => t.id === 'reclame-aqui');
-                    if (homoIdx !== -1 && raIdx !== -1 && homoIdx !== raIdx - 1) {
-                        const homoItem = this.current.topicos.splice(homoIdx, 1)[0];
-                        const newRaIdx = this.current.topicos.findIndex(t => t.id === 'reclame-aqui');
-                        this.current.topicos.splice(newRaIdx, 0, homoItem);
-                        this.save();
-                    }
+                // Garante que 'homologacao-manual' fique antes do 'reclame-aqui' corrigindo os caches antigos
+                const homoIdx = this.current.topicos.findIndex(t => t.id === 'homologacao-manual');
+                const raIdx = this.current.topicos.findIndex(t => t.id === 'reclame-aqui');
+                if (homoIdx !== -1 && raIdx !== -1 && homoIdx !== raIdx - 1) {
+                    const homoItem = this.current.topicos.splice(homoIdx, 1)[0];
+                    const newRaIdx = this.current.topicos.findIndex(t => t.id === 'reclame-aqui');
+                    this.current.topicos.splice(newRaIdx, 0, homoItem);
+                    this.save();
                 }
 
                 this.applyStateStyles();
@@ -1548,16 +1503,8 @@
             }
 
             static save() {
-                // 1. Salva no navegador local (Para não perder se cair a internet)
                 localStorage.setItem('sgm_manual_store_2026_v2', JSON.stringify(this.current));
                 this.applyStateStyles();
-
-                // 2. Salva na nuvem silenciosamente (Tempo Real)
-                if(window.supabaseClient) {
-                    window.supabaseClient.from('manual_config').upsert({ id: 1, data: this.current }).then(({error}) => {
-                        if(error) console.error('Erro ao sincronizar com o Supabase:', error);
-                    });
-                }
             }
 
             static applyStateStyles() {
@@ -1633,6 +1580,7 @@
                 this.restoreGridStructures();
                 this.restoreAllCustomStyles();
 
+                // NOVIDADE: Injetar o botão "Subtítulo" automaticamente
                 document.querySelectorAll('.add-card-options').forEach(menu => {
                     if (!menu.querySelector('[onclick*="subtitle"]')) {
                         const btnSub = document.createElement('button');
@@ -1643,6 +1591,7 @@
                     }
                 });
 
+                // NOVIDADE: Injetar botão "Ocultar" nos blocos antigos
                 document.querySelectorAll('.card-controls').forEach(ctrl => {
                     if (!ctrl.querySelector('.hide-btn')) {
                         const btnHide = document.createElement('button');
@@ -1908,7 +1857,7 @@
                 SGMToast.show('Novo tópico criado com sucesso!');
             }
 
-            // GERAÇÃO DE BLOCOS CORRIGIDA COM EMOJI NATIVO
+            // FUNÇÃO ATUALIZADA
             static addContent(btnEl, type) {
                 const grid = btnEl.closest('.grid-cards-editable');
                 const btnContainer = grid.querySelector('.add-card-btn-container');
@@ -1966,7 +1915,7 @@
                     newElement.style.position = 'relative';
                     newElement.innerHTML = controls + `
                         <h3 style="display:flex; align-items:center; gap:0.5rem; margin-bottom: 0.5rem;">
-                            <span style="font-size: 1.2rem; color: var(--azul);">📌</span>
+                            <i class="fas fa-bookmark" id="icon-sub-${uniqId}" style="color:var(--azul);"></i>
                             <span class="edit-text" id="ed-sub-${uniqId}" style="flex:1;">Novo Subtítulo</span>
                         </h3>
                         <div class="edit-text" id="ed-subtxt-${uniqId}" style="width: 100%; padding: 0.5rem; border: 1px dashed transparent; border-radius: 8px;">Insira o parágrafo ou lista desta subseção aqui. Clique duplo para editar...</div>
@@ -2029,7 +1978,7 @@
                 }
             }
 
-            // FUNÇÃO ATUALIZADA (Drag & Drop para TODOS os elementos filhos da grid)
+            // FUNÇÃO ATUALIZADA (Sem bugs de sobrescrever evento)
             static initCardsEditor() {
                 if(!SGMState.current.inlineEdit) return;
 
@@ -2038,23 +1987,14 @@
                     grid.ondrop = e => {
                         e.preventDefault();
                         const dragging = document.querySelector('.card-dragging');
-                        
-                        // Permite soltar em qualquer bloco que seja irmão dentro do mesmo grid
-                        let target = e.target;
-                        while (target && target.parentNode !== grid) {
-                            target = target.parentNode;
-                        }
-                        
-                        if (dragging && target && dragging !== target && dragging !== grid.querySelector('.add-card-btn-container')) {
+                        const target = e.target.closest('.card-stat, .system-card, .base-card, .sla-card, .automation-step, .import-step, .cadeado-item, .swatch, .text-block-editable, .highlight-box');
+                        if (dragging && target && dragging !== target && dragging.parentNode === grid) {
                             grid.insertBefore(dragging, target);
                             this.saveGridState(grid.id);
                         }
                     };
 
-                    // Seleciona todos os filhos do grid (exceto o botão de adicionar no final)
-                    Array.from(grid.children).forEach(card => {
-                        if(card.classList.contains('add-card-btn-container')) return;
-
+                    grid.querySelectorAll('.card-stat, .system-card, .base-card, .sla-card, .automation-step, .import-step, .cadeado-item, .swatch, .text-block-editable, .highlight-box').forEach(card => {
                         card.draggable = true;
                         card.ondragstart = () => card.classList.add('card-dragging');
                         card.ondragend = () => card.classList.remove('card-dragging');
@@ -2092,24 +2032,26 @@
                             };
                         }
 
+                        // Ação de Ocultar/Exibir com a lógica de ícones que você pediu
                         const hideBtn = card.querySelector('.card-btn.hide-btn');
                         if(hideBtn) {
                             const icon = hideBtn.querySelector('i');
                             
+                            // Define o ícone de acordo com o estado do card no carregamento
                             if(card.classList.contains('ft-hidden-block')) {
-                                icon.className = 'fas fa-eye-slash'; 
+                                icon.className = 'fas fa-eye-slash'; // Cortado = Invisível
                             } else {
-                                icon.className = 'fas fa-eye'; 
+                                icon.className = 'fas fa-eye'; // Aberto = Visível
                             }
                             
                             hideBtn.onclick = (e) => {
                                 e.stopPropagation();
                                 card.classList.toggle('ft-hidden-block');
                                 if(card.classList.contains('ft-hidden-block')) {
-                                    icon.className = 'fas fa-eye-slash'; 
+                                    icon.className = 'fas fa-eye-slash'; // Cortado = Invisível
                                     SGMToast.show('Bloco suspenso (invisível na leitura).', 'warning');
                                 } else {
-                                    icon.className = 'fas fa-eye'; 
+                                    icon.className = 'fas fa-eye'; // Aberto = Visível
                                     SGMToast.show('Bloco ativo novamente.', 'success');
                                 }
                                 this.saveGridState(grid.id);
@@ -2430,23 +2372,8 @@
             copiarTexto(document.getElementById('scriptCode').value, this); 
         });
 
-        // ---------------------------------------------------------
-        // INICIALIZANDO O SUPABASE
-        // ---------------------------------------------------------
-        const _SUPABASE_URL = 'https://owfxthaxmznnbkaospuc.supabase.co';
-        const _SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im93Znh0aGF4bXpubmJrYW9zcHVjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODMzMzU3NjcsImV4cCI6MjA5ODkxMTc2N30.wZDXzY-xPY8lxXJp65WI0rxbFOHuB-JmewLsHIY_raM';
-        
-        if(_SUPABASE_URL.includes('COLE_SUA_URL_AQUI')) {
-            console.warn("Supabase não configurado. Trabalhando apenas de forma Offline (localStorage).");
-        } else {
-            window.supabaseClient = supabase.createClient(_SUPABASE_URL, _SUPABASE_KEY);
-        }
-
-        document.addEventListener('DOMContentLoaded', async () => {
-            await SGMState.load(); // Baixa da nuvem e compara com o local
-            SGMAdmin.init(); 
-            SGMBackup.initImportTrigger();
-            
+        document.addEventListener('DOMContentLoaded', () => {
+            SGMState.load(); SGMAdmin.init(); SGMBackup.initImportTrigger();
             const floatingBtn = document.getElementById('floatingTopBtn');
             window.addEventListener('scroll', () => { floatingBtn.classList.toggle('visible', window.scrollY > 300); });
             const btnDark = document.getElementById('btnDarkModeToggle');
