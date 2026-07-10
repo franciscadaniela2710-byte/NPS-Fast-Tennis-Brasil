@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title id="manualTitleTag">NPS Fast Tennis · Manual</title>
     
-    <!-- Biblioteca Oficial do Supabase -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -151,10 +150,11 @@
         /* Estilos do Modo Editor Visual */
         body.edit-mode-active .editable-field { outline: 2px dashed var(--azul); outline-offset: 4px; cursor: pointer; }
         body.edit-mode-active .editable-field:hover { background: rgba(30, 70, 197, 0.05); }
-        .admin-controls-panel { display: none; background: #FFFBEB; border: 1px solid #FDE68A; padding: 1rem; border-radius: 12px; margin-bottom: 1.5rem; gap: 10px; align-items: center; }
+        .admin-controls-panel { display: none; background: #FFFBEB; border: 1px solid #FDE68A; padding: 1rem; border-radius: 12px; margin-bottom: 1.5rem; gap: 10px; align-items: center; flex-wrap: wrap; }
         body.edit-mode-active .admin-controls-panel { display: flex; }
         
         .admin-action-btn { background: var(--azul); color: white; border: none; padding: 0.5rem 1rem; border-radius: 8px; font-size: 0.85rem; font-weight: 600; cursor: pointer; }
+        .admin-action-btn.secondary { background: #475569; }
         .admin-action-btn.danger { background: #EF4444; }
     </style>
 </head>
@@ -188,18 +188,17 @@
             <nav id="sidebarNav"></nav>
         </aside>
         <main class="main">
-            <!-- Painel de Administração Rápido Visível em Modo de Edição -->
             <div class="admin-controls-panel">
                 <span><strong>Modo de Edição Ativo</strong></span>
                 <button class="admin-action-btn" id="btnCriarModulo"><i class="fas fa-plus"></i> Novo Módulo</button>
-                <button class="admin-action-btn" id="btnUploadImagens"><i class="fas fa-image"></i> Favicon / Banner</button>
+                <button class="admin-action-btn" id="btnUploadImagens"><i class="fas fa-image"></i> Identidade Visual</button>
+                <button class="admin-action-btn secondary" id="btnForcarImportar"><i class="fas fa-upload"></i> Importar Backup HTML</button>
                 <button class="admin-action-btn danger" id="btnSairAdmin">Sair da Edição</button>
             </div>
             <div id="mainContent"></div>
         </main>
     </div>
 
-    <!-- Modal de Senha -->
     <div class="modal-overlay" id="senhaModal">
         <div class="modal-box">
             <h3><i class="fas fa-lock"></i> Área do Administrador</h3>
@@ -212,7 +211,6 @@
         </div>
     </div>
 
-    <!-- Modal de Configuração de Módulo -->
     <div class="modal-overlay" id="moduloModal">
         <div class="modal-box">
             <h3 id="modalTitulo">Configurar Elemento</h3>
@@ -231,7 +229,6 @@
         </div>
     </div>
 
-    <!-- Modal de Carregamento de Mídia -->
     <div class="modal-overlay" id="midiaModal">
         <div class="modal-box">
             <h3>Gerenciador de Identidade Visual</h3>
@@ -249,10 +246,11 @@
         </div>
     </div>
 
+    <input type="file" id="importHTMLFileSelector" accept=".html" style="display: none;">
+
     <div id="ft-toast-container"></div>
 
     <script>
-        // CREDENCIAIS OFICIAIS DO CLIENTE INTEGRadas
         const _SUPABASE_URL = "https://vymbwuvorpfycmhxejoa.supabase.co"; 
         const _SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZ5bWJ3dXZvcnBmeWNtaHhlam9hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM1OTc2NjMsImV4cCI6MjA5OTE3MzY2M30.aO4twzzkC4sUcuP_8Eq2bZdG49tvrJjWHOsUSqLPMb8"; 
         
@@ -265,7 +263,7 @@
             faviconData: "",
             bgData: "",
             modules: [
-                { id: "mod_ini", title: "Início", icon: "fa-home", content: "Bem-vindo ao seu novo sistema de manual. Clique na logo ou na engrenagem e insira a senha para customizar todos os campos." }
+                { id: "mod_ini", title: "Início", icon: "fa-home", content: "Bem-vindo ao seu novo sistema de manual. Faça a importação do arquivo Backup.html para restaurar os dados antigos." }
             ]
         };
 
@@ -318,7 +316,6 @@
                     renderApp();
                     updateSyncIndicator('saved');
                 } else {
-                    // Se estiver completamente vazio na tabela, persistimos a base inicial estruturada
                     await saveDataCloud();
                 }
             } catch(e) {
@@ -348,7 +345,6 @@
         }
 
         function renderApp() {
-            // Aplicar mídias carregadas
             const imgLogo = document.getElementById('uploadedLogo');
             if(SGMState.logoData) {
                 imgLogo.src = SGMState.logoData;
@@ -371,7 +367,6 @@
                 document.documentElement.style.setProperty('--bg-custom-image', 'none');
             }
 
-            // Renderizar Sidebar Menu
             const nav = document.getElementById('sidebarNav');
             nav.innerHTML = "";
             SGMState.modules.forEach((mod, idx) => {
@@ -382,7 +377,6 @@
                 nav.appendChild(a);
             });
 
-            // Carrega o primeiro por padrão
             if(SGMState.modules.length > 0) {
                 carregarModuloNoCentro(SGMState.modules[0].id);
             }
@@ -392,7 +386,6 @@
             const mod = SGMState.modules.find(m => m.id === id);
             const main = document.getElementById('mainContent');
             
-            // Gerenciar classe ativa na sidebar
             document.querySelectorAll('#sidebarNav a').forEach(a => {
                 a.classList.toggle('active', a.innerText.trim() === mod.title.trim());
             });
@@ -405,7 +398,7 @@
                         <i class="fas ${mod.icon || 'fa-file-alt'}"></i> <span>${mod.title}</span>
                     </h2>
                     <div class="subsection">
-                        <p class="${isAdmin ? 'editable-field' : ''}" style="white-space: pre-wrap;" onclick="abrirConfigElemento('${mod.id}')">${mod.content || 'Sem conteúdo.'}</p>
+                        <div class="${isAdmin ? 'editable-field' : ''}" style="white-space: pre-wrap; font-size:0.95rem; line-height:1.6;" onclick="abrirConfigElemento('${mod.id}')">${mod.content || 'Sem conteúdo.'}</div>
                     </div>
                     ${isAdmin ? `<button class="admin-action-btn danger" style="margin-top:20px; font-size:0.75rem;" onclick="deletarModulo('${mod.id}')"><i class="fas fa-trash"></i> Excluir Módulo</button>` : ''}
                 </div>
@@ -434,7 +427,6 @@
             showToast("Módulo removido.");
         }
 
-        // Conversor de imagens locais para strings seguras de texto
         function handleImageUpload(inputEl, stateProperty) {
             const file = inputEl.files[0];
             if(!file) return;
@@ -443,12 +435,69 @@
                 SGMState[stateProperty] = e.target.result;
                 saveDataCloud();
                 renderApp();
-                showToast("Imagem atualizada com sucesso!");
+                showToast("Imagem atualizada!");
             };
             reader.readAsDataURL(file);
         }
 
-        // CONTROLADORES DE EVENTOS E TRIGGERS
+        // NOVO MECANISMO: LÊ O BACKUP.HTML DIRETAMENTE E IMPORTA OS TEXTOS HISTÓRICOS
+        document.getElementById('btnForcarImportar').onclick = () => {
+            document.getElementById('importHTMLFileSelector').click();
+        };
+
+        document.getElementById('importHTMLFileSelector').onchange = function(evt) {
+            const file = evt.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const textContent = e.target.result;
+                
+                // Procurar pela variável localStorage de estado antigo inserida dentro do HTML antigo
+                try {
+                    let match = textContent.match(/localStorage\.getItem\(['"]sgm_manual_state['"]\)\s*\|\|\s*['"]([^'"]+)['"]/);
+                    if(!match) {
+                        match = textContent.match(/current:\s*(\{[\s\S]*?\})\s*,\s*save:/);
+                    }
+                    
+                    if(match) {
+                        let jsonText = match[1].replace(/\\"/g, '"');
+                        let parsed = JSON.parse(jsonText);
+                        if(parsed.modules) {
+                            SGMState.modules = parsed.modules;
+                            if(parsed.logoData) SGMState.logoData = parsed.logoData;
+                            if(parsed.faviconData) SGMState.faviconData = parsed.faviconData;
+                            if(parsed.bgData) SGMState.bgData = parsed.bgData;
+                            
+                            saveDataCloud();
+                            renderApp();
+                            showToast("Backup histórico importado com sucesso!", "#10B981");
+                            return;
+                        }
+                    }
+                    
+                    // Fallback alternativo caso venha do script direto estruturado
+                    let stateMatch = textContent.match(/let\s+SGMState\s*=\s*(\{[\s\S]*?\});/);
+                    if(stateMatch) {
+                        let parsed = eval('(' + stateMatch[1] + ')');
+                        if(parsed.modules) {
+                            SGMState.modules = parsed.modules;
+                            saveDataCloud();
+                            renderApp();
+                            showToast("Estrutura carregada e salva com sucesso!", "#10B981");
+                            return;
+                        }
+                    }
+                    
+                    showToast("Não foi possível ler as variáveis do arquivo de backup.", "#EF4444");
+                } catch(err) {
+                    console.error(err);
+                    showToast("Erro ao processar o arquivo HTML.", "#EF4444");
+                }
+            };
+            reader.readAsText(file);
+        };
+
         document.getElementById('logoContainer').onclick = () => {
             if(!isAdmin) document.getElementById('senhaModal').classList.add('active');
         };
@@ -463,7 +512,6 @@
 
         document.getElementById('btnConfirmarSenha').onclick = () => {
             const senha = document.getElementById('senhaInput').value;
-            // Validação simples padrão
             if(senha === "123" || senha.toLowerCase() === "admin") {
                 isAdmin = true;
                 document.body.classList.add('edit-mode-active');
@@ -504,11 +552,9 @@
             if(!t) { showToast("O título é obrigatório", "#EF4444"); return; }
 
             if(moduloEditandoId) {
-                // Modo Edição
                 const mod = SGMState.modules.find(m => m.id === moduloEditandoId);
                 if(mod) { mod.title = t; mod.icon = i; mod.content = c; }
             } else {
-                // Modo Criação Novo
                 const newId = "mod_" + Date.now();
                 SGMState.modules.push({ id: newId, title: t, icon: i, content: c });
             }
@@ -516,7 +562,7 @@
             document.getElementById('moduloModal').classList.remove('active');
             saveDataCloud();
             renderApp();
-            showToast("Configurações salvas e sincronizadas!");
+            showToast("Configurações salvas!");
         };
 
         document.getElementById('btnUploadImagens').onclick = () => {
@@ -530,7 +576,6 @@
         document.getElementById('fileFavicon').onchange = function() { handleImageUpload(this, 'faviconData'); };
         document.getElementById('fileFundo').onchange = function() { handleImageUpload(this, 'bgData'); };
 
-        // Mecanismo de busca no menu lateral
         document.getElementById('menuSearch').oninput = function() {
             const val = this.value.toLowerCase();
             document.querySelectorAll('#sidebarNav a').forEach(a => {
@@ -539,7 +584,6 @@
             });
         };
 
-        // Dark Mode Simples
         document.getElementById('btnDarkModeToggle').onclick = () => {
             const isDark = document.body.classList.toggle('dark-theme');
             SGMState.theme = isDark ? 'dark' : 'light';
@@ -547,7 +591,6 @@
             triggerDebounceSave();
         };
 
-        // INICIALIZAÇÃO AUTOMÁTICA
         window.onload = () => {
             loadData();
         };
