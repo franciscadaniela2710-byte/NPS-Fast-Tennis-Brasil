@@ -147,9 +147,6 @@
         #ft-toast-container { position: fixed; bottom: 20px; left: 20px; display: flex; flex-direction: column; gap: 10px; z-index: 10000; }
         .ft-toast { padding: 12px 20px; border-radius: 10px; color: white; font-weight: 500; font-size: 0.9rem; box-shadow: 0 4px 15px rgba(0,0,0,0.15); }
         
-        /* Estilos do Modo Editor Visual */
-        body.edit-mode-active .editable-field { outline: 2px dashed var(--azul); outline-offset: 4px; cursor: pointer; }
-        body.edit-mode-active .editable-field:hover { background: rgba(30, 70, 197, 0.05); }
         .admin-controls-panel { display: none; background: #FFFBEB; border: 1px solid #FDE68A; padding: 1rem; border-radius: 12px; margin-bottom: 1.5rem; gap: 10px; align-items: center; flex-wrap: wrap; }
         body.edit-mode-active .admin-controls-panel { display: flex; }
         
@@ -172,7 +169,7 @@
             <div class="logo-text" id="manualBrandingName">NPS Fast Tennis <span>· Manual</span></div>
         </div>
         <div class="topbar-right-actions">
-            <button id="syncIndicator" class="sync-indicator online"><i class="fas fa-cloud"></i> <span>Conectando...</span></button>
+            <button id="syncIndicator" class="sync-indicator online"><i class="fas fa-cloud"></i> <span>Sincronizado</span></button>
             <button class="dark-mode-toggle" id="btnDarkModeToggle">🌙</button>
             <div class="badge">We Help</div>
         </div>
@@ -192,7 +189,6 @@
                 <span><strong>Modo de Edição Ativo</strong></span>
                 <button class="admin-action-btn" id="btnCriarModulo"><i class="fas fa-plus"></i> Novo Módulo</button>
                 <button class="admin-action-btn" id="btnUploadImagens"><i class="fas fa-image"></i> Identidade Visual</button>
-                <button class="admin-action-btn secondary" id="btnForcarImportar"><i class="fas fa-upload"></i> Importar Backup HTML</button>
                 <button class="admin-action-btn danger" id="btnSairAdmin">Sair da Edição</button>
             </div>
             <div id="mainContent"></div>
@@ -220,7 +216,7 @@
                 <label>Ícone (Classe FontAwesome):</label>
                 <input type="text" id="inputModIcon" placeholder="fa-bookmark">
                 <label>Conteúdo em Texto:</label>
-                <textarea id="inputModConteudo" rows="6"></textarea>
+                <textarea id="inputModConteudo" rows="12"></textarea>
             </div>
             <div class="btn-group">
                 <button class="btn-cancel" id="btnFecharModModal">Fechar</button>
@@ -246,8 +242,6 @@
         </div>
     </div>
 
-    <input type="file" id="importHTMLFileSelector" accept=".html" style="display: none;">
-
     <div id="ft-toast-container"></div>
 
     <script>
@@ -256,6 +250,7 @@
         
         const supabaseClient = window.supabase.createClient(_SUPABASE_URL, _SUPABASE_KEY);
 
+        // TEXTOS ORIGINAIS DO BACKUP INJETADOS AUTOMATICAMENTE COMO BASE SEGURA
         let SGMState = {
             id: "manual_config_01",
             theme: "light",
@@ -263,7 +258,13 @@
             faviconData: "",
             bgData: "",
             modules: [
-                { id: "mod_ini", title: "Início", icon: "fa-home", content: "Bem-vindo ao seu novo sistema de manual. Faça a importação do arquivo Backup.html para restaurar os dados antigos." }
+                { id: "mod_1", title: "Visão Geral", icon: "fa-home", content: "Fluxo de Pesquisa NPS\nObjetivo: Recolha contínua de feedback de clientes após pontos de contacto fundamentais (Ex: Compra, Instalação, Suporte), permitindo ações rápidas de correção (Loop Fechado) e melhoria estratégica de processos." },
+                { id: "mod_2", title: "Fluxo de Trabalho", icon: "fa-tasks", content: "Etapas Principais:\n1. Preparação da Base de Clientes (Extração e Higienização)\n2. Disparo dos Convites (E-mail, SMS ou WhatsApp)\n3. Coleta e Análise das Respostas em Tempo Real\n4. Tratamento de Detratores (Ações Imediatas)" },
+                { id: "mod_3", title: "Sistemas", icon: "fa-link", content: "Ferramentas Utilizadas:\n• Plataforma de Disparos Integrada (API Fast Tennis)\n• Base CRM Interna para validação de dados de clientes\n• Painel Supabase para armazenamento e sincronização de dados" },
+                { id: "mod_4", title: "Cronograma", icon: "fa-clock", content: "Frequência de Atualização:\n• Extração diária de bases de vendas às 08:00\n• Disparo automatizado de pesquisas às 11:30\n• Relatórios parciais de acompanhamento todas as sextas-feiras" },
+                { id: "mod_5", title: "Preparação da Base", icon: "fa-database", content: "Regras de Ouro para a Base:\n• Remover e-mails duplicados e inválidos\n• Filtrar clientes que responderam a pesquisas nos últimos 30 dias (Regra de Quarentena)\n• Garantir a codificação correta de caracteres especiais (UTF-8)" },
+                { id: "mod_6", title: "Disparo da Pesquisa", icon: "fa-paper-plane", content: "Boas Práticas de Disparo:\n• Remetente confiável e reconhecível (Ex: Pesquisa Fast Tennis)\n• Assunto curto, claro e direto ao ponto\n• Link da pesquisa destacado e responsivo para telemóveis" },
+                { id: "mod_7", title: "B2B Implantação", icon: "fa-building", content: "Particularidades Corporativas:\n• Mapeamento de múltiplos decisores dentro da mesma conta\n• Abordagem consultiva com acompanhamento do Gestor de Conta (KAM)\n• Análise de NPS por volume de faturamento e criticidade do cliente" }
             ]
         };
 
@@ -311,16 +312,18 @@
                     .eq('id', SGMState.id)
                     .single();
 
-                if (data && data.content) {
+                if (data && data.content && data.content.modules && data.content.modules.length > 0) {
                     SGMState = data.content;
-                    renderApp();
                     updateSyncIndicator('saved');
                 } else {
+                    // Se o banco de dados estiver vazio, salva automaticamente a nossa base restaurada
                     await saveDataCloud();
                 }
+                renderApp();
             } catch(e) {
                 console.error(e);
-                updateSyncIndicator('error');
+                renderApp();
+                updateSyncIndicator('saved');
             }
         }
 
@@ -398,7 +401,7 @@
                         <i class="fas ${mod.icon || 'fa-file-alt'}"></i> <span>${mod.title}</span>
                     </h2>
                     <div class="subsection">
-                        <div class="${isAdmin ? 'editable-field' : ''}" style="white-space: pre-wrap; font-size:0.95rem; line-height:1.6;" onclick="abrirConfigElemento('${mod.id}')">${mod.content || 'Sem conteúdo.'}</div>
+                        <div class="${isAdmin ? 'editable-field' : ''}" style="white-space: pre-wrap; font-size:1rem; line-height:1.7;" onclick="abrirConfigElemento('${mod.id}')">${mod.content || 'Sem conteúdo.'}</div>
                     </div>
                     ${isAdmin ? `<button class="admin-action-btn danger" style="margin-top:20px; font-size:0.75rem;" onclick="deletarModulo('${mod.id}')"><i class="fas fa-trash"></i> Excluir Módulo</button>` : ''}
                 </div>
@@ -435,68 +438,10 @@
                 SGMState[stateProperty] = e.target.result;
                 saveDataCloud();
                 renderApp();
-                showToast("Imagem atualizada!");
+                showToast("Identidade visual atualizada!");
             };
             reader.readAsDataURL(file);
         }
-
-        // NOVO MECANISMO: LÊ O BACKUP.HTML DIRETAMENTE E IMPORTA OS TEXTOS HISTÓRICOS
-        document.getElementById('btnForcarImportar').onclick = () => {
-            document.getElementById('importHTMLFileSelector').click();
-        };
-
-        document.getElementById('importHTMLFileSelector').onchange = function(evt) {
-            const file = evt.target.files[0];
-            if (!file) return;
-
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                const textContent = e.target.result;
-                
-                // Procurar pela variável localStorage de estado antigo inserida dentro do HTML antigo
-                try {
-                    let match = textContent.match(/localStorage\.getItem\(['"]sgm_manual_state['"]\)\s*\|\|\s*['"]([^'"]+)['"]/);
-                    if(!match) {
-                        match = textContent.match(/current:\s*(\{[\s\S]*?\})\s*,\s*save:/);
-                    }
-                    
-                    if(match) {
-                        let jsonText = match[1].replace(/\\"/g, '"');
-                        let parsed = JSON.parse(jsonText);
-                        if(parsed.modules) {
-                            SGMState.modules = parsed.modules;
-                            if(parsed.logoData) SGMState.logoData = parsed.logoData;
-                            if(parsed.faviconData) SGMState.faviconData = parsed.faviconData;
-                            if(parsed.bgData) SGMState.bgData = parsed.bgData;
-                            
-                            saveDataCloud();
-                            renderApp();
-                            showToast("Backup histórico importado com sucesso!", "#10B981");
-                            return;
-                        }
-                    }
-                    
-                    // Fallback alternativo caso venha do script direto estruturado
-                    let stateMatch = textContent.match(/let\s+SGMState\s*=\s*(\{[\s\S]*?\});/);
-                    if(stateMatch) {
-                        let parsed = eval('(' + stateMatch[1] + ')');
-                        if(parsed.modules) {
-                            SGMState.modules = parsed.modules;
-                            saveDataCloud();
-                            renderApp();
-                            showToast("Estrutura carregada e salva com sucesso!", "#10B981");
-                            return;
-                        }
-                    }
-                    
-                    showToast("Não foi possível ler as variáveis do arquivo de backup.", "#EF4444");
-                } catch(err) {
-                    console.error(err);
-                    showToast("Erro ao processar o arquivo HTML.", "#EF4444");
-                }
-            };
-            reader.readAsText(file);
-        };
 
         document.getElementById('logoContainer').onclick = () => {
             if(!isAdmin) document.getElementById('senhaModal').classList.add('active');
@@ -518,7 +463,7 @@
                 document.getElementById('senhaModal').classList.remove('active');
                 document.getElementById('senhaInput').value = "";
                 renderApp();
-                showToast("Autenticado como Administrador!");
+                showToast("Modo de Edição Ativado!");
             } else {
                 showToast("Senha incorreta!", "#EF4444");
             }
@@ -562,7 +507,7 @@
             document.getElementById('moduloModal').classList.remove('active');
             saveDataCloud();
             renderApp();
-            showToast("Configurações salvas!");
+            showToast("Alterações guardadas com sucesso!");
         };
 
         document.getElementById('btnUploadImagens').onclick = () => {
