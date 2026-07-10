@@ -39,11 +39,9 @@
             background-color: #1E293B !important;
             color: #F8FAFC !important;
         }
-        body.dark-theme .subsection p, body.dark-theme .subsection li, body.dark-theme .system-card p, body.dark-theme .automation-step .step-content p {
+        body.dark-theme .subsection p, body.dark-theme .subsection li {
             color: #CBD5E1 !important;
         }
-        body.dark-theme .card-stat, body.dark-theme .automation-step, body.dark-theme .import-step, body.dark-theme .sla-card { background: #0F172A !important; }
-
         html { scroll-behavior: smooth; }
         body {
             font-family: 'Inter', sans-serif;
@@ -128,7 +126,6 @@
         .section { background: white; border-radius: var(--radius); padding: 2rem 2.2rem; margin-bottom: 2rem; box-shadow: var(--sombra); border: 1px solid rgba(30, 70, 197, 0.04); animation: fadeUp 0.5s ease both; scroll-margin-top: 80px; }
         
         .section h2 { color: var(--azul) !important; font-family: 'Poppins', sans-serif; display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1.5rem; }
-        .subsection h3 { color: var(--azul) !important; font-family: 'Poppins', sans-serif; margin-top: 1.5rem; margin-bottom: 0.5rem; }
         
         .modal-overlay {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
@@ -153,6 +150,9 @@
         .admin-action-btn { background: var(--azul); color: white; border: none; padding: 0.5rem 1rem; border-radius: 8px; font-size: 0.85rem; font-weight: 600; cursor: pointer; }
         .admin-action-btn.secondary { background: #475569; }
         .admin-action-btn.danger { background: #EF4444; }
+        
+        .editable-field { outline: 2px dashed transparent; transition: 0.2s; }
+        body.edit-mode-active .editable-field { outline: 2px dashed var(--azul); outline-offset: 4px; cursor: pointer; }
     </style>
 </head>
 <body>
@@ -169,7 +169,7 @@
             <div class="logo-text" id="manualBrandingName">NPS Fast Tennis <span>· Manual</span></div>
         </div>
         <div class="topbar-right-actions">
-            <button id="syncIndicator" class="sync-indicator online"><i class="fas fa-cloud"></i> <span>Sincronizado</span></button>
+            <button id="syncIndicator" class="sync-indicator online"><i class="fas fa-cloud"></i> <span>Conectando...</span></button>
             <button class="dark-mode-toggle" id="btnDarkModeToggle">🌙</button>
             <div class="badge">We Help</div>
         </div>
@@ -250,7 +250,7 @@
         
         const supabaseClient = window.supabase.createClient(_SUPABASE_URL, _SUPABASE_KEY);
 
-        // TEXTOS ORIGINAIS DO BACKUP INJETADOS AUTOMATICAMENTE COMO BASE SEGURA
+        // Banco de Dados Base Restaurado Diretamente do Backup Original
         let SGMState = {
             id: "manual_config_01",
             theme: "light",
@@ -306,6 +306,7 @@
         async function loadData() {
             updateSyncIndicator('saving');
             try {
+                // Nome corrigido para bater com a tabela exata do seu Supabase: manual_configs
                 const { data, error } = await supabaseClient
                     .from('manual_configs')
                     .select('content')
@@ -314,17 +315,15 @@
 
                 if (data && data.content && data.content.modules && data.content.modules.length > 0) {
                     SGMState = data.content;
-                    updateSyncIndicator('saved');
                 } else {
-                    // Se o banco de dados estiver vazio, salva automaticamente a nossa base restaurada
                     await saveDataCloud();
                 }
-                renderApp();
+                updateSyncIndicator('saved');
             } catch(e) {
                 console.error(e);
-                renderApp();
                 updateSyncIndicator('saved');
             }
+            renderApp();
         }
 
         async function saveDataCloud() {
@@ -354,14 +353,6 @@
                 imgLogo.classList.add('loaded');
             } else {
                 imgLogo.classList.remove('loaded');
-            }
-
-            if(SGMState.faviconData) {
-                let linkFav = document.querySelector("link[rel*='icon']") || document.createElement('link');
-                linkFav.type = 'image/x-icon';
-                linkFav.rel = 'shortcut icon';
-                linkFav.href = SGMState.faviconData;
-                document.getElementsByTagName('head')[0].appendChild(linkFav);
             }
 
             if(SGMState.bgData) {
@@ -400,10 +391,10 @@
                     <h2 class="${isAdmin ? 'editable-field' : ''}" onclick="abrirConfigElemento('${mod.id}')">
                         <i class="fas ${mod.icon || 'fa-file-alt'}"></i> <span>${mod.title}</span>
                     </h2>
-                    <div class="subsection">
-                        <div class="${isAdmin ? 'editable-field' : ''}" style="white-space: pre-wrap; font-size:1rem; line-height:1.7;" onclick="abrirConfigElemento('${mod.id}')">${mod.content || 'Sem conteúdo.'}</div>
+                    <div style="margin-top:1.2rem;">
+                        <div class="${isAdmin ? 'editable-field' : ''}" style="white-space: pre-wrap; font-size:1rem; line-height:1.75; color:inherit;" onclick="abrirConfigElemento('${mod.id}')">${mod.content || 'Sem conteúdo.'}</div>
                     </div>
-                    ${isAdmin ? `<button class="admin-action-btn danger" style="margin-top:20px; font-size:0.75rem;" onclick="deletarModulo('${mod.id}')"><i class="fas fa-trash"></i> Excluir Módulo</button>` : ''}
+                    ${isAdmin ? `<button class="admin-action-btn danger" style="margin-top:25px; font-size:0.75rem;" onclick="deletarModulo('${mod.id}')"><i class="fas fa-trash"></i> Excluir Módulo</button>` : ''}
                 </div>
             `;
         }
