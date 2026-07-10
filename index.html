@@ -74,14 +74,15 @@
         }
         .logo-wrapper { display: flex; align-items: center; gap: 0.75rem; cursor: default; }
         .logo-container {
-            width: 64px; height: 64px; border-radius: 12px; background: var(--azul);
+            width: 64px; height: 64px; border-radius: 12px; background: var(--branco);
             display: flex; align-items: center; justify-content: center; position: relative;
             overflow: hidden; flex-shrink: 0; transition: 0.2s; cursor: pointer; user-select: none;
         }
         .logo-container:hover { opacity: 0.9; }
-        .logo-container svg { width: 48px; height: 48px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2)); }
+        .logo-container svg { width: 48px; height: 48px; }
         .logo-container img { width: 100%; height: 100%; object-fit: contain; display: none; }
         .logo-container img.loaded { display: block; }
+        .logo-container img.loaded + svg { display: none; }
         .logo-container .upload-hint {
             position: absolute; bottom: 0; left: 0; right: 0; background: rgba(0,0,0,0.6);
             color: white; font-size: 0.55rem; text-align: center; padding: 2px 0;
@@ -92,12 +93,7 @@
         .logo-text { font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 1.4rem; letter-spacing: -0.5px; color: white !important; }
         .logo-text span { font-weight: 300; opacity: 0.8; font-size: 0.7rem; margin-left: 0.3rem; }
         .topbar-right-actions { display: flex; align-items: center; gap: 0.8rem; }
-        .topbar .badge {
-            background: rgba(255, 255, 255, 0.15); padding: 0.3rem 1rem; border-radius: 40px;
-            font-size: 0.75rem; font-weight: 600; letter-spacing: 0.3px; border: 1px solid rgba(255, 255, 255, 0.2); backdrop-filter: blur(4px);
-        }
         
-        /* Indicador de Sincronização */
         .sync-indicator {
             padding: 0.3rem 0.8rem; border-radius: 40px; font-size: 0.7rem; font-weight: 700; 
             display: flex; align-items: center; gap: 0.4rem; transition: 0.3s;
@@ -115,469 +111,446 @@
             padding: 1.5rem 1rem; box-shadow: var(--sombra); height: fit-content; position: sticky;
             top: 90px; max-height: calc(100vh - 120px); overflow-y: auto;
         }
-        .sidebar::-webkit-scrollbar { width: 4px; }
-        .sidebar::-webkit-scrollbar-thumb { background: var(--azul); border-radius: 10px; }
         .menu-search-box { position: relative; margin-bottom: 1rem; }
         .menu-search-box input { width: 100%; padding: 0.4rem 0.6rem 0.4rem 1.8rem; border-radius: 8px; border: 1px solid var(--cinza-claro); font-size: 0.85rem; background: transparent; color: inherit; }
         .menu-search-box i { position: absolute; left: 0.6rem; top: 50%; transform: translateY(-50%); font-size: 0.8rem; opacity: 0.5; }
+        
         .sidebar h3 { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.08em; color: #6B7280; margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 2px solid var(--cinza-claro); display: flex; justify-content: space-between; align-items: center; }
         .sidebar h3 .config-btn { background: none; border: none; cursor: pointer; font-size: 1rem; color: var(--azul); opacity: 0.5; transition: 0.2s; padding: 0.2rem 0.4rem; border-radius: 4px; }
         .sidebar h3 .config-btn:hover { opacity: 1; background: rgba(30, 70, 197, 0.08); }
+        
         .sidebar nav { display: flex; flex-direction: column; gap: 0.25rem; }
         .sidebar nav a { display: flex; align-items: center; gap: 0.75rem; padding: 0.6rem 0.8rem; border-radius: 12px; color: inherit; text-decoration: none; font-size: 0.9rem; font-weight: 500; transition: 0.2s; border-left: 3px solid transparent; cursor: pointer; }
         .sidebar nav a i { width: 1.25rem; color: var(--azul); font-size: 1rem; text-align: center; opacity: 0.7; }
         .sidebar nav a:hover { background: rgba(30, 70, 197, 0.06); border-left-color: var(--azul); }
         .sidebar nav a.active { background: rgba(30, 70, 197, 0.08); border-left-color: var(--azul); font-weight: 600; }
-        .sidebar nav a.active i { opacity: 1; }
-        .sidebar nav a.hidden-link { display: none !important; }
         
         .main { flex: 1; min-width: 0; }
-        .section { background: white; border-radius: var(--radius); padding: 2rem 2.2rem; margin-bottom: 2rem; box-shadow: var(--sombra); border: 1px solid rgba(30, 70, 197, 0.04); animation: fadeUp 0.5s ease both; scroll-margin-top: 80px; position: relative; transition: opacity 0.3s, transform 0.3s; }
-        .section.hidden-section { display: none !important; }
+        .section { background: white; border-radius: var(--radius); padding: 2rem 2.2rem; margin-bottom: 2rem; box-shadow: var(--sombra); border: 1px solid rgba(30, 70, 197, 0.04); animation: fadeUp 0.5s ease both; scroll-margin-top: 80px; }
         
-        .section h2, .section h2 i, .section h2 span { color: var(--azul) !important; font-family: 'Poppins', sans-serif; }
-        .subsection h3, .subsection h3 i, .subsection h3 span { color: var(--azul) !important; font-family: 'Poppins', sans-serif; }
-
-        @keyframes fadeUp {
-            0% { opacity: 0; transform: translateY(10px); }
-            100% { opacity: 1; transform: translateY(0); }
-        }
-        .section-header { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1.5rem; }
-        .section-header i { font-size: 1.8rem; background: rgba(30, 70, 197, 0.08); padding: 0.5rem; border-radius: 14px; width: 3rem; height: 3rem; display: flex; align-items: center; justify-content: center; transition: 0.3s background, 0.3s color; }
-        .section-header .tag { margin-left: auto; background: var(--verde); color: #0A2A0A !important; font-size: 0.65rem; font-weight: 700; padding: 0.2rem 0.8rem; border-radius: 40px; text-transform: uppercase; letter-spacing: 0.04em; white-space: nowrap; }
-        .subsection { margin-top: 1.5rem; }
-        .subsection p, .subsection li { color: inherit; opacity: 0.9; line-height: 1.6; }
-        .subsection ul, .subsection ol { padding-left: 1.5rem; margin: 0.5rem 0 1rem; }
+        .section h2 { color: var(--azul) !important; font-family: 'Poppins', sans-serif; display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1.5rem; }
+        .subsection h3 { color: var(--azul) !important; font-family: 'Poppins', sans-serif; margin-top: 1.5rem; margin-bottom: 0.5rem; }
         
-        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 0.8rem; }
-        .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-top: 0.8rem; }
-        .grid-container-editable { position: relative; display: grid; gap: 1.5rem; margin-top: 0.8rem; }
-        
-        .card-controls { position: absolute; top: -10px; right: -10px; display: none; gap: 5px; z-index: 10; }
-        body.edit-mode-active .card-controls { display: flex; }
-        .card-btn { width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; cursor: pointer; border: 2px solid white; font-size: 11px; box-shadow: 0 2px 5px rgba(0,0,0,0.2); transition: 0.2s; }
-        .card-btn.add { background: #10B981; }
-        .card-btn.del { background: #EF4444; }
-        .card-btn:hover { transform: scale(1.1); }
-        
-        .card-btn.hide-btn { background: #F59E0B; } 
-        body:not(.edit-mode-active) .ft-hidden-block { display: none !important; }
-        body.edit-mode-active .ft-hidden-block { opacity: 0.4; filter: grayscale(80%); outline: 2px dashed #F59E0B !important; }
-
-        .add-card-btn-container { display: none; width: 100%; grid-column: 1 / -1; padding: 1.2rem; border: 2px dashed var(--cinza-claro); border-radius: 12px; background: transparent; color: var(--cinza-claro); transition: 0.2s; align-items: center; justify-content: center; flex-direction: column; gap: 10px; }
-        body.edit-mode-active .add-card-btn-container { display: flex; }
-        .add-card-btn-container:hover { border-color: var(--azul); background: rgba(30, 70, 197, 0.02); }
-        .add-card-options { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; }
-        .add-card-options button { padding: 6px 14px; font-size: 0.85rem; background: white; color: #475569; border: 1px solid #CBD5E1; border-radius: 8px; font-weight: 600; cursor: pointer; transition: 0.2s; display: flex; align-items: center; gap: 6px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
-        .add-card-options button:hover { background: #F8FAFC; color: var(--azul); border-color: var(--azul); transform: translateY(-2px); }
-
-        .card-stat { background: var(--cinza-fundo); border-radius: 16px; padding: 1.2rem 1.5rem; border-left: 4px solid var(--azul); position: relative; }
-        .card-stat .num { font-size: 1.8rem; font-weight: 700; color: var(--azul); line-height: 1.2; }
-        .card-stat .label { font-size: 0.8rem; color: #64748B; font-weight: 500; letter-spacing: 0.02em; }
-        .card-stat.green { border-left-color: var(--verde); }
-        .card-stat.green .num { color: #0F7B0F; }
-        .card-stat.orange { border-left-color: #F59E0B; }
-        .card-stat.orange .num { color: #B45309; }
-        .card-stat.red { border-left-color: #EF4444; }
-        .card-stat.red .num { color: #B91C1C; }
-        
-        .highlight-box { background: rgba(30, 70, 197, 0.04); border: none; border-radius: 12px; padding: 1rem 1.5rem; margin: 0.8rem 0; display: flex; align-items: center; gap: 0.75rem; color: #334155; font-size: 0.95rem; position: relative; }
-        .highlight-box.blue { background: #EFF6FF; border: 1px solid #BFDBFE; color: #1E40AF; }
-        .highlight-box.blue i { color: #2563EB; }
-        .highlight-box.orange-box { background: #FFFBEB; border: 1px solid #FDE68A; color: #92400E; }
-        .highlight-box.orange-box i { color: #D97706; }
-        .highlight-box strong { font-weight: 700; }
-        
-        .table-wrap { overflow-x: auto; margin: 0.8rem 0; border-radius: 16px; border: 1px solid var(--cinza-claro); position: relative; }
-        .table-wrap table { width: 100%; border-collapse: collapse; font-size: 0.9rem; min-width: 300px; }
-        .table-wrap th { background: var(--azul); color: white; padding: 0.7rem 1rem; text-align: left; font-weight: 600; }
-        .table-wrap td { padding: 0.7rem 1rem; border-bottom: 1px solid var(--cinza-claro); color: inherit; }
-        .table-wrap tr:last-child td { border-bottom: none; }
-        
-        .system-card { background: var(--cinza-fundo); border-radius: 16px; padding: 1.2rem 1rem; text-align: center; border: 1px solid var(--cinza-claro); transition: 0.2s; display: flex; flex-direction: column; align-items: center; gap: 0.2rem; position: relative; }
-        .system-card:hover { border-color: var(--azul); box-shadow: 0 4px 12px rgba(30, 70, 197, 0.08); transform: translateY(-2px); }
-        .system-card i { font-size: 2.5rem; color: var(--azul); margin-bottom: 0.1rem; }
-        .system-card h4 { font-weight: 700; color: var(--azul); font-size: 1rem; margin: 0.1rem 0; }
-        .system-card p { font-size: 0.8rem; color: #475569; margin: 0.1rem 0 0.4rem 0; flex: 1; }
-        .system-card .btn-acessar { background: var(--btn-color); color: white; padding: 0.3rem 1.2rem; border-radius: 40px; text-decoration: none; font-size: 0.75rem; font-weight: 600; display: inline-block; border: none; cursor: pointer; }
-
         .modal-overlay {
-            position: fixed;
-            top: 0; left: 0; width: 100vw; height: 100vh;
-            background: rgba(15, 23, 42, 0.6);
-            backdrop-filter: blur(4px);
-            z-index: 9999;
-            display: none;
-            align-items: center;
-            justify-content: center;
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(4px);
+            z-index: 9999; display: none; align-items: center; justify-content: center;
         }
         .modal-overlay.active { display: flex; }
-        .modal-box { 
-            background: white; 
-            border-radius: 20px; 
-            padding: 2rem 2.2rem; 
-            max-width: 580px; 
-            width: 95%; 
-            max-height: 90vh; 
-            overflow-y: auto; 
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3); 
-            text-align: center; 
-            animation: modalFade 0.3s ease;
-        }
-        @keyframes modalFade {
-            from { opacity: 0; transform: scale(0.95); }
-            to { opacity: 1; transform: scale(1); }
-        }
+        .modal-box { background: white; border-radius: 20px; padding: 2rem 2.2rem; max-width: 580px; width: 95%; max-height: 90vh; overflow-y: auto; box-shadow: 0 20px 60px rgba(0,0,0,0.3); }
+        
         .btn-group { display: flex; gap: 0.75rem; justify-content: flex-end; margin-top: 1rem; }
-        .btn-confirm, .btn-salvar, .btn-alterar-senha { background: var(--btn-color); color: white; border: none; padding: 0.6rem 1.2rem; border-radius: 12px; font-weight: 600; cursor: pointer; font-size: 0.9rem; transition: 0.2s; }
-        .btn-cancel { background: #E2E8F0; color: #475569; border: none; padding: 0.6rem 1.2rem; border-radius: 12px; font-weight: 600; cursor: pointer; font-size: 0.9rem; transition: 0.2s; }
-        .btn-confirm:hover, .btn-salvar:hover { opacity: 0.9; }
-        .btn-cancel:hover { background: #CBD5E1; }
-
-        .admin-tab-nav { display: flex; gap: 0.25rem; border-bottom: 2px solid var(--cinza-claro); margin-bottom: 1rem; overflow-x: auto; padding-bottom: 0.3rem; }
-        .admin-tab-btn { padding: 0.5rem 0.8rem; background: none; border: none; cursor: pointer; font-size: 0.85rem; font-weight: 600; color: inherit; opacity: 0.6; white-space: nowrap; transition: 0.2s; }
-        .admin-tab-btn.active { opacity: 1; color: var(--azul); border-bottom: 3px solid var(--azul); }
-        .admin-tab-panel { display: none; text-align: left; }
-        .admin-tab-panel.active { display: block; }
-        .modal-box input, .modal-box select, .modal-box textarea { width: 100%; padding: 0.6rem 0.8rem; border: 2px solid var(--cinza-claro); border-radius: 12px; font-size: 0.95rem; outline: none; background: transparent; color: inherit; margin-bottom: 0.8rem; }
+        .btn-confirm, .btn-salvar { background: var(--btn-color); color: white; border: none; padding: 0.6rem 1.2rem; border-radius: 12px; font-weight: 600; cursor: pointer; font-size: 0.9rem; }
+        .btn-cancel { background: #E2E8F0; color: #475569; border: none; padding: 0.6rem 1.2rem; border-radius: 12px; font-weight: 600; cursor: pointer; }
         
-        .media-upload-wrapper { display: flex; align-items: center; gap: 0.5rem; width: 100%; margin-bottom: 0.8rem; }
-        .media-upload-wrapper input { margin-bottom: 0; }
-        .btn-clear-media { background: #EF4444; color: white; border: none; padding: 0.6rem 1rem; border-radius: 12px; cursor: pointer; font-size: 0.9rem; transition: 0.2s; display: flex; align-items: center; gap: 0.25rem; }
-        .btn-clear-media:hover { background: #DC2626; }
-
-        body.edit-mode-active .editable-active { outline: 2px dashed rgba(30, 70, 197, 0.4) !important; outline-offset: 4px; cursor: text; position: relative; transition: 0.2s; border-radius: 4px; }
-        body.edit-mode-active .editable-active:hover { background: rgba(30, 70, 197, 0.05); outline-style: solid !important; }
-        body.edit-mode-active .grid-cards-editable > div { cursor: grab; }
+        .modal-box input, .modal-box select, .modal-box textarea { width: 100%; padding: 0.6rem 0.8rem; border: 2px solid var(--cinza-claro); border-radius: 12px; font-size: 0.95rem; background: transparent; color: inherit; margin-bottom: 0.8rem; }
         
-        .automation-steps { display: flex; flex-direction: column; gap: 0.8rem; margin-top: 0.8rem; position: relative; }
-        .automation-step, .import-step { background: #F8FAFC; border-radius: 12px; padding: 1rem 1.5rem; border-left: 4px solid var(--azul); display: flex; flex-direction: row; align-items: flex-start; gap: 1rem; box-shadow: 0 1px 3px rgba(0,0,0,0.05); position: relative; }
-        .automation-step .step-number { display: inline-flex; align-items: center; justify-content: center; background: var(--azul); color: white; width: 28px; height: 28px; border-radius: 50%; font-weight: 700; font-size: 0.8rem; flex-shrink: 0; }
-        .automation-step .step-content { flex: 1; }
-        .automation-step .step-content strong { color: var(--azul); font-size: 0.95rem; display: block; margin-bottom: 0.25rem; }
-        .automation-step .step-content p { font-size: 0.9rem; color: #334155; }
-        .automation-step .step-content .highlight { background: #EDF2F7; padding: 0.1rem 0.4rem; border-radius: 4px; font-family: monospace; font-size: 0.85rem; color: #1A202C; font-weight: 600; }
-        .automation-step .step-content ul { padding-left: 1.2rem; margin-top: 0.4rem; font-size: 0.9rem; color: #4A5568; }
-        .automation-step .step-content ul li { margin-bottom: 0.2rem; }
-        
-        .import-step .step-title { font-weight: 600; color: var(--azul); margin-bottom: 0.25rem; display: block; }
-        .import-step .field-mapping { font-family: monospace; font-size: 0.85rem; background: #FFFFFF; border: 1px solid #E2E8F0; padding: 0.5rem 1rem; border-radius: 8px; line-height: 1.5; margin-top: 0.4rem; color: #4A5568; width: 100%; }
-        .import-step .field-mapping span { color: var(--azul); font-weight: 600; }
-
-        .back-to-top-wrapper { display: flex; justify-content: flex-end; margin-top: 1rem; width: 100%; }
-        .back-to-top { display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; background: var(--azul); color: white; border-radius: 50%; text-decoration: none; font-size: 0.9rem; box-shadow: 0 2px 8px rgba(30, 70, 197, 0.25); border: none; opacity: 0.7; cursor: pointer; transition: 0.2s; }
-        .back-to-top:hover { opacity: 1; transform: scale(1.1); }
-        
-        .floating-top-btn { 
-            position: fixed; 
-            bottom: 30px; 
-            right: 30px;
-            width: 48px; 
-            height: 48px; 
-            font-size: 1.3rem; 
-            box-shadow: 0 6px 20px rgba(30, 70, 197, 0.4); 
-            z-index: 999; 
-            opacity: 0; 
-            visibility: hidden; 
-            transform: scale(0.8); 
-            transition: 0.3s; 
-            background: var(--azul); 
-            color: white; 
-            border-radius: 50%; 
-            border: none; 
-            cursor: pointer;
-        }
-        .floating-top-btn.visible { opacity: 1; visibility: visible; transform: scale(1); }
-
-        .sortable-item { 
-            display: flex; 
-            align-items: center; 
-            justify-content: space-between; 
-            background: var(--cinza-fundo); 
-            padding: 0.6rem 1rem; 
-            margin-bottom: 0.5rem; 
-            border-radius: 8px; 
-            cursor: move; 
-            gap: 1rem;
-        }
-
-        .footer-branding { text-align: center; padding: 2rem; font-size: 0.85rem; opacity: 0.7; border-top: 1px solid var(--cinza-claro); margin-top: 2rem; }
-
-        .cadeados-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-top: 0.8rem; position: relative; }
-        .cadeado-item { background: #F8FAFC; border-radius: 12px; padding: 0.6rem 1rem; display: flex; align-items: center; gap: 0.75rem; font-size: 0.95rem; color: #334155; position: relative; }
-        .cadeado-item span { font-size: 1.25rem; }
-        .sla-grid { display: flex; gap: 1rem; margin: 1rem 0; width: 100%; position: relative; }
-        .sla-card { background: #F8FAFC; border-radius: 12px; padding: 1rem; flex: 1; text-align: center; border-bottom: 4px solid var(--azul); position: relative; }
-        .sla-card.step-2 { border-bottom-color: #F59E0B; }
-        .sla-card.step-3 { border-bottom-color: #19F000; }
-        .sla-card .num { font-size: 1.5rem; font-weight: 700; color: #1A1A2E; margin-bottom: 0.2rem; }
-        .sla-card .text { font-size: 0.85rem; color: #64748B; font-weight: 500; }
-        
-        .base-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 0.5rem; position: relative; }
-        .base-card { background: #F8FAFC; border-radius: 12px; padding: 1rem; border: 1px solid #E2E8F0; position: relative; }
-        .base-card h4 { display: flex; align-items: center; gap: 0.5rem; font-size: 1rem; color: var(--azul); margin-bottom: 0.5rem; }
-        .base-card h4 i { font-size: 0.95rem; }
-        .base-card ul { padding-left: 1.2rem; font-size: 0.9rem; color: #4A5568; }
-
-        .btn-copy-email, .btn-copy-script {
-            background: #E2E8F0; color: #1E293B; border: 1px solid #CBD5E1; padding: 0.5rem 1rem; 
-            border-radius: 8px; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; 
-            gap: 0.5rem; transition: 0.2s; font-size: 0.85rem;
-        }
-        .btn-copy-email:hover, .btn-copy-script:hover { background: #CBD5E1; }
-        .copied-msg { display: none; color: #10B981; }
-        .copied .copy-label { display: none; }
-        .copied .copied-msg { inline-flex; align-items: center; gap: 0.3rem; }
-
         #ft-toast-container { position: fixed; bottom: 20px; left: 20px; display: flex; flex-direction: column; gap: 10px; z-index: 10000; }
-        .ft-toast { padding: 12px 20px; border-radius: 10px; color: white; font-weight: 500; font-size: 0.9rem; display: flex; align-items: center; gap: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.15); animation: slideIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-        @keyframes slideIn { from { transform: translateX(-100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
-
-        .wysiwyg-btn { padding: 4px 8px; border: 1px solid transparent; background: transparent; cursor: pointer; color: #475569; border-radius: 4px; font-size: 0.9rem; display: flex; align-items: center; justify-content: center; }
-        .wysiwyg-btn:hover { background: #E2E8F0; border-color: #CBD5E1; color: #1E293B; }
-        .wysiwyg-select { padding: 4px; border: 1px solid transparent; border-radius: 4px; background: transparent; color: #475569; font-size: 0.85rem; cursor: pointer; }
-        .wysiwyg-select:hover { background: #E2E8F0; border-color: #CBD5E1; }
-        .wysiwyg-divider { width: 1px; background: #CBD5E1; margin: 0 4px; height: 20px; }
+        .ft-toast { padding: 12px 20px; border-radius: 10px; color: white; font-weight: 500; font-size: 0.9rem; box-shadow: 0 4px 15px rgba(0,0,0,0.15); }
         
-        .text-block-editable { background: transparent; transition: 0.2s; }
-
-        @media (max-width: 1024px) {
-            .container { flex-direction: column; padding: 1rem; }
-            .sidebar { width: 100%; position: relative; top: 0; max-height: none; padding: 1rem; }
-            .sidebar nav { flex-direction: row; flex-wrap: wrap; gap: 0.2rem; }
-            .sidebar nav a { padding: 0.4rem 0.8rem; font-size: 0.8rem; border-left: none; border-bottom: 2px solid transparent; border-radius: 8px; }
-            .grid-2, .grid-3, .cadeados-grid, .base-grid { grid-template-columns: 1fr; }
-            .sla-grid { flex-direction: column; }
-            .section { padding: 1.5rem; }
-        }
+        /* Estilos do Modo Editor Visual */
+        body.edit-mode-active .editable-field { outline: 2px dashed var(--azul); outline-offset: 4px; cursor: pointer; }
+        body.edit-mode-active .editable-field:hover { background: rgba(30, 70, 197, 0.05); }
+        .admin-controls-panel { display: none; background: #FFFBEB; border: 1px solid #FDE68A; padding: 1rem; border-radius: 12px; margin-bottom: 1.5rem; gap: 10px; align-items: center; }
+        body.edit-mode-active .admin-controls-panel { display: flex; }
+        
+        .admin-action-btn { background: var(--azul); color: white; border: none; padding: 0.5rem 1rem; border-radius: 8px; font-size: 0.85rem; font-weight: 600; cursor: pointer; }
+        .admin-action-btn.danger { background: #EF4444; }
     </style>
 </head>
 <body>
-    <header class="topbar" id="top">
+    <header class="topbar">
         <div class="logo-wrapper">
-            <div class="logo-container" id="logoContainer" title="Duplo clique + senha para gerenciar o manual.">
+            <div class="logo-container" id="logoContainer">
                 <svg id="defaultLogo" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <circle cx="20" cy="20" r="18" fill="#FFFFFF" stroke="#19F000" stroke-width="1.5" />
-                    <circle cx="20" cy="20" r="12" fill="none" stroke="#19F000" stroke-width="2" stroke-dasharray="3 3" />
-                    <path d="M13 13 L27 27 M27 13 L13 27" stroke="#1E46C5" stroke-width="2.5" stroke-linecap="round" />
-                    <text x="20" y="25" font-family="'Inter', sans-serif" font-size="13" font-weight="800" fill="#1E46C5" text-anchor="middle">FT</text>
+                    <text x="20" y="25" font-family="sans-serif" font-size="14" font-weight="800" fill="#1E46C5" text-anchor="middle">FT</text>
                 </svg>
-                <img id="uploadedLogo" alt="Logo personalizada" />
-                <div class="upload-hint">🔒 Dbl clique:<br>Painel Admin</div>
+                <img id="uploadedLogo" alt="Logo" />
+                <div class="upload-hint">🔒 Clique:<br>Painel Admin</div>
             </div>
             <div class="logo-text" id="manualBrandingName">NPS Fast Tennis <span>· Manual</span></div>
         </div>
         <div class="topbar-right-actions">
-            <button id="syncIndicator" class="sync-indicator online" title="Status da Nuvem"><i class="fas fa-cloud"></i> <span>Conectando...</span></button>
-            <button class="dark-mode-toggle" id="btnDarkModeToggle" title="Alternar Modo Escuro">🌙</button>
-            <div class="badge green-badge">We Help</div>
+            <button id="syncIndicator" class="sync-indicator online"><i class="fas fa-cloud"></i> <span>Conectando...</span></button>
+            <button class="dark-mode-toggle" id="btnDarkModeToggle">🌙</button>
+            <div class="badge">We Help</div>
         </div>
-        <input type="file" id="logoUpload" accept="image/*" style="display: none;">
     </header>
 
-    <div class="modal-overlay" id="senhaModal">
-        <div class="modal-box">
-            <h3 id="modalAuthTitulo"><i class="fas fa-lock"></i> Autenticação</h3>
-            <p id="modalAuthDescricao" style="margin-bottom: 1rem; font-size: 0.9rem; opacity: 0.8;">Digite a senha para prosseguir.</p>
-            <input type="password" id="senhaInput" placeholder="Digite a senha" maxlength="20" autocomplete="off">
-            <div class="error-msg" id="senhaErro" style="color: #EF4444; font-size: 0.8rem; margin-top: -0.4rem; margin-bottom: 0.6rem; display: none; text-align: left;">Senha incorreta. Tente novamente.</div>
-            <div class="btn-group">
-                <button class="btn-cancel" id="btnCancelarSenha">Cancelar</button>
-                <button class="btn-confirm" id="btnConfirmarSenha">Confirmar</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Estrutura principal básica para renderização do App -->
     <div class="container">
         <aside class="sidebar">
             <div class="menu-search-box">
                 <i class="fas fa-search"></i>
                 <input type="text" id="menuSearch" placeholder="Buscar no menu...">
             </div>
-            <h3>Módulos <button class="config-btn" id="adminConfigTrigger" title="Configurações Avançadas"><i class="fas fa-cog"></i></button></h3>
+            <h3>Módulos <button class="config-btn" id="adminConfigTrigger"><i class="fas fa-cog"></i></button></h3>
             <nav id="sidebarNav"></nav>
         </aside>
-        <main class="main" id="mainContent"></main>
+        <main class="main">
+            <!-- Painel de Administração Rápido Visível em Modo de Edição -->
+            <div class="admin-controls-panel">
+                <span><strong>Modo de Edição Ativo</strong></span>
+                <button class="admin-action-btn" id="btnCriarModulo"><i class="fas fa-plus"></i> Novo Módulo</button>
+                <button class="admin-action-btn" id="btnUploadImagens"><i class="fas fa-image"></i> Favicon / Banner</button>
+                <button class="admin-action-btn danger" id="btnSairAdmin">Sair da Edição</button>
+            </div>
+            <div id="mainContent"></div>
+        </main>
     </div>
 
-    <button id="floatingTopBtn" class="floating-top-btn" title="Voltar ao Topo">▲</button>
+    <!-- Modal de Senha -->
+    <div class="modal-overlay" id="senhaModal">
+        <div class="modal-box">
+            <h3><i class="fas fa-lock"></i> Área do Administrador</h3>
+            <p style="margin: 0.5rem 0 1rem; font-size: 0.9rem; opacity: 0.8;">Insira a sua senha de acesso para configurar o manual.</p>
+            <input type="password" id="senhaInput" placeholder="Digite a senha padrão">
+            <div class="btn-group">
+                <button class="btn-cancel" id="btnCancelarSenha">Cancelar</button>
+                <button class="btn-confirm" id="btnConfirmarSenha">Entrar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Configuração de Módulo -->
+    <div class="modal-overlay" id="moduloModal">
+        <div class="modal-box">
+            <h3 id="modalTitulo">Configurar Elemento</h3>
+            <div style="text-align: left; margin-top: 1rem;">
+                <label>Título:</label>
+                <input type="text" id="inputModTitulo">
+                <label>Ícone (Classe FontAwesome):</label>
+                <input type="text" id="inputModIcon" placeholder="fa-bookmark">
+                <label>Conteúdo em Texto:</label>
+                <textarea id="inputModConteudo" rows="6"></textarea>
+            </div>
+            <div class="btn-group">
+                <button class="btn-cancel" id="btnFecharModModal">Fechar</button>
+                <button class="btn-salvar" id="btnSalvarModulo">Salvar Alterações</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Carregamento de Mídia -->
+    <div class="modal-overlay" id="midiaModal">
+        <div class="modal-box">
+            <h3>Gerenciador de Identidade Visual</h3>
+            <div style="text-align: left; margin-top: 1rem; display: flex; flex-direction: column; gap: 10px;">
+                <label>Logotipo do Topo:</label>
+                <input type="file" id="fileLogo" accept="image/*">
+                <label>Favicon do Manual (.ico ou .png):</label>
+                <input type="file" id="fileFavicon" accept="image/*">
+                <label>Imagem de Fundo Geral:</label>
+                <input type="file" id="fileFundo" accept="image/*">
+            </div>
+            <div class="btn-group" style="margin-top: 1.5rem;">
+                <button class="btn-cancel" id="btnFecharMidiaModal">Concluir</button>
+            </div>
+        </div>
+    </div>
+
     <div id="ft-toast-container"></div>
 
     <script>
-        // CONFIGURAÇÕES DO SUPABASE INTEGRADAS COM SUCESSO
+        // CREDENCIAIS OFICIAIS DO CLIENTE INTEGRadas
         const _SUPABASE_URL = "https://vymbwuvorpfycmhxejoa.supabase.co"; 
         const _SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZ5bWJ3dXZvcnBmeWNtaHhlam9hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM1OTc2NjMsImV4cCI6MjA5OTE3MzY2M30.aO4twzzkC4sUcuP_8Eq2bZdG49tvrJjWHOsUSqLPMb8"; 
         
-        // Instanciação segura isolada no escopo global window
         const supabaseClient = window.supabase.createClient(_SUPABASE_URL, _SUPABASE_KEY);
 
-        // ESTADO GLOBAL DO PROJETO
         let SGMState = {
-            current: {
-                id: "manual_config_01",
-                theme: "light",
-                modules: []
-            }
+            id: "manual_config_01",
+            theme: "light",
+            logoData: "",
+            faviconData: "",
+            bgData: "",
+            modules: [
+                { id: "mod_ini", title: "Início", icon: "fa-home", content: "Bem-vindo ao seu novo sistema de manual. Clique na logo ou na engrenagem e insira a senha para customizar todos os campos." }
+            ]
         };
 
+        let isAdmin = false;
         let saveTimeout = null;
+        let moduloEditandoId = null;
 
-        // Gerenciador visual da barra de carregamento e status
-        function updateSyncStatus(status) {
-            const indicator = document.getElementById('syncIndicator');
-            if (!indicator) return;
+        function showToast(text, bg = "#10B981") {
+            const container = document.getElementById('ft-toast-container');
+            const toast = document.createElement('div');
+            toast.className = "ft-toast";
+            toast.style.background = bg;
+            toast.innerText = text;
+            container.appendChild(toast);
+            setTimeout(() => toast.remove(), 3000);
+        }
+
+        function updateSyncIndicator(status) {
+            const el = document.getElementById('syncIndicator');
+            if(!el) return;
+            const s = el.querySelector('span');
+            const i = el.querySelector('i');
             
-            indicator.className = "sync-indicator";
-            const icon = indicator.querySelector('i');
-            const label = indicator.querySelector('span');
-
             if (status === 'saved') {
-                indicator.classList.add('online');
-                if(icon) icon.className = "fas fa-cloud";
-                if(label) label.innerText = "Sincronizado";
+                el.className = "sync-indicator online";
+                s.innerText = "Sincronizado";
+                i.className = "fas fa-cloud";
             } else if (status === 'saving') {
-                indicator.classList.add('syncing');
-                if(icon) icon.className = "fas fa-sync-alt fa-spin";
-                if(label) label.innerText = "A guardar...";
-            } else if (status === 'error') {
-                indicator.classList.add('error');
-                if(icon) icon.className = "fas fa-exclamation-triangle";
-                if(label) label.innerText = "Erro ao guardar";
+                el.className = "sync-indicator syncing";
+                s.innerText = "Salvando...";
+                i.className = "fas fa-sync fa-spin";
+            } else {
+                el.className = "sync-indicator error";
+                s.innerText = "Erro ao salvar";
+                i.className = "fas fa-exclamation-triangle";
             }
         }
 
-        // CARREGAMENTO DOS DADOS COM TRATAMENTO DE CORRUPÇÃO DE ARQUIVO
-        async function loadSystemData() {
-            updateSyncStatus('saving');
-            
-            const cachedData = localStorage.getItem('manual_data');
-            if (cachedData) {
-                try {
-                    SGMState.current = JSON.parse(cachedData);
-                    if (typeof renderModules === 'function') renderModules(); 
-                } catch (e) {
-                    console.warn("Cache local inválido ou corrompido, limpando dados temporários.", e);
-                    localStorage.removeItem('manual_data');
-                }
-            }
-
+        async function loadData() {
+            updateSyncIndicator('saving');
             try {
                 const { data, error } = await supabaseClient
                     .from('manual_configs')
                     .select('content')
-                    .eq('id', SGMState.current.id)
+                    .eq('id', SGMState.id)
                     .single();
 
-                if (error && error.code !== 'PGRST116') throw error;
-
                 if (data && data.content) {
-                    SGMState.current = data.content;
-                    localStorage.setItem('manual_data', JSON.stringify(SGMState.current));
-                    if (typeof renderModules === 'function') renderModules();
-                    updateSyncStatus('saved');
+                    SGMState = data.content;
+                    renderApp();
+                    updateSyncIndicator('saved');
                 } else {
-                    await forceSaveCloud(); 
+                    // Se estiver completamente vazio na tabela, persistimos a base inicial estruturada
+                    await saveDataCloud();
                 }
-            } catch (err) {
-                console.error("Erro na comunicação ativa com o Supabase:", err);
-                updateSyncStatus('error');
+            } catch(e) {
+                console.error(e);
+                updateSyncIndicator('error');
             }
         }
 
-        // DEBOUNCE INTELIGENTE DE DIGITAÇÃO (500ms)
-        function triggerDataSave() {
-            localStorage.setItem('manual_data', JSON.stringify(SGMState.current));
-            updateSyncStatus('saving');
-
-            if (saveTimeout) clearTimeout(saveTimeout);
-            
-            saveTimeout = setTimeout(async () => {
-                await forceSaveCloud();
-            }, 500);
-        }
-
-        // PERSISTÊNCIA REMOTA VIA UPSERT DIRETO NA CHAVE PRIMÁRIA
-        async function forceSaveCloud() {
+        async function saveDataCloud() {
+            updateSyncIndicator('saving');
             try {
                 const { error } = await supabaseClient
                     .from('manual_configs')
-                    .upsert({ 
-                        id: SGMState.current.id, 
-                        content: SGMState.current,
-                        updated_at: new Date().toISOString()
-                    }, {
-                        onConflict: 'id'
-                    });
-
-                if (error) throw error;
-                updateSyncStatus('saved');
-            } catch (err) {
-                console.error("Falha ao injetar dados na nuvem Supabase:", err);
-                updateSyncStatus('error');
+                    .upsert({ id: SGMState.id, content: SGMState, updated_at: new Date().toISOString() });
+                if(error) throw error;
+                updateSyncIndicator('saved');
+            } catch(e) {
+                updateSyncIndicator('error');
             }
         }
 
-        // MECANISMO DE CÓPIA PARA ÁREA DE TRANSFERÊNCIA
-        function copiarTexto(texto, botao) {
-            navigator.clipboard.writeText(texto).then(() => {
-                const icon = botao.querySelector('i');
-                const span = botao.querySelector('span');
-                if (icon && span) {
-                    const originalIcon = icon.className;
-                    const originalText = span.innerText;
-                    
-                    icon.className = "fa-solid fa-check mr-2";
-                    span.innerText = "Copiado!";
-                    setTimeout(() => {
-                        icon.className = originalIcon;
-                        span.innerText = originalText;
-                    }, 2000);
-                }
-            }).catch(err => console.error("Sem permissões de escrita na Clipboard:", err));
+        function triggerDebounceSave() {
+            if(saveTimeout) clearTimeout(saveTimeout);
+            saveTimeout = setTimeout(() => {
+                saveDataCloud();
+            }, 800);
         }
 
-        // EVENTOS GERAIS DA INTERFACE DO USUÁRIO
-        document.getElementById('btnCopyEmail')?.addEventListener('click', function() { 
-            let emailEl = document.getElementById('emailTemplate');
-            let texto = emailEl ? (emailEl.innerText || emailEl.textContent) : "";
-            copiarTexto(texto, this); 
-        });
-        
-        document.getElementById('btnCopyScript')?.addEventListener('click', function() { 
-            let scriptEl = document.getElementById('scriptCode');
-            let texto = scriptEl ? scriptEl.value : "";
-            copiarTexto(texto, this); 
-        });
+        function renderApp() {
+            // Aplicar mídias carregadas
+            const imgLogo = document.getElementById('uploadedLogo');
+            if(SGMState.logoData) {
+                imgLogo.src = SGMState.logoData;
+                imgLogo.classList.add('loaded');
+            } else {
+                imgLogo.classList.remove('loaded');
+            }
 
-        // DISPARO E CONFIGURAÇÕES INICIAIS DA DOM
-        document.addEventListener('DOMContentLoaded', async () => {
-            await loadSystemData(); 
+            if(SGMState.faviconData) {
+                let linkFav = document.querySelector("link[rel*='icon']") || document.createElement('link');
+                linkFav.type = 'image/x-icon';
+                linkFav.rel = 'shortcut icon';
+                linkFav.href = SGMState.faviconData;
+                document.getElementsByTagName('head')[0].appendChild(linkFav);
+            }
+
+            if(SGMState.bgData) {
+                document.documentElement.style.setProperty('--bg-custom-image', `url(${SGMState.bgData})`);
+            } else {
+                document.documentElement.style.setProperty('--bg-custom-image', 'none');
+            }
+
+            // Renderizar Sidebar Menu
+            const nav = document.getElementById('sidebarNav');
+            nav.innerHTML = "";
+            SGMState.modules.forEach((mod, idx) => {
+                const a = document.createElement('a');
+                a.innerHTML = `<i class="fas ${mod.icon || 'fa-folder'}"></i> ${mod.title}`;
+                a.onclick = () => carregarModuloNoCentro(mod.id);
+                if(idx === 0) a.className = "active";
+                nav.appendChild(a);
+            });
+
+            // Carrega o primeiro por padrão
+            if(SGMState.modules.length > 0) {
+                carregarModuloNoCentro(SGMState.modules[0].id);
+            }
+        }
+
+        function carregarModuloNoCentro(id) {
+            const mod = SGMState.modules.find(m => m.id === id);
+            const main = document.getElementById('mainContent');
             
-            const floatingBtn = document.getElementById('floatingTopBtn');
-            if (floatingBtn) {
-                window.addEventListener('scroll', () => { 
-                    floatingBtn.classList.toggle('visible', window.scrollY > 300); 
-                });
-                floatingBtn.addEventListener('click', () => {
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
-                });
+            // Gerenciar classe ativa na sidebar
+            document.querySelectorAll('#sidebarNav a').forEach(a => {
+                a.classList.toggle('active', a.innerText.trim() === mod.title.trim());
+            });
+
+            if(!mod) return;
+
+            main.innerHTML = `
+                <div class="section">
+                    <h2 class="${isAdmin ? 'editable-field' : ''}" onclick="abrirConfigElemento('${mod.id}')">
+                        <i class="fas ${mod.icon || 'fa-file-alt'}"></i> <span>${mod.title}</span>
+                    </h2>
+                    <div class="subsection">
+                        <p class="${isAdmin ? 'editable-field' : ''}" style="white-space: pre-wrap;" onclick="abrirConfigElemento('${mod.id}')">${mod.content || 'Sem conteúdo.'}</p>
+                    </div>
+                    ${isAdmin ? `<button class="admin-action-btn danger" style="margin-top:20px; font-size:0.75rem;" onclick="deletarModulo('${mod.id}')"><i class="fas fa-trash"></i> Excluir Módulo</button>` : ''}
+                </div>
+            `;
+        }
+
+        function abrirConfigElemento(id) {
+            if(!isAdmin) return;
+            moduloEditandoId = id;
+            const mod = SGMState.modules.find(m => m.id === id);
+            if(!mod) return;
+
+            document.getElementById('modalTitulo').innerText = "Editar Módulo";
+            document.getElementById('inputModTitulo').value = mod.title;
+            document.getElementById('inputModIcon').value = mod.icon || 'fa-file-alt';
+            document.getElementById('inputModConteudo').value = mod.content || '';
+            
+            document.getElementById('moduloModal').classList.add('active');
+        }
+
+        function deletarModulo(id) {
+            if(!confirm("Tem certeza que deseja apagar este módulo?")) return;
+            SGMState.modules = SGMState.modules.filter(m => m.id !== id);
+            saveDataCloud();
+            renderApp();
+            showToast("Módulo removido.");
+        }
+
+        // Conversor de imagens locais para strings seguras de texto
+        function handleImageUpload(inputEl, stateProperty) {
+            const file = inputEl.files[0];
+            if(!file) return;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                SGMState[stateProperty] = e.target.result;
+                saveDataCloud();
+                renderApp();
+                showToast("Imagem atualizada com sucesso!");
+            };
+            reader.readAsDataURL(file);
+        }
+
+        // CONTROLADORES DE EVENTOS E TRIGGERS
+        document.getElementById('logoContainer').onclick = () => {
+            if(!isAdmin) document.getElementById('senhaModal').classList.add('active');
+        };
+        document.getElementById('adminConfigTrigger').onclick = () => {
+            if(!isAdmin) document.getElementById('senhaModal').classList.add('active');
+        };
+
+        document.getElementById('btnCancelarSenha').onclick = () => {
+            document.getElementById('senhaModal').classList.remove('active');
+            document.getElementById('senhaInput').value = "";
+        };
+
+        document.getElementById('btnConfirmarSenha').onclick = () => {
+            const senha = document.getElementById('senhaInput').value;
+            // Validação simples padrão
+            if(senha === "123" || senha.toLowerCase() === "admin") {
+                isAdmin = true;
+                document.body.classList.add('edit-mode-active');
+                document.getElementById('senhaModal').classList.remove('active');
+                document.getElementById('senhaInput').value = "";
+                renderApp();
+                showToast("Autenticado como Administrador!");
+            } else {
+                showToast("Senha incorreta!", "#EF4444");
+            }
+        };
+
+        document.getElementById('btnSairAdmin').onclick = () => {
+            isAdmin = false;
+            document.body.classList.remove('edit-mode-active');
+            renderApp();
+            showToast("Saiu do modo editor.", "#475569");
+        };
+
+        document.getElementById('btnCriarModulo').onclick = () => {
+            moduloEditandoId = null;
+            document.getElementById('modalTitulo').innerText = "Criar Novo Módulo";
+            document.getElementById('inputModTitulo').value = "";
+            document.getElementById('inputModIcon').value = "fa-file-alt";
+            document.getElementById('inputModConteudo').value = "";
+            document.getElementById('moduloModal').classList.add('active');
+        };
+
+        document.getElementById('btnFecharModModal').onclick = () => {
+            document.getElementById('moduloModal').classList.remove('active');
+        };
+
+        document.getElementById('btnSalvarModulo').onclick = () => {
+            const t = document.getElementById('inputModTitulo').value.trim();
+            const i = document.getElementById('inputModIcon').value.trim();
+            const c = document.getElementById('inputModConteudo').value.trim();
+
+            if(!t) { showToast("O título é obrigatório", "#EF4444"); return; }
+
+            if(moduloEditandoId) {
+                // Modo Edição
+                const mod = SGMState.modules.find(m => m.id === moduloEditandoId);
+                if(mod) { mod.title = t; mod.icon = i; mod.content = c; }
+            } else {
+                // Modo Criação Novo
+                const newId = "mod_" + Date.now();
+                SGMState.modules.push({ id: newId, title: t, icon: i, content: c });
             }
 
-            const btnDark = document.getElementById('btnDarkModeToggle');
-            if (btnDark) {
-                if (SGMState.current.theme === 'dark') { 
-                    document.body.classList.add('dark-theme'); 
-                    btnDark.innerText = '☀️'; 
-                }
-                btnDark.addEventListener('click', () => {
-                    const isDark = document.body.classList.toggle('dark-theme'); 
-                    SGMState.current.theme = isDark ? 'dark' : 'light';
-                    btnDark.innerText = isDark ? '☀️' : '🌙'; 
-                    triggerDataSave();
-                });
-            }
-        });
+            document.getElementById('moduloModal').classList.remove('active');
+            saveDataCloud();
+            renderApp();
+            showToast("Configurações salvas e sincronizadas!");
+        };
+
+        document.getElementById('btnUploadImagens').onclick = () => {
+            document.getElementById('midiaModal').classList.add('active');
+        };
+        document.getElementById('btnFecharMidiaModal').onclick = () => {
+            document.getElementById('midiaModal').classList.remove('active');
+        };
+
+        document.getElementById('fileLogo').onchange = function() { handleImageUpload(this, 'logoData'); };
+        document.getElementById('fileFavicon').onchange = function() { handleImageUpload(this, 'faviconData'); };
+        document.getElementById('fileFundo').onchange = function() { handleImageUpload(this, 'bgData'); };
+
+        // Mecanismo de busca no menu lateral
+        document.getElementById('menuSearch').oninput = function() {
+            const val = this.value.toLowerCase();
+            document.querySelectorAll('#sidebarNav a').forEach(a => {
+                const text = a.innerText.toLowerCase();
+                a.style.display = text.includes(val) ? "flex" : "none";
+            });
+        };
+
+        // Dark Mode Simples
+        document.getElementById('btnDarkModeToggle').onclick = () => {
+            const isDark = document.body.classList.toggle('dark-theme');
+            SGMState.theme = isDark ? 'dark' : 'light';
+            document.getElementById('btnDarkModeToggle').innerText = isDark ? '☀️' : '🌙';
+            triggerDebounceSave();
+        };
+
+        // INICIALIZAÇÃO AUTOMÁTICA
+        window.onload = () => {
+            loadData();
+        };
     </script>
 </body>
 </html>
