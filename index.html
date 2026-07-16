@@ -805,6 +805,8 @@
         .ft-emoji-empty { grid-column: 1 / -1; text-align: center; color: #94A3B8; font-size: 0.85rem; padding: 1rem; }
 
         /* Seletor de ícone (troca do ícone de uma seção/card) */
+        .ft-emoji-icon { font-style: normal; display: inline-flex; align-items: center; justify-content: center; }
+        .ft-icon-glyph { line-height: 1; }
         .ft-icon-edit-btn {
             position: absolute; bottom: -6px; right: -8px; width: 16px; height: 16px; border-radius: 50%; background: var(--azul);
             color: white; border: 1.5px solid white; display: flex; align-items: center; justify-content: center;
@@ -1213,6 +1215,114 @@
                         <li class="edit-text" id="ed-cro-7"><strong>Sexta-feira:</strong> Conferência final. Revisar todos os arquivos com a base da pesquisa, configuração das pesquisas criadas e automações, para que na segunda-feira realize somente o input no sistema WeHelp.</li>
                     </ul>
                 </div>
+                <div class="back-to-top-wrapper"><button class="back-to-top" onclick="voltarAoTopo();"><i class="fas fa-arrow-up"></i></button></div>
+            </section>
+
+            <section id="comunicacao" class="section">
+                <div class="section-header">
+                    <i class="fas fa-bullhorn" id="icon-comunicacao"></i>
+                    <h2 class="edit-text" id="ed-com-titulo">Comunicação</h2>
+                    <span class="tag">Rede</span>
+                </div>
+                <p style="margin-bottom:1rem;" class="edit-text" id="ed-com-intro">Linha do tempo dos comunicados enviados à rede antes e durante o ciclo de NPS, com sugestões de mensagem prontas para copiar e usar.</p>
+
+                <div class="automation-steps grid-cards-editable" id="grid-comunicacao-steps">
+
+                    <div class="automation-step edit-text">
+                        <span class="step-number">1</span>
+                        <h4 class="edit-text" id="ed-com1-titulo">1º Comunicado <span style="font-weight:400; color:#64748B;">| 10 dias antes da pesquisa</span></h4>
+                        <p class="edit-text" id="ed-com1-desc">Enviamos um comunicado interno informando sobre a reunião de alinhamento NPS, no qual será abordado metodologia, regulamento, critérios de reconhecimento e premiação.</p>
+                        <p class="edit-text" id="ed-com1-sug-label" style="margin-top:0.6rem; font-weight:bold; color:var(--azul);">💬 Sugestão | Alinhamento Regulamento e critérios</p>
+                        <div id="msgComunicado1" style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:10px; padding:1rem; margin:0.6rem 0; font-size:0.88rem; line-height:1.6; white-space:pre-wrap;" class="edit-text ft-hidden-block">Olá, Rede! Tudo bem?
+
+No dia INSERIR DATA DA REUNIÃO realizaremos uma reunião de alinhamento sobre o NPS, onde abordaremos os principais pontos da métrica, regulamento, critérios de reconhecimento e premiação.
+
+Gostaríamos muito de contar com a participação de vocês. Como iniciaremos um novo ciclo de pesquisa no dia INSERIR DATA DA PESQUISA, esse encontro será importante para esclarecer dúvidas e reforçar os principais direcionamentos, considerando que o NPS também é um KPI relevante dentro do processo de acompanhamento e performance (PAPE).
+
+Data:
+Horário:
+Link da videochamada:
+https://meet.google.com/qxe-wowz-dhd
+Ou disque:
+(BR) +55 11 4935-2684
+PIN: 794 086 874#
+
+Contamos com vocês!
+Qualquer dúvida estou à disposição.</div>
+                        <button class="btn-copy-script" id="btnCopyComunicado1"><i class="fas fa-copy"></i> <span class="copy-label">Copiar Sugestão</span><span class="copied-msg"><i class="fas fa-check-circle"></i> Copiado!</span></button>
+                    </div>
+
+                    <div class="automation-step edit-text">
+                        <span class="step-number">2</span>
+                        <h4 class="edit-text" id="ed-com2-titulo">2º Comunicado <span style="font-weight:400; color:#64748B;">| 7 dias antes da pesquisa</span></h4>
+                        <p class="edit-text" id="ed-com2-desc">Disparo via Sults (enviado pela responsável) para toda a rede (implantação e operação), reforçando a proximidade da pesquisa.</p>
+                    </div>
+
+                    <div class="automation-step edit-text">
+                        <span class="step-number">3</span>
+                        <h4 class="edit-text" id="ed-com3-titulo">3º Comunicado <span style="font-weight:400; color:#64748B;">| Sexta-feira que antecede o início da pesquisa</span></h4>
+                        <p class="edit-text" id="ed-com3-desc">Enviamos um novo comunicado interno reforçando a importância da participação dos clientes, atualização dos cadastros e engajamento das equipes.</p>
+                        <p class="edit-text" id="ed-com3-sug-label" style="margin-top:0.6rem; font-weight:bold; color:var(--azul);">💬 Sugestão | Lembrete pré-pesquisa</p>
+                        <div id="msgComunicado3" style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:10px; padding:1rem; margin:0.6rem 0; font-size:0.88rem; line-height:1.6; white-space:pre-wrap;" class="edit-text ft-hidden-block">Olá, Rede! Tudo bem?
+
+Passando para informar que estamos nos aproximando do início oficial do ciclo de NPS de INSERIR MESES DO CICLO, que será disparado em INSERIR DATA.
+
+Lembrando que o NPS também é um dos indicadores considerados no PAPE, sendo um termômetro essencial da satisfação dos nossos clientes e um apoio importante para o desenvolvimento da operação.
+
+Atenção:
+A pesquisa será encaminhada via e-mail e, após ser iniciada, terá 20 minutos para ser respondida antes do encerramento automático.
+Reforçamos a importância de engajar as equipes e, sempre que possível, preparar os clientes para a participação.
+O envio da pesquisa para os clientes B2C da rede é realizado de acordo com o e-mail cadastrado no PlayFast. Certifiquem-se de que os dados estejam atualizados.
+
+Caso algum cliente informe que não recebeu a pesquisa, estou à disposição para verificar o envio e realizar um novo disparo, se necessário.
+
+Qualquer dúvida, estou à disposição.</div>
+                        <button class="btn-copy-script" id="btnCopyComunicado3"><i class="fas fa-copy"></i> <span class="copy-label">Copiar Sugestão</span><span class="copied-msg"><i class="fas fa-check-circle"></i> Copiado!</span></button>
+                        <div class="highlight-box blue edit-text" style="margin-top:0.6rem;">
+                            <i class="fas fa-paperclip"></i>
+                            <span id="ed-com3-obs"><strong>Obs.:</strong> nesse chamado, anexar o arquivo Onboarding NPS.</span>
+                        </div>
+                    </div>
+
+                    <div class="automation-step edit-text">
+                        <span class="step-number">4</span>
+                        <h4 class="edit-text" id="ed-com4-titulo">4º Comunicado <span style="font-weight:400; color:#64748B;">| Início da pesquisa</span></h4>
+                        <p class="edit-text" id="ed-com4-desc">Comunicado enviado no grupo de franqueados via WhatsApp informando o início oficial da rodada e reforçando orientações para acompanhamento e incentivo aos clientes.</p>
+                        <p class="edit-text" id="ed-com4-sug-label" style="margin-top:0.6rem; font-weight:bold; color:var(--azul);">💬 Sugestão | Início da pesquisa</p>
+                        <div id="msgComunicado4" style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:10px; padding:1rem; margin:0.6rem 0; font-size:0.88rem; line-height:1.6; white-space:pre-wrap;" class="edit-text ft-hidden-block">🚀 O NPS DE INSERIR CICLO JÁ COMEÇOU!
+
+Olá, Rede! Tudo bem?
+
+Nosso novo ciclo de NPS já está no ar!
+O papel de cada um de nós é fundamental para incentivar os clientes a responderem e, assim, continuarmos evoluindo a experiência oferecida em nossas unidades.
+
+Como o cliente recebe a pesquisa?
+A pesquisa é enviada 100% por e-mail.
+Remetente: noreply@wehelpsoftware.com
+Orientem os clientes a verificarem a caixa de entrada e, se necessário, também as pastas de Spam ou Promoções.
+
+O cliente informou que não recebeu?
+• Verifique se o e-mail cadastrado no PlayFast está correto.
+• Persistindo o problema, acione a Daniela (31 97247-8500) para validação e envio da pesquisa.
+
+Contamos com o empenho de todos para fazermos mais um ciclo de sucesso e alcançarmos excelentes resultados!
+Muito obrigada!</div>
+                        <button class="btn-copy-script" id="btnCopyComunicado4"><i class="fas fa-copy"></i> <span class="copy-label">Copiar Sugestão</span><span class="copied-msg"><i class="fas fa-check-circle"></i> Copiado!</span></button>
+                    </div>
+
+                    <div class="add-card-btn-container">
+                        <span style="font-size:0.9rem; font-weight:700;"><i class="fas fa-plus"></i> Adicionar Bloco</span>
+                        <div class="add-card-options">
+                            <button class="btn-cancel" onclick="event.stopPropagation(); SGMAdmin.addContent(this, 'subtitle')"><i class="fas fa-heading"></i> Subtítulo</button>
+                            <button class="btn-cancel" onclick="event.stopPropagation(); SGMAdmin.addContent(this, 'text')"><i class="fas fa-align-left"></i> Texto</button>
+                            <button class="btn-cancel" onclick="event.stopPropagation(); SGMAdmin.addContent(this, 'card')"><i class="fas fa-th-large"></i> Card Info</button>
+                            <button class="btn-cancel" onclick="event.stopPropagation(); SGMAdmin.addContent(this, 'stat')"><i class="fas fa-chart-bar"></i> Card KPI</button>
+                            <button class="btn-cancel" onclick="event.stopPropagation(); SGMAdmin.addContent(this, 'highlight')"><i class="fas fa-exclamation-circle"></i> Alerta</button>
+                            <button class="btn-cancel" onclick="event.stopPropagation(); SGMAdmin.addContent(this, 'step')"><i class="fas fa-list-ol"></i> Etapa</button>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="back-to-top-wrapper"><button class="back-to-top" onclick="voltarAoTopo();"><i class="fas fa-arrow-up"></i></button></div>
             </section>
 
@@ -2388,7 +2498,7 @@ function inlineCheckSigilo(nome, valAuth) {
             
             <section id="homologacao-manual" class="section">
                 <div class="section-header">
-                    <i class="fas fa-cloud-upload-alt" id="icon-homologacao"></i>
+                    <span class="ft-emoji-icon" id="icon-homologacao"><span class="ft-icon-glyph">☁️</span></span>
                     <h2 class="edit-text" id="ed-homo-1">Homologando o Manual (Supabase)</h2>
                     <span class="tag">Integração Nuvem</span>
                 </div>
@@ -2396,7 +2506,7 @@ function inlineCheckSigilo(nome, valAuth) {
 
                 <div class="subsection">
                     <h3 style="display:flex; align-items:center; gap:0.5rem;">
-                        <i class="fas fa-database" style="color: var(--azul);"></i>
+                        <span class="ft-emoji-icon" style="color: var(--azul);"><span class="ft-icon-glyph">🗄️</span></span>
                         <span class="edit-text" id="ed-homo-sql-title" style="flex:1;">1. Criar a tabela no Supabase</span>
                     </h3>
                     <p class="edit-text" id="ed-homo-sql-desc">No painel do seu projeto Supabase, abra o <strong>SQL Editor</strong> e rode este script uma única vez:</p>
@@ -2425,20 +2535,20 @@ insert into manual_config (id, data) values (1, '{}'::jsonb);</div>
 
                 <div class="subsection">
                     <h3 style="display:flex; align-items:center; gap:0.5rem;">
-                        <i class="fas fa-key" style="color: var(--azul);"></i>
+                        <span class="ft-emoji-icon" style="color: var(--azul);"><span class="ft-icon-glyph">🔑</span></span>
                         <span class="edit-text" id="ed-homo-keys-title" style="flex:1;">2. Colar suas chaves no arquivo</span>
                     </h3>
                     <p class="edit-text" id="ed-homo-keys-desc">Em <strong>Project Settings &gt; API</strong> no Supabase, copie a <strong>Project URL</strong> e a <strong>anon public key</strong>. Abra o arquivo <code>.html</code> deste manual em um editor de texto, procure por <code>SUPABASE_URL</code> perto do início do código e substitua os dois valores de exemplo pelos seus. Depois é só subir o arquivo (renomeado para <code>index.html</code>) no GitHub e conectar ao Netlify ou GitHub Pages.</p>
                 </div>
 
                 <div class="highlight-box blue edit-text" id="ed-homo-security" style="margin-top:0.8rem;">
-                    <i class="fas fa-shield-alt"></i>
+                    <span class="ft-emoji-icon"><span class="ft-icon-glyph">🛡️</span></span>
                     <span><strong>Sobre segurança:</strong> a chave "anon" do Supabase é pública por natureza (já viaja dentro do próprio HTML) e as regras do script acima permitem leitura e escrita para qualquer pessoa que tenha essa chave. Isso é equivalente ao nível de proteção que a senha de admin do manual já oferece hoje. Se quiser um controle mais forte no futuro (só o admin logado grava), dá para evoluir para autenticação do Supabase.</span>
                 </div>
 
                 <div class="subsection">
                     <h3 style="display:flex; align-items:center; gap:0.5rem;">
-                        <i class="fas fa-shoe-prints" style="color: var(--azul);"></i>
+                        <span class="ft-emoji-icon" style="color: var(--azul);"><span class="ft-icon-glyph">👣</span></span>
                         <span class="edit-text" id="ed-homo-3" style="flex:1;">Como fica o dia a dia</span>
                     </h3>
                     <p class="edit-text" id="ed-homo-3b" style="margin-bottom:1rem;">Depois de configurado, edite o manual normalmente pelo link publicado e clique em salvar — não precisa mais exportar HTML nem subir arquivo toda vez. A alteração já chega para todos que acessarem o link.</p>
@@ -2620,8 +2730,8 @@ insert into manual_config (id, data) values (1, '{}'::jsonb);</div>
            Enquanto estiverem com os valores de exemplo abaixo, o manual funciona
            normalmente, só que salvando apenas no navegador (como já fazia antes).
         ==================================================================== */
-        const SUPABASE_URL = 'https://SEU-PROJETO.supabase.co';
-        const SUPABASE_ANON_KEY = 'SUA-CHAVE-ANON-AQUI';
+        const SUPABASE_URL = 'https://vymbwuvorpfycmhxejoa.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZ5bWJ3dXZvcnBmeWNtaHhlam9hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM1OTc2NjMsImV4cCI6MjA5OTE3MzY2M30.aO4twzzkC4sUcuP_8Eq2bZdG49tvrJjWHOsUSqLPMb8';
         const SUPABASE_CONFIGURED = !SUPABASE_URL.includes('SEU-PROJETO') && !SUPABASE_ANON_KEY.includes('SUA-CHAVE');
         const SUPABASE_TABLE = 'manual_config';
 
@@ -2683,6 +2793,7 @@ insert into manual_config (id, data) values (1, '{}'::jsonb);</div>
                         { id: 'fluxo-trabalho', label: 'Fluxo de Trabalho', icon: 'fa-tasks', visible: true },
                         { id: 'sistemas', label: 'Sistemas', icon: 'fa-link', visible: true },
                         { id: 'cronograma', label: 'Cronograma', icon: 'fa-clock', visible: true },
+                        { id: 'comunicacao', label: 'Comunicação', icon: 'fa-bullhorn', visible: true },
                         { id: 'preparacao-base', label: 'Preparação da Base', icon: 'fa-database', visible: true },
                         { id: 'disparo', label: 'Disparo da Pesquisa', icon: 'fa-paper-plane', visible: true },
                         { id: 'premiacao', label: 'Premiação & Reconhecimento', icon: 'fa-trophy', visible: true },
@@ -2715,6 +2826,30 @@ insert into manual_config (id, data) values (1, '{}'::jsonb);</div>
                     const homoItem = this.current.topicos.splice(homoIdx, 1)[0];
                     const newRaIdx = this.current.topicos.findIndex(t => t.id === 'reclame-aqui');
                     this.current.topicos.splice(newRaIdx, 0, homoItem);
+                    this.save();
+                }
+
+                // Garante que 'comunicacao' fique logo depois de 'cronograma' corrigindo caches antigos
+                const comuIdx = this.current.topicos.findIndex(t => t.id === 'comunicacao');
+                const cronoIdx = this.current.topicos.findIndex(t => t.id === 'cronograma');
+                if (comuIdx !== -1 && cronoIdx !== -1 && comuIdx !== cronoIdx + 1) {
+                    const comuItem = this.current.topicos.splice(comuIdx, 1)[0];
+                    const newCronoIdx = this.current.topicos.findIndex(t => t.id === 'cronograma');
+                    this.current.topicos.splice(newCronoIdx + 1, 0, comuItem);
+                    this.save();
+                }
+
+                // Descarta automaticamente uma cópia salva antiga/quebrada do tópico "Homologando o Manual"
+                // (essa seção foi bastante ajustada nas últimas atualizações; isso garante que todo mundo
+                // passe a ver a versão nova e corrigida, sem precisar limpar o navegador manualmente).
+                const HOMOLOGACAO_CONTENT_VERSION = 3;
+                if (this.current._homologVersion !== HOMOLOGACAO_CONTENT_VERSION) {
+                    if (this.current.sectionStructures) {
+                        delete this.current.sectionStructures['homologacao'];
+                        delete this.current.sectionStructures['homologacao-manual'];
+                    }
+                    if (this.current.gridStructures) delete this.current.gridStructures['grid-homo-steps'];
+                    this.current._homologVersion = HOMOLOGACAO_CONTENT_VERSION;
                     this.save();
                 }
 
@@ -2907,94 +3042,48 @@ insert into manual_config (id, data) values (1, '{}'::jsonb);</div>
 
         /* ============ Seletor de Ícone (trocar/remover ícone de seções e cards) ============ */
         class FTIconPicker {
-            static COMMON_ICONS = ['fa-star','fa-heart','fa-check-circle','fa-info-circle','fa-exclamation-circle',
-                'fa-bell','fa-bullhorn','fa-bolt','fa-fire','fa-trophy','fa-award','fa-medal','fa-gift','fa-lightbulb',
-                'fa-cog','fa-wrench','fa-tools','fa-chart-line','fa-chart-bar','fa-chart-pie','fa-database','fa-server',
-                'fa-cloud','fa-cloud-upload-alt','fa-link','fa-envelope','fa-paper-plane','fa-clock','fa-calendar',
-                'fa-calendar-check','fa-file-alt','fa-folder','fa-clipboard-list','fa-tasks','fa-list','fa-users',
-                'fa-user','fa-user-tie','fa-building','fa-store','fa-shield-alt','fa-lock','fa-key','fa-search',
-                'fa-filter','fa-globe','fa-map-marker-alt','fa-comment','fa-comments','fa-thumbs-up','fa-flag',
-                'fa-tag','fa-tags','fa-briefcase','fa-book','fa-graduation-cap','fa-handshake','fa-rocket','fa-palette',
-                'fa-paint-brush','fa-camera','fa-video','fa-music','fa-headset','fa-phone','fa-mobile-alt',
-                'fa-laptop-code','fa-code','fa-wifi','fa-plug','fa-battery-full','fa-recycle','fa-leaf','fa-tree',
-                'fa-sun','fa-moon','fa-umbrella','fa-home','fa-door-open','fa-car','fa-plane','fa-ship','fa-truck',
-                'fa-bicycle','fa-running','fa-futbol','fa-basketball-ball','fa-dumbbell','fa-utensils','fa-coffee',
-                'fa-birthday-cake','fa-shopping-cart','fa-credit-card','fa-money-bill','fa-coins','fa-piggy-bank',
-                'fa-percentage','fa-balance-scale','fa-gavel','fa-file-invoice-dollar'];
             static currentTarget = null;
-            static ensureBuilt() {
-                if (document.getElementById('ftIconPopup')) return;
-                const popup = document.createElement('div');
-                popup.id = 'ftIconPopup';
-                popup.className = 'ft-icon-popup';
-                popup.innerHTML = `
-                    <div class="ft-icon-custom-input">
-                        <input type="text" id="ftIconCustomInput" placeholder="ex: fa-star">
-                        <button type="button" id="ftIconCustomApply">Usar</button>
-                    </div>
-                    <div class="ft-icon-grid" id="ftIconGrid"></div>
-                `;
-                document.body.appendChild(popup);
-                const grid = popup.querySelector('#ftIconGrid');
-                FTIconPicker.COMMON_ICONS.forEach(iconClass => {
-                    const b = document.createElement('button');
-                    b.type = 'button'; b.className = 'ft-icon-item';
-                    b.innerHTML = `<i class="fas ${iconClass}"></i>`;
-                    b.title = iconClass;
-                    b.addEventListener('click', (e) => { e.stopPropagation(); FTIconPicker.apply(iconClass); });
-                    grid.appendChild(b);
-                });
-                popup.querySelector('#ftIconCustomApply').addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    const val = popup.querySelector('#ftIconCustomInput').value.trim();
-                    if (val) FTIconPicker.apply(val.startsWith('fa-') ? val : 'fa-' + val);
-                });
-                popup.addEventListener('click', (e) => e.stopPropagation());
-                document.addEventListener('click', (e) => {
-                    if (!popup.contains(e.target) && !e.target.closest('.ft-icon-edit-btn')) FTIconPicker.close();
-                });
+
+            static setEmoji(icon, emojiChar) {
+                // Remove classes do Font Awesome (fas/far/fab/fa-xxx) para não conflitar com o ::before
+                icon.className = icon.className.split(' ').filter(c => c && c !== 'fas' && c !== 'far' && c !== 'fab' && !c.startsWith('fa-')).join(' ');
+                icon.classList.add('ft-emoji-icon');
+                let glyph = icon.querySelector(':scope > .ft-icon-glyph');
+                if (!glyph) {
+                    glyph = document.createElement('span');
+                    glyph.className = 'ft-icon-glyph';
+                    icon.insertBefore(glyph, icon.firstChild);
+                }
+                glyph.textContent = emojiChar;
             }
-            static apply(iconClass) {
+
+            static apply(emojiChar) {
                 if (!FTIconPicker.currentTarget) return;
                 const icon = FTIconPicker.currentTarget;
-                icon.className = icon.className.replace(/fa-[a-z0-9-]+/i, iconClass);
-                if (!icon.classList.contains('fas')) icon.classList.add('fas');
+                FTIconPicker.setEmoji(icon, emojiChar);
                 if (icon.id) {
                     if (!SGMState.current.customIcons) SGMState.current.customIcons = {};
-                    SGMState.current.customIcons[icon.id] = iconClass;
+                    SGMState.current.customIcons[icon.id] = emojiChar;
                     SGMState.save();
                 }
-                FTIconPicker.close();
+                FTEmojiPicker.close();
                 SGMToast.show('Ícone atualizado!', 'success');
             }
-            static open(triggerBtn, iconEl) {
-                FTIconPicker.ensureBuilt();
-                FTIconPicker.currentTarget = iconEl;
-                const popup = document.getElementById('ftIconPopup');
-                const rect = triggerBtn.getBoundingClientRect();
-                let top = rect.bottom + 6;
-                if (top + 360 > window.innerHeight) top = Math.max(8, rect.top - 366);
-                let left = rect.left;
-                if (left + 300 > window.innerWidth) left = window.innerWidth - 310;
-                popup.style.top = Math.max(8, top) + 'px';
-                popup.style.left = Math.max(8, left) + 'px';
-                popup.classList.add('active');
-                popup.querySelector('#ftIconCustomInput').value = '';
-            }
-            static close() { const p = document.getElementById('ftIconPopup'); if (p) p.classList.remove('active'); }
+
             static initEditors() {
                 if (!SGMState.current.inlineEdit) return;
-                document.querySelectorAll('.section-header > i[id], .card-stat > i[id], .system-card > i[id], .base-card i[id], .sla-card i[id], h3 > i[id], .highlight-box > i[id], .import-step > i[id]').forEach(icon => {
+                document.querySelectorAll('.section-header > i[id], .card-stat > i[id], .system-card > i[id], .base-card i[id], .sla-card i[id], h3 > i[id], .highlight-box > i[id], .import-step > i[id], .section-header > .ft-emoji-icon[id], h3 > .ft-emoji-icon[id]').forEach(icon => {
                     const old = icon.querySelector(':scope > .ft-icon-edit-btn');
                     if (old) old.remove();
                     if (getComputedStyle(icon).position === 'static') icon.style.position = 'relative';
                     const btn = document.createElement('span');
                     btn.className = 'ft-icon-edit-btn';
-                    btn.innerHTML = '<i class="fas fa-pen"></i>';
-                    btn.title = 'Trocar ícone';
+                    btn.innerHTML = '✏️';
+                    btn.title = 'Trocar ícone (emoji)';
                     btn.addEventListener('click', (e) => {
                         e.stopPropagation();
-                        FTIconPicker.open(btn, icon);
+                        FTIconPicker.currentTarget = icon;
+                        FTEmojiPicker.open(btn, (char) => FTIconPicker.apply(char));
                     });
                     icon.appendChild(btn);
                 });
@@ -3003,10 +3092,7 @@ insert into manual_config (id, data) values (1, '{}'::jsonb);</div>
                 if (!SGMState.current.customIcons) return;
                 Object.keys(SGMState.current.customIcons).forEach(id => {
                     const el = document.getElementById(id);
-                    if (el) {
-                        el.className = el.className.replace(/fa-[a-z0-9-]+/i, SGMState.current.customIcons[id]);
-                        if (!el.classList.contains('fas')) el.classList.add('fas');
-                    }
+                    if (el) FTIconPicker.setEmoji(el, SGMState.current.customIcons[id]);
                 });
             }
         }
@@ -3057,8 +3143,8 @@ insert into manual_config (id, data) values (1, '{}'::jsonb);</div>
                     }
                 });
 
-                this.initCardsEditor();
                 this.initInlineEditor();
+                this.initCardsEditor();
                 FTIconPicker.initEditors();
                 
                 if (SGMState.current.inlineEdit) {
@@ -3322,8 +3408,8 @@ insert into manual_config (id, data) values (1, '{}'::jsonb);</div>
 
                 this.renderMenuPanel(); 
                 this.applyVisibility(); 
-                this.initCardsEditor();
                 this.initInlineEditor();
+                this.initCardsEditor();
                 FTIconPicker.initEditors();
                 SGMToast.show('Novo tópico criado com sucesso!');
             }
@@ -3386,19 +3472,25 @@ insert into manual_config (id, data) values (1, '{}'::jsonb);</div>
                     newElement.style.position = 'relative';
                     newElement.innerHTML = controls + `
                         <h3 style="display:flex; align-items:center; gap:0.5rem; margin-bottom: 0.5rem;">
-                            <i class="fas fa-bookmark" id="icon-sub-${uniqId}" style="color:var(--azul);"></i>
+                            <span class="ft-emoji-icon" id="icon-sub-${uniqId}" style="color:var(--azul);"><span class="ft-icon-glyph">🔖</span></span>
                             <span class="edit-text" id="ed-sub-${uniqId}" style="flex:1;">Novo Subtítulo</span>
                         </h3>
                         <div class="edit-text" id="ed-subtxt-${uniqId}" style="width: 100%; padding: 0.5rem; border: 1px dashed transparent; border-radius: 8px;">Insira o parágrafo ou lista desta subseção aqui. Clique duplo para editar...</div>
                     `;
                 }
                 
-                grid.insertBefore(newElement, btnContainer);
-                this.saveSectionState(grid);
-                this.initCardsEditor();
+                const section = grid.closest('section.section');
+                const backToTop = section ? section.querySelector(':scope > .back-to-top-wrapper') : null;
+                if (section) {
+                    section.insertBefore(newElement, backToTop || null);
+                } else {
+                    grid.insertBefore(newElement, btnContainer);
+                }
+                this.saveSectionState(section || grid);
                 this.initInlineEditor();
+                this.initCardsEditor();
                 FTIconPicker.initEditors();
-                SGMToast.show('Novo bloco adicionado!', 'success');
+                SGMToast.show('Novo bloco adicionado ao final do tópico!', 'success');
             }
 
             static saveMenuStructure() {
@@ -3608,8 +3700,8 @@ insert into manual_config (id, data) values (1, '{}'::jsonb);</div>
                             this.saveSectionState(card.closest('section.section'));
                             SGMToast.show('Bloco duplicado!', 'success');
 
-                            this.initCardsEditor();
                             this.initInlineEditor();
+                            this.initCardsEditor();
                             FTIconPicker.initEditors();
                         };
                     }
@@ -4030,6 +4122,18 @@ insert into manual_config (id, data) values (1, '{}'::jsonb);</div>
                 copiarTexto(texto, this);
             });
         }
+
+        [['btnCopyComunicado1', 'msgComunicado1'], ['btnCopyComunicado3', 'msgComunicado3'], ['btnCopyComunicado4', 'msgComunicado4']].forEach(([btnId, msgId]) => {
+            const btnEl = document.getElementById(btnId);
+            if (btnEl) {
+                btnEl.addEventListener('click', function() {
+                    const msgEl = document.getElementById(msgId);
+                    if (!msgEl) { SGMToast.show('Mensagem não encontrada.', 'error'); return; }
+                    const texto = msgEl.innerText || msgEl.textContent;
+                    copiarTexto(texto, this);
+                });
+            }
+        });
 
         document.addEventListener('DOMContentLoaded', async () => {
             try {
