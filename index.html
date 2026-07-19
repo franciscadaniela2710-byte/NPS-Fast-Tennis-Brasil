@@ -532,6 +532,13 @@
         .topbar .badge.green-badge { background: #19F000; color: #0A2A0A !important; font-size: 0.65rem; font-weight: 700; border: none; text-transform: uppercase; }
         .dark-mode-toggle { background: rgba(255, 255, 255, 0.2); border: none; color: white; padding: 0.4rem 0.8rem; border-radius: 20px; cursor: pointer; font-size: 1rem; }
         .mobile-menu-toggle { display: none; background: rgba(255,255,255,0.2); border: none; color: white; width: 2.4rem; height: 2.4rem; border-radius: 10px; align-items: center; justify-content: center; font-size: 1.1rem; cursor: pointer; margin-right: 0.6rem; }
+        .ft-sync-badge { display: flex; align-items: center; gap: 0.4rem; background: rgba(255,255,255,0.15); color: white; padding: 0.35rem 0.7rem; border-radius: 20px; font-size: 0.75rem; font-weight: 600; white-space: nowrap; cursor: default; }
+        .ft-sync-dot { width: 8px; height: 8px; border-radius: 50%; background: #94A3B8; flex-shrink: 0; }
+        .ft-sync-dot.loading { background: #F59E0B; animation: ft-pulse 1s infinite; }
+        .ft-sync-dot.synced { background: #10B981; }
+        .ft-sync-dot.offline { background: #EF4444; }
+        .ft-sync-dot.local { background: #94A3B8; }
+        @keyframes ft-pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
 
         .container { display: flex; max-width: 1440px; margin: 0 auto; width: 100%; padding: 1.5rem 2rem; gap: 2rem; flex: 1; }
         .sidebar {
@@ -874,6 +881,10 @@
             <div class="logo-text" id="manualBrandingName">NPS Fast Tennis <span>· Manual</span></div>
         </div>
         <div class="topbar-right-actions">
+            <div class="ft-sync-badge" id="ftSyncBadge" title="Status de sincronização">
+                <span class="ft-sync-dot" id="ftSyncDot"></span>
+                <span id="ftSyncLabel">Carregando...</span>
+            </div>
             <button class="mobile-menu-toggle" id="btnMobileMenuToggle" title="Abrir menu"><i class="fas fa-bars"></i></button>
             <button class="dark-mode-toggle" id="btnDarkModeToggle" title="Alternar Modo Escuro">🌙</button>
             <div class="badge green-badge">We Help</div>
@@ -1744,6 +1755,93 @@ Alunos pendentes:</div>
                         <span><strong>Mantenha a foto sempre updated no SULTS</strong> – isso é fundamental para o reconhecimento dos premiados na apresentação oficial da rede.</span>
                     </div>
                 </div>
+                <div class="back-to-top-wrapper"><button class="back-to-top" onclick="voltarAoTopo();"><i class="fas fa-arrow-up"></i></button></div>
+            </section>
+
+            <section id="financeiro" class="section">
+                <div class="section-header">
+                    <i class="fas fa-hand-holding-usd" id="icon-financeiro"></i>
+                    <h2 class="edit-text" id="ed-fin-1">Financeiro</h2>
+                    <span class="tag">Rotina</span>
+                </div>
+                <p style="margin-bottom:1rem;" class="edit-text" id="ed-fin-2">Cronograma de acionamento do time financeiro a cada ciclo de NPS, garantindo que os troféus e as premiações sejam produzidos, pagos e entregues dentro do prazo.</p>
+
+                <div class="grid-3 grid-cards-editable" id="grid-financeiro-stats" style="margin-bottom:1.2rem;">
+                    <div class="card-stat" id="cstat-fin-1">
+                        <div class="card-controls"><button class="card-btn hide-btn" title="Ocultar/Exibir para o usuário"><i class="fas fa-eye-slash"></i></button><button class="card-btn add" title="Duplicar"><i class="fas fa-plus"></i></button><button class="card-btn del" title="Excluir"><i class="fas fa-trash-alt"></i></button></div>
+                        <div class="num edit-text" id="ed-fin-11">3 chamados</div><div class="label edit-text" id="ed-fin-12">abertos por ciclo, um para cada etapa</div>
+                    </div>
+                    <div class="card-stat orange" id="cstat-fin-2">
+                        <div class="card-controls"><button class="card-btn hide-btn" title="Ocultar/Exibir para o usuário"><i class="fas fa-eye-slash"></i></button><button class="card-btn add" title="Duplicar"><i class="fas fa-plus"></i></button><button class="card-btn del" title="Excluir"><i class="fas fa-trash-alt"></i></button></div>
+                        <div class="num edit-text" id="ed-fin-13">Dias 10–15</div><div class="label edit-text" id="ed-fin-14">janela do mês para o 1º chamado</div>
+                    </div>
+                    <div class="card-stat" id="cstat-fin-3">
+                        <div class="card-controls"><button class="card-btn hide-btn" title="Ocultar/Exibir para o usuário"><i class="fas fa-eye-slash"></i></button><button class="card-btn add" title="Duplicar"><i class="fas fa-plus"></i></button><button class="card-btn del" title="Excluir"><i class="fas fa-trash-alt"></i></button></div>
+                        <div class="num edit-text" id="ed-fin-15">15 dias úteis</div><div class="label edit-text" id="ed-fin-16">prazo de confecção dos troféus</div>
+                    </div>
+
+                    <div class="add-card-btn-container">
+                        <span style="font-size:0.9rem; font-weight:700;"><i class="fas fa-plus"></i> Adicionar Bloco</span>
+                        <div class="add-card-options">
+                            <button class="btn-cancel" onclick="event.stopPropagation(); SGMAdmin.addContent(this, 'subtitle')"><i class="fas fa-heading"></i> Subtítulo</button>
+                            <button class="btn-cancel" onclick="event.stopPropagation(); SGMAdmin.addContent(this, 'text')"><i class="fas fa-align-left"></i> Texto</button>
+                            <button class="btn-cancel" onclick="event.stopPropagation(); SGMAdmin.addContent(this, 'card')"><i class="fas fa-th-large"></i> Card Info</button>
+                            <button class="btn-cancel" onclick="event.stopPropagation(); SGMAdmin.addContent(this, 'stat')"><i class="fas fa-chart-bar"></i> Card KPI</button>
+                            <button class="btn-cancel" onclick="event.stopPropagation(); SGMAdmin.addContent(this, 'highlight')"><i class="fas fa-exclamation-circle"></i> Alerta</button>
+                            <button class="btn-cancel" onclick="event.stopPropagation(); SGMAdmin.addContent(this, 'step')"><i class="fas fa-list-ol"></i> Etapa</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="subsection">
+                    <h3 style="font-size:1rem; margin-bottom:0.6rem; color:#334155;" class="edit-text" id="ed-fin-17"><i class="fas fa-list-ol" style="margin-right:0.4rem; color:var(--azul);"></i>Linha do tempo dos chamados</h3>
+                    <div class="automation-steps grid-cards-editable" id="grid-financeiro-steps">
+                        <div class="automation-step" id="fin-1">
+                            <div class="card-controls"><button class="card-btn hide-btn" title="Ocultar/Exibir para o usuário"><i class="fas fa-eye-slash"></i></button><button class="card-btn add" title="Duplicar"><i class="fas fa-plus"></i></button><button class="card-btn del" title="Excluir"><i class="fas fa-trash-alt"></i></button></div>
+                            <span class="step-number">1</span>
+                            <div class="step-content">
+                                <strong class="edit-text" id="ed-fin-3">1º Chamado · Solicitação dos troféus</strong>
+                                <p class="edit-text" id="ed-fin-4">Abrir o chamado de solicitação <strong>entre os dias 10 e 15 do mês</strong> em que o ciclo ocorre, pedindo a confecção dos troféus. O prazo de produção é de <strong>15 dias úteis</strong> — ou seja, eles já estarão prontos para entrega até o fechamento do ciclo do NPS.</p>
+                            </div>
+                        </div>
+                        <div class="automation-step" id="fin-2">
+                            <div class="card-controls"><button class="card-btn hide-btn" title="Ocultar/Exibir para o usuário"><i class="fas fa-eye-slash"></i></button><button class="card-btn add" title="Duplicar"><i class="fas fa-plus"></i></button><button class="card-btn del" title="Excluir"><i class="fas fa-trash-alt"></i></button></div>
+                            <span class="step-number">2</span>
+                            <div class="step-content">
+                                <strong class="edit-text" id="ed-fin-5">2º Chamado · Premiados e valores a receber</strong>
+                                <p class="edit-text" id="ed-fin-6">Após a apuração do NPS (feita, em geral, 2 dias após o encerramento da pesquisa — o prazo pode variar conforme a data de fechamento do ciclo), abrir um chamado informando os <strong>nomes dos premiados</strong> e os <strong>respectivos valores a receber</strong>. Com isso, o financeiro providencia a recarga dos cartões e registra a colocação e o troféu de cada premiado.</p>
+                                <div class="highlight-box blue edit-text" id="ed-fin-7" style="margin-top:0.6rem;">
+                                    <i class="fas fa-info-circle"></i>
+                                    <span><strong>Obs.:</strong> preencher o link fornecido pela controladora com as informações necessárias para o pagamento e a distribuição dos troféus.</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="automation-step" id="fin-3">
+                            <div class="card-controls"><button class="card-btn hide-btn" title="Ocultar/Exibir para o usuário"><i class="fas fa-eye-slash"></i></button><button class="card-btn add" title="Duplicar"><i class="fas fa-plus"></i></button><button class="card-btn del" title="Excluir"><i class="fas fa-trash-alt"></i></button></div>
+                            <span class="step-number">3</span>
+                            <div class="step-content">
+                                <strong class="edit-text" id="ed-fin-8">3º Chamado · Despacho dos troféus</strong>
+                                <p class="edit-text" id="ed-fin-9">Abrir chamado para despachar os troféus até as respectivas unidades.</p>
+                                <div class="highlight-box orange-box edit-text" id="ed-fin-10" style="margin-top:0.6rem;">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    <span><strong>Obs.:</strong> com a chegada do GR (Gerente de Resultados) na região de São Paulo, avaliar com ele a possibilidade de enviar os troféus diretamente para o seu endereço, para que a entrega seja feita pessoalmente — fortalecendo o contato com os franqueados e tornando o reconhecimento do ciclo ainda mais especial para os professores.</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="add-card-btn-container">
+                            <div class="add-card-options">
+                                <button class="btn-cancel" onclick="event.stopPropagation(); SGMAdmin.addContent(this, 'subtitle')"><i class="fas fa-heading"></i> Subtítulo</button>
+                                <button class="btn-cancel" onclick="event.stopPropagation(); SGMAdmin.addContent(this, 'text')"><i class="fas fa-align-left"></i> Texto</button>
+                                <button class="btn-cancel" onclick="event.stopPropagation(); SGMAdmin.addContent(this, 'card')"><i class="fas fa-th-large"></i> Card Info</button>
+                                <button class="btn-cancel" onclick="event.stopPropagation(); SGMAdmin.addContent(this, 'stat')"><i class="fas fa-chart-bar"></i> Card KPI</button>
+                                <button class="btn-cancel" onclick="event.stopPropagation(); SGMAdmin.addContent(this, 'highlight')"><i class="fas fa-exclamation-circle"></i> Alerta</button>
+                                <button class="btn-cancel" onclick="event.stopPropagation(); SGMAdmin.addContent(this, 'step')"><i class="fas fa-list-ol"></i> Etapa</button>
+                            </div>
+                            <button class="add-card-btn" onclick="this.previousElementSibling.classList.toggle('active')"><i class="fas fa-plus"></i> Adicionar Bloco</button>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="back-to-top-wrapper"><button class="back-to-top" onclick="voltarAoTopo();"><i class="fas fa-arrow-up"></i></button></div>
             </section>
 
@@ -2735,6 +2833,21 @@ insert into manual_config (id, data) values (1, '{}'::jsonb);</div>
         const SUPABASE_CONFIGURED = !SUPABASE_URL.includes('SEU-PROJETO') && !SUPABASE_ANON_KEY.includes('SUA-CHAVE');
         const SUPABASE_TABLE = 'manual_config';
 
+        class FTSyncStatus {
+            static set(status) {
+                const dot = document.getElementById('ftSyncDot');
+                const label = document.getElementById('ftSyncLabel');
+                if (!dot || !label) return;
+                dot.className = 'ft-sync-dot ' + status;
+                const agora = new Date();
+                const hora = agora.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+                if (status === 'loading') label.textContent = 'Sincronizando...';
+                else if (status === 'synced') label.textContent = 'Atualizado às ' + hora;
+                else if (status === 'offline') label.textContent = 'Sem sincronização (' + hora + ')';
+                else if (status === 'local') label.textContent = 'Salvo só neste navegador';
+            }
+        }
+
         class FTSupabaseSync {
             static async fetchRemoteState() {
                 if (!SUPABASE_CONFIGURED) return null;
@@ -2797,6 +2910,7 @@ insert into manual_config (id, data) values (1, '{}'::jsonb);</div>
                         { id: 'preparacao-base', label: 'Preparação da Base', icon: 'fa-database', visible: true },
                         { id: 'disparo', label: 'Disparo da Pesquisa', icon: 'fa-paper-plane', visible: true },
                         { id: 'premiacao', label: 'Premiação & Reconhecimento', icon: 'fa-trophy', visible: true },
+                        { id: 'financeiro', label: 'Financeiro', icon: 'fa-hand-holding-usd', visible: true },
                         { id: 'retornos', label: 'Retornos e Relatórios', icon: 'fa-reply-all', visible: true },
                         { id: 'relatorios-pa', label: 'Relatórios e PA', icon: 'fa-file-alt', visible: true },
                         { id: 'automacao-email', label: 'Automação E-mail', icon: 'fa-envelope', visible: true },
@@ -2808,53 +2922,103 @@ insert into manual_config (id, data) values (1, '{}'::jsonb);</div>
                 };
             }
 
+            static isTopicosListSane(topicos) {
+                return Array.isArray(topicos) && topicos.length >= 10 &&
+                    topicos.every(t => t && typeof t.id === 'string' && typeof t.label === 'string' && t.label.length > 0);
+            }
+
             static async load() {
-                const remoteState = await FTSupabaseSync.fetchRemoteState();
-                if (remoteState) {
-                    this.current = remoteState;
-                    try { localStorage.setItem('sgm_manual_store_2026_v2', JSON.stringify(this.current)); } catch(e) {}
-                } else {
-                    const data = localStorage.getItem('sgm_manual_store_2026_v2');
-                    this.current = data ? JSON.parse(data) : this.getDefaults();
-                    if(!data) this.save();
-                }
+                try {
+                    FTSyncStatus.set('loading');
+                    const remoteState = await FTSupabaseSync.fetchRemoteState();
+                    const remoteValido = remoteState && this.isTopicosListSane(remoteState.topicos);
 
-                // Garante que 'homologacao-manual' fique antes do 'reclame-aqui' corrigindo os caches antigos
-                const homoIdx = this.current.topicos.findIndex(t => t.id === 'homologacao-manual');
-                const raIdx = this.current.topicos.findIndex(t => t.id === 'reclame-aqui');
-                if (homoIdx !== -1 && raIdx !== -1 && homoIdx !== raIdx - 1) {
-                    const homoItem = this.current.topicos.splice(homoIdx, 1)[0];
-                    const newRaIdx = this.current.topicos.findIndex(t => t.id === 'reclame-aqui');
-                    this.current.topicos.splice(newRaIdx, 0, homoItem);
-                    this.save();
-                }
-
-                // Garante que 'comunicacao' fique logo depois de 'cronograma' corrigindo caches antigos
-                const comuIdx = this.current.topicos.findIndex(t => t.id === 'comunicacao');
-                const cronoIdx = this.current.topicos.findIndex(t => t.id === 'cronograma');
-                if (comuIdx !== -1 && cronoIdx !== -1 && comuIdx !== cronoIdx + 1) {
-                    const comuItem = this.current.topicos.splice(comuIdx, 1)[0];
-                    const newCronoIdx = this.current.topicos.findIndex(t => t.id === 'cronograma');
-                    this.current.topicos.splice(newCronoIdx + 1, 0, comuItem);
-                    this.save();
-                }
-
-                // Descarta automaticamente uma cópia salva antiga/quebrada do tópico "Homologando o Manual"
-                // (essa seção foi bastante ajustada nas últimas atualizações; isso garante que todo mundo
-                // passe a ver a versão nova e corrigida, sem precisar limpar o navegador manualmente).
-                const HOMOLOGACAO_CONTENT_VERSION = 3;
-                if (this.current._homologVersion !== HOMOLOGACAO_CONTENT_VERSION) {
-                    if (this.current.sectionStructures) {
-                        delete this.current.sectionStructures['homologacao'];
-                        delete this.current.sectionStructures['homologacao-manual'];
+                    if (remoteValido) {
+                        this.current = remoteState;
+                        try { localStorage.setItem('sgm_manual_store_2026_v2', JSON.stringify(this.current)); } catch(e) {}
+                        FTSyncStatus.set('synced');
+                    } else {
+                        const data = localStorage.getItem('sgm_manual_store_2026_v2');
+                        let parsedLocal = null;
+                        try { parsedLocal = data ? JSON.parse(data) : null; } catch(e) { parsedLocal = null; }
+                        this.current = (parsedLocal && this.isTopicosListSane(parsedLocal.topicos)) ? parsedLocal : this.getDefaults();
+                        if(!data) this.save();
+                        // Se o Supabase está configurado mas ainda não tem dados válidos/completos (ex: acabou de
+                        // rodar o SQL, ou ficou uma versão incompleta salva de algum teste anterior),
+                        // envia o estado local/padrão para lá agora, corrigindo a fonte de dados de vez.
+                        if (SUPABASE_CONFIGURED && remoteState !== null && !remoteValido) {
+                            FTSupabaseSync.pushRemoteState(this.current).then(ok => FTSyncStatus.set(ok ? 'synced' : 'offline'));
+                        } else if (SUPABASE_CONFIGURED && remoteState === null) {
+                            FTSyncStatus.set('offline');
+                        } else {
+                            FTSyncStatus.set('local');
+                        }
                     }
-                    if (this.current.gridStructures) delete this.current.gridStructures['grid-homo-steps'];
-                    this.current._homologVersion = HOMOLOGACAO_CONTENT_VERSION;
-                    this.save();
-                }
 
-                this.applyStateStyles();
-                return this.current;
+                    // Rede de segurança final: nunca deixa o app seguir adiante sem uma lista de tópicos válida
+                    // e completa, seja qual for a causa (dado remoto corrompido, localStorage corrompido, etc.)
+                    if (!this.isTopicosListSane(this.current.topicos)) {
+                        console.warn('Estado carregado sem lista de tópicos válida/completa — usando padrão de fábrica.');
+                        const defaults = this.getDefaults();
+                        this.current = Object.assign({}, defaults, this.current, { topicos: defaults.topicos });
+                        try { localStorage.setItem('sgm_manual_store_2026_v2', JSON.stringify(this.current)); } catch(e) {}
+                        if (SUPABASE_CONFIGURED) {
+                            FTSupabaseSync.pushRemoteState(this.current).then(ok => FTSyncStatus.set(ok ? 'synced' : 'offline'));
+                        }
+                    }
+
+                    // Garante que 'homologacao-manual' fique antes do 'reclame-aqui' corrigindo os caches antigos
+                    const homoIdx = this.current.topicos.findIndex(t => t.id === 'homologacao-manual');
+                    const raIdx = this.current.topicos.findIndex(t => t.id === 'reclame-aqui');
+                    if (homoIdx !== -1 && raIdx !== -1 && homoIdx !== raIdx - 1) {
+                        const homoItem = this.current.topicos.splice(homoIdx, 1)[0];
+                        const newRaIdx = this.current.topicos.findIndex(t => t.id === 'reclame-aqui');
+                        this.current.topicos.splice(newRaIdx, 0, homoItem);
+                        this.save();
+                    }
+
+                    // Garante que 'comunicacao' fique logo depois de 'cronograma' corrigindo caches antigos
+                    const comuIdx = this.current.topicos.findIndex(t => t.id === 'comunicacao');
+                    const cronoIdx = this.current.topicos.findIndex(t => t.id === 'cronograma');
+                    if (comuIdx !== -1 && cronoIdx !== -1 && comuIdx !== cronoIdx + 1) {
+                        const comuItem = this.current.topicos.splice(comuIdx, 1)[0];
+                        const newCronoIdx = this.current.topicos.findIndex(t => t.id === 'cronograma');
+                        this.current.topicos.splice(newCronoIdx + 1, 0, comuItem);
+                        this.save();
+                    }
+
+                    // Insere o novo tópico 'financeiro' para quem já tinha um estado salvo sem ele ainda
+                    if (this.current.topicos.findIndex(t => t.id === 'financeiro') === -1) {
+                        const premIdx = this.current.topicos.findIndex(t => t.id === 'premiacao');
+                        const novoItem = { id: 'financeiro', label: 'Financeiro', icon: 'fa-hand-holding-usd', visible: true };
+                        if (premIdx !== -1) this.current.topicos.splice(premIdx + 1, 0, novoItem);
+                        else this.current.topicos.push(novoItem);
+                        this.save();
+                    }
+
+                    // Descarta automaticamente uma cópia salva antiga/quebrada do tópico "Homologando o Manual"
+                    // (essa seção foi bastante ajustada nas últimas atualizações; isso garante que todo mundo
+                    // passe a ver a versão nova e corrigida, sem precisar limpar o navegador manualmente).
+                    const HOMOLOGACAO_CONTENT_VERSION = 3;
+                    if (this.current._homologVersion !== HOMOLOGACAO_CONTENT_VERSION) {
+                        if (this.current.sectionStructures) {
+                            delete this.current.sectionStructures['homologacao'];
+                            delete this.current.sectionStructures['homologacao-manual'];
+                        }
+                        if (this.current.gridStructures) delete this.current.gridStructures['grid-homo-steps'];
+                        this.current._homologVersion = HOMOLOGACAO_CONTENT_VERSION;
+                        this.save();
+                    }
+
+                    this.applyStateStyles();
+                    return this.current;
+                } catch (err) {
+                    console.error('Erro inesperado em SGMState.load(), usando padrão de fábrica como último recurso:', err);
+                    this.current = this.getDefaults();
+                    try { FTSyncStatus.set('offline'); } catch(e) {}
+                    try { this.applyStateStyles(); } catch(e) {}
+                    return this.current;
+                }
             }
 
             static async save() {
@@ -2870,8 +3034,16 @@ insert into manual_config (id, data) values (1, '{}'::jsonb);</div>
                     SGMToast.show('A imagem é grande demais para o armazenamento do navegador. A alteração não vai persistir ao recarregar — tente uma imagem menor.', 'error');
                 }
                 if (SUPABASE_CONFIGURED) {
+                    FTSyncStatus.set('loading');
                     const synced = await FTSupabaseSync.pushRemoteState(this.current);
-                    if (!synced) SGMToast.show('Salvo neste navegador, mas falhou a sincronização central (Supabase). Verifique sua conexão.', 'error');
+                    if (!synced) {
+                        FTSyncStatus.set('offline');
+                        SGMToast.show('Salvo neste navegador, mas falhou a sincronização central (Supabase). Verifique sua conexão.', 'error');
+                    } else {
+                        FTSyncStatus.set('synced');
+                    }
+                } else {
+                    FTSyncStatus.set('local');
                 }
             }
 
@@ -3265,9 +3437,10 @@ insert into manual_config (id, data) values (1, '{}'::jsonb);</div>
                 SGMToast.show('Sessão encerrada com segurança.', 'info');
             }
 
-            static clearMediaField(fieldName) {
+            static async clearMediaField(fieldName) {
                 if(confirm('Deseja realmente apagar esta imagem e voltar para o visual padrão?')) {
-                    SGMState.current[fieldName] = null; SGMState.save();
+                    SGMState.current[fieldName] = null; 
+                    await SGMState.save();
                     if(fieldName === 'logoData') window.location.reload();
                     SGMToast.show('Imagem apagada e redefinida com sucesso.', 'warning');
                 }
@@ -3279,9 +3452,9 @@ insert into manual_config (id, data) values (1, '{}'::jsonb);</div>
                 SGMState.save(); SGMToast.show('Configurações gerais salvas!');
             }
 
-            static saveConteudo() {
+            static async saveConteudo() {
                 SGMState.current.inlineEdit = document.getElementById('cfgEnableInlineEdit').checked;
-                SGMState.save();
+                await SGMState.save();
                 window.location.reload(); 
             }
 
@@ -3983,9 +4156,17 @@ insert into manual_config (id, data) values (1, '{}'::jsonb);</div>
                 }
             }
 
-            static systemReset() {
-                if(confirm('Apagar todas as configurações locais e restaurar os padrões originais?')) {
-                    localStorage.removeItem('sgm_manual_store_2026_v2'); window.location.reload();
+            static async systemReset() {
+                const msg = 'Apagar todas as configurações locais' + (typeof SUPABASE_CONFIGURED !== 'undefined' && SUPABASE_CONFIGURED ? ' e do Supabase' : '') + ' e restaurar os padrões originais?';
+                if(confirm(msg)) {
+                    localStorage.removeItem('sgm_manual_store_2026_v2');
+                    if (typeof SUPABASE_CONFIGURED !== 'undefined' && SUPABASE_CONFIGURED) {
+                        try {
+                            const defaults = SGMState.getDefaults();
+                            await FTSupabaseSync.pushRemoteState(defaults);
+                        } catch (e) { console.warn('Não foi possível limpar o Supabase, mas o reset local será aplicado.', e); }
+                    }
+                    window.location.reload();
                 }
             }
         }
@@ -4053,10 +4234,10 @@ insert into manual_config (id, data) values (1, '{}'::jsonb);</div>
                 document.getElementById('importBackupFile').addEventListener('change', (e) => {
                     const file = e.target.files[0]; if (!file) return;
                     const reader = new FileReader();
-                    reader.onload = (event) => {
+                    reader.onload = async (event) => {
                         try {
                             const parsed = JSON.parse(event.target.result);
-                            if (parsed.password && parsed.topicos) { SGMState.current = parsed; SGMState.save(); window.location.reload(); }
+                            if (parsed.password && parsed.topicos) { SGMState.current = parsed; await SGMState.save(); window.location.reload(); }
                         } catch(err) { SGMToast.show('Arquivo inválido.', 'error'); }
                     };
                     reader.readAsText(file);
