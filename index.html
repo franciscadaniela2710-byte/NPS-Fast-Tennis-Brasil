@@ -577,6 +577,12 @@
         .section-header i { font-size: 1.8rem; background: rgba(30, 70, 197, 0.08); padding: 0.5rem; border-radius: 14px; width: 3rem; height: 3rem; display: flex; align-items: center; justify-content: center; transition: 0.3s background, 0.3s color; }
         .section-header .tag { margin-left: auto; background: var(--verde); color: #0A2A0A !important; font-size: 0.65rem; font-weight: 700; padding: 0.2rem 0.8rem; border-radius: 40px; text-transform: uppercase; letter-spacing: 0.04em; white-space: nowrap; }
         .subsection { margin-top: 1.5rem; }
+        .subsection-hide-btn {
+            position: absolute; top: -6px; right: -6px; width: 26px; height: 26px; border-radius: 50%;
+            background: white; color: var(--azul); border: 1.5px solid #E2E8F0; display: flex; align-items: center;
+            justify-content: center; font-size: 0.7rem; cursor: pointer; box-shadow: 0 2px 6px rgba(0,0,0,0.15); z-index: 4;
+        }
+        .subsection-hide-btn:hover { transform: scale(1.12); }
         .subsection p, .subsection li { color: inherit; opacity: 0.9; line-height: 1.6; }
         .subsection ul, .subsection ol { padding-left: 1.5rem; margin: 0.5rem 0 1rem; }
         
@@ -1436,7 +1442,7 @@ Muito obrigada!</div>
                     <h3 class="edit-text" id="ed-pb-47">Ajuste de agenda de professores</h3>
                     <p class="edit-text" id="ed-pb-48">Na segunda-feira que antecede a pesquisa, deve ser enviado um e-mail para as unidades que possuem alunos cadastrados sem vínculo de professor, informando o prazo para ajuste até a quarta-feira.</p>
                     <p style="margin-top:0.3rem;" class="edit-text" id="ed-pb-49">Clique no botão abaixo para copiar a mensagem padrão com todos os emojis e estrutura:</p>
-                    <div id="emailTemplate" style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:10px; padding:1rem; margin:0.6rem 0; font-size:0.88rem; line-height:1.6; white-space:pre-wrap;" class="edit-text">Olá, pessoal!
+                    <div id="emailTemplate" style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:10px; padding:1rem; margin:0.6rem 0; font-size:0.88rem; line-height:1.6; white-space:pre-wrap;" class="edit-text ft-hidden-block">Olá, pessoal!
 
 Identificamos que os alunos abaixo estão sem vínculo de professor cadastrado para o próximo ciclo de NPS.
 
@@ -1764,55 +1770,27 @@ Alunos pendentes:</div>
                     <h2 class="edit-text" id="ed-fin-1">Financeiro</h2>
                     <span class="tag">Rotina</span>
                 </div>
-                <p style="margin-bottom:1rem;" class="edit-text" id="ed-fin-2">Cronograma de acionamento do time financeiro a cada ciclo de NPS, garantindo que os troféus e as premiações sejam produzidos, pagos e entregues dentro do prazo.</p>
-
-                <div class="grid-3 grid-cards-editable" id="grid-financeiro-stats" style="margin-bottom:1.2rem;">
-                    <div class="card-stat" id="cstat-fin-1">
-                        <div class="card-controls"><button class="card-btn hide-btn" title="Ocultar/Exibir para o usuário"><i class="fas fa-eye-slash"></i></button><button class="card-btn add" title="Duplicar"><i class="fas fa-plus"></i></button><button class="card-btn del" title="Excluir"><i class="fas fa-trash-alt"></i></button></div>
-                        <div class="num edit-text" id="ed-fin-11">3 chamados</div><div class="label edit-text" id="ed-fin-12">abertos por ciclo, um para cada etapa</div>
-                    </div>
-                    <div class="card-stat orange" id="cstat-fin-2">
-                        <div class="card-controls"><button class="card-btn hide-btn" title="Ocultar/Exibir para o usuário"><i class="fas fa-eye-slash"></i></button><button class="card-btn add" title="Duplicar"><i class="fas fa-plus"></i></button><button class="card-btn del" title="Excluir"><i class="fas fa-trash-alt"></i></button></div>
-                        <div class="num edit-text" id="ed-fin-13">Dias 10–15</div><div class="label edit-text" id="ed-fin-14">janela do mês para o 1º chamado</div>
-                    </div>
-                    <div class="card-stat" id="cstat-fin-3">
-                        <div class="card-controls"><button class="card-btn hide-btn" title="Ocultar/Exibir para o usuário"><i class="fas fa-eye-slash"></i></button><button class="card-btn add" title="Duplicar"><i class="fas fa-plus"></i></button><button class="card-btn del" title="Excluir"><i class="fas fa-trash-alt"></i></button></div>
-                        <div class="num edit-text" id="ed-fin-15">15 dias úteis</div><div class="label edit-text" id="ed-fin-16">prazo de confecção dos troféus</div>
-                    </div>
-
-                    <div class="add-card-btn-container">
-                        <span style="font-size:0.9rem; font-weight:700;"><i class="fas fa-plus"></i> Adicionar Bloco</span>
-                        <div class="add-card-options">
-                            <button class="btn-cancel" onclick="event.stopPropagation(); SGMAdmin.addContent(this, 'subtitle')"><i class="fas fa-heading"></i> Subtítulo</button>
-                            <button class="btn-cancel" onclick="event.stopPropagation(); SGMAdmin.addContent(this, 'text')"><i class="fas fa-align-left"></i> Texto</button>
-                            <button class="btn-cancel" onclick="event.stopPropagation(); SGMAdmin.addContent(this, 'card')"><i class="fas fa-th-large"></i> Card Info</button>
-                            <button class="btn-cancel" onclick="event.stopPropagation(); SGMAdmin.addContent(this, 'stat')"><i class="fas fa-chart-bar"></i> Card KPI</button>
-                            <button class="btn-cancel" onclick="event.stopPropagation(); SGMAdmin.addContent(this, 'highlight')"><i class="fas fa-exclamation-circle"></i> Alerta</button>
-                            <button class="btn-cancel" onclick="event.stopPropagation(); SGMAdmin.addContent(this, 'step')"><i class="fas fa-list-ol"></i> Etapa</button>
-                        </div>
-                    </div>
-                </div>
+                <p style="margin-bottom:1rem;" class="edit-text" id="ed-fin-2">Fluxo de chamados a serem abertos com o time financeiro a cada ciclo de NPS, garantindo que a confecção, o pagamento e a entrega das premiações ocorram dentro do prazo estabelecido.</p>
 
                 <div class="subsection">
-                    <h3 style="font-size:1rem; margin-bottom:0.6rem; color:#334155;" class="edit-text" id="ed-fin-17"><i class="fas fa-list-ol" style="margin-right:0.4rem; color:var(--azul);"></i>Linha do tempo dos chamados</h3>
                     <div class="automation-steps grid-cards-editable" id="grid-financeiro-steps">
                         <div class="automation-step" id="fin-1">
                             <div class="card-controls"><button class="card-btn hide-btn" title="Ocultar/Exibir para o usuário"><i class="fas fa-eye-slash"></i></button><button class="card-btn add" title="Duplicar"><i class="fas fa-plus"></i></button><button class="card-btn del" title="Excluir"><i class="fas fa-trash-alt"></i></button></div>
                             <span class="step-number">1</span>
                             <div class="step-content">
-                                <strong class="edit-text" id="ed-fin-3">1º Chamado · Solicitação dos troféus</strong>
-                                <p class="edit-text" id="ed-fin-4">Abrir o chamado de solicitação <strong>entre os dias 10 e 15 do mês</strong> em que o ciclo ocorre, pedindo a confecção dos troféus. O prazo de produção é de <strong>15 dias úteis</strong> — ou seja, eles já estarão prontos para entrega até o fechamento do ciclo do NPS.</p>
+                                <strong class="edit-text" id="ed-fin-3">1º Chamado | Solicitação dos troféus</strong>
+                                <p class="edit-text" id="ed-fin-4">O primeiro chamado deve ser aberto <strong>entre os dias 10 e 15 do mês</strong> de referência do ciclo, solicitando a confecção dos troféus. O prazo de produção é de <strong>15 dias úteis</strong>, o que garante que as peças já estejam prontas até o encerramento do NPS.</p>
                             </div>
                         </div>
                         <div class="automation-step" id="fin-2">
                             <div class="card-controls"><button class="card-btn hide-btn" title="Ocultar/Exibir para o usuário"><i class="fas fa-eye-slash"></i></button><button class="card-btn add" title="Duplicar"><i class="fas fa-plus"></i></button><button class="card-btn del" title="Excluir"><i class="fas fa-trash-alt"></i></button></div>
                             <span class="step-number">2</span>
                             <div class="step-content">
-                                <strong class="edit-text" id="ed-fin-5">2º Chamado · Premiados e valores a receber</strong>
-                                <p class="edit-text" id="ed-fin-6">Após a apuração do NPS (feita, em geral, 2 dias após o encerramento da pesquisa — o prazo pode variar conforme a data de fechamento do ciclo), abrir um chamado informando os <strong>nomes dos premiados</strong> e os <strong>respectivos valores a receber</strong>. Com isso, o financeiro providencia a recarga dos cartões e registra a colocação e o troféu de cada premiado.</p>
+                                <strong class="edit-text" id="ed-fin-5">2º Chamado | Premiados e valores a receber</strong>
+                                <p class="edit-text" id="ed-fin-6">Após a apuração do NPS — que ocorre 2 dias após o encerramento da pesquisa, podendo variar conforme a data de finalização do ciclo — deve ser aberto um segundo chamado informando os <strong>nomes dos premiados</strong> e os <strong>respectivos valores a receber</strong>, para que o financeiro providencie a recarga dos cartões, além da colocação e do troféu correspondente a cada um.</p>
                                 <div class="highlight-box blue edit-text" id="ed-fin-7" style="margin-top:0.6rem;">
                                     <i class="fas fa-info-circle"></i>
-                                    <span><strong>Obs.:</strong> preencher o link fornecido pela controladora com as informações necessárias para o pagamento e a distribuição dos troféus.</span>
+                                    <span><strong>Importante:</strong> preencher o link fornecido pela controladora com as informações necessárias para o pagamento e a distribuição dos troféus.</span>
                                 </div>
                             </div>
                         </div>
@@ -1820,11 +1798,11 @@ Alunos pendentes:</div>
                             <div class="card-controls"><button class="card-btn hide-btn" title="Ocultar/Exibir para o usuário"><i class="fas fa-eye-slash"></i></button><button class="card-btn add" title="Duplicar"><i class="fas fa-plus"></i></button><button class="card-btn del" title="Excluir"><i class="fas fa-trash-alt"></i></button></div>
                             <span class="step-number">3</span>
                             <div class="step-content">
-                                <strong class="edit-text" id="ed-fin-8">3º Chamado · Despacho dos troféus</strong>
-                                <p class="edit-text" id="ed-fin-9">Abrir chamado para despachar os troféus até as respectivas unidades.</p>
+                                <strong class="edit-text" id="ed-fin-8">3º Chamado | Despacho dos troféus</strong>
+                                <p class="edit-text" id="ed-fin-9">O terceiro chamado deve ser aberto para providenciar o despacho dos troféus até as respectivas unidades.</p>
                                 <div class="highlight-box orange-box edit-text" id="ed-fin-10" style="margin-top:0.6rem;">
                                     <i class="fas fa-map-marker-alt"></i>
-                                    <span><strong>Obs.:</strong> com a chegada do GR (Gerente de Resultados) na região de São Paulo, avaliar com ele a possibilidade de enviar os troféus diretamente para o seu endereço, para que a entrega seja feita pessoalmente — fortalecendo o contato com os franqueados e tornando o reconhecimento do ciclo ainda mais especial para os professores.</span>
+                                    <span><strong>Oportunidade:</strong> com a chegada do GR (Gerente de Resultados) da região de São Paulo, avaliar a possibilidade de enviar os troféus diretamente para o seu endereço, para que a distribuição seja feita pessoalmente. Essa aproximação fortalece o relacionamento com os franqueados e agrega valor ao reconhecimento entregue aos professores premiados no ciclo.</span>
                                 </div>
                             </div>
                         </div>
@@ -2608,7 +2586,7 @@ function inlineCheckSigilo(nome, valAuth) {
                         <span class="edit-text" id="ed-homo-sql-title" style="flex:1;">1. Criar a tabela no Supabase</span>
                     </h3>
                     <p class="edit-text" id="ed-homo-sql-desc">No painel do seu projeto Supabase, abra o <strong>SQL Editor</strong> e rode este script uma única vez:</p>
-                    <div class="import-step edit-text" id="ed-homo-sql-code" style="border-left-color: var(--azul); width:100%; max-width:100%; background:#0F172A; color:#E2E8F0; font-family: monospace; font-size:0.82rem; white-space:pre-wrap; padding:1rem; border-radius:8px;">create table manual_config (
+                    <div class="import-step edit-text ft-hidden-block" id="ed-homo-sql-code" style="border-left-color: var(--azul); width:100%; max-width:100%; background:#0F172A; color:#E2E8F0; font-family: monospace; font-size:0.82rem; white-space:pre-wrap; padding:1rem; border-radius:8px;">create table manual_config (
   id bigint primary key,
   data jsonb not null,
   updated_at timestamptz default now()
@@ -3437,10 +3415,9 @@ insert into manual_config (id, data) values (1, '{}'::jsonb);</div>
                 SGMToast.show('Sessão encerrada com segurança.', 'info');
             }
 
-            static async clearMediaField(fieldName) {
+            static clearMediaField(fieldName) {
                 if(confirm('Deseja realmente apagar esta imagem e voltar para o visual padrão?')) {
-                    SGMState.current[fieldName] = null; 
-                    await SGMState.save();
+                    SGMState.current[fieldName] = null; SGMState.save();
                     if(fieldName === 'logoData') window.location.reload();
                     SGMToast.show('Imagem apagada e redefinida com sucesso.', 'warning');
                 }
@@ -3452,9 +3429,9 @@ insert into manual_config (id, data) values (1, '{}'::jsonb);</div>
                 SGMState.save(); SGMToast.show('Configurações gerais salvas!');
             }
 
-            static async saveConteudo() {
+            static saveConteudo() {
                 SGMState.current.inlineEdit = document.getElementById('cfgEnableInlineEdit').checked;
-                await SGMState.save();
+                SGMState.save();
                 window.location.reload(); 
             }
 
@@ -3901,6 +3878,40 @@ insert into manual_config (id, data) values (1, '{}'::jsonb);</div>
                         };
                     }
                 });
+
+                this.initSubsectionHideToggles();
+            }
+
+            static initSubsectionHideToggles() {
+                if (!SGMState.current.inlineEdit) return;
+                document.querySelectorAll('.subsection').forEach(sub => {
+                    if (!sub.id) {
+                        const section = sub.closest('section.section');
+                        const scopeKey = section ? section.id : 'global';
+                        if (!this._subCounters) this._subCounters = {};
+                        this._subCounters[scopeKey] = (this._subCounters[scopeKey] || 0) + 1;
+                        sub.id = 'sub-' + scopeKey + '-' + this._subCounters[scopeKey];
+                    }
+                    if (getComputedStyle(sub).position === 'static') sub.style.position = 'relative';
+
+                    let hideBtn = sub.querySelector(':scope > .subsection-hide-btn');
+                    if (!hideBtn) {
+                        hideBtn = document.createElement('button');
+                        hideBtn.type = 'button';
+                        hideBtn.className = 'subsection-hide-btn';
+                        hideBtn.title = 'Ocultar/Exibir este bloco inteiro para o usuário';
+                        sub.insertBefore(hideBtn, sub.firstChild);
+                    }
+                    hideBtn.innerHTML = sub.classList.contains('ft-hidden-block') ? '<i class="fas fa-eye"></i>' : '<i class="fas fa-eye-slash"></i>';
+                    hideBtn.onclick = (e) => {
+                        e.stopPropagation();
+                        sub.classList.toggle('ft-hidden-block');
+                        const hidden = sub.classList.contains('ft-hidden-block');
+                        hideBtn.innerHTML = hidden ? '<i class="fas fa-eye"></i>' : '<i class="fas fa-eye-slash"></i>';
+                        SGMToast.show(hidden ? 'Bloco suspenso (invisível na leitura).' : 'Bloco ativo novamente.', hidden ? 'warning' : 'success');
+                        this.saveSectionState(sub.closest('section.section'));
+                    };
+                });
             }
 
             static saveSectionState(sectionOrEl) {
@@ -4234,10 +4245,10 @@ insert into manual_config (id, data) values (1, '{}'::jsonb);</div>
                 document.getElementById('importBackupFile').addEventListener('change', (e) => {
                     const file = e.target.files[0]; if (!file) return;
                     const reader = new FileReader();
-                    reader.onload = async (event) => {
+                    reader.onload = (event) => {
                         try {
                             const parsed = JSON.parse(event.target.result);
-                            if (parsed.password && parsed.topicos) { SGMState.current = parsed; await SGMState.save(); window.location.reload(); }
+                            if (parsed.password && parsed.topicos) { SGMState.current = parsed; SGMState.save(); window.location.reload(); }
                         } catch(err) { SGMToast.show('Arquivo inválido.', 'error'); }
                     };
                     reader.readAsText(file);
@@ -4248,30 +4259,36 @@ insert into manual_config (id, data) values (1, '{}'::jsonb);</div>
         function voltarAoTopo() { window.scrollTo({ top: 0, behavior: 'smooth' }); }
         
         function copiarTexto(texto, botao) {
+            const showSuccess = () => {
+                botao.classList.add('copied'); SGMToast.show('Copiado para a área de transferência!');
+                setTimeout(() => botao.classList.remove('copied'), 3000);
+            };
+            const legacyCopy = () => {
+                try {
+                    const textArea = document.createElement('textarea');
+                    textArea.value = texto;
+                    textArea.style.position = 'fixed';
+                    textArea.style.left = '-999999px';
+                    textArea.style.top = '-999999px';
+                    document.body.appendChild(textArea);
+                    textArea.focus();
+                    textArea.select();
+                    const ok = document.execCommand('copy');
+                    textArea.remove();
+                    if (ok) { showSuccess(); return true; }
+                } catch (err) { /* segue para o prompt manual abaixo */ }
+                return false;
+            };
+            const manualFallback = () => {
+                window.prompt('Não foi possível copiar automaticamente. Copie o texto abaixo manualmente (Ctrl+C):', texto);
+            };
+
             if (navigator.clipboard && window.isSecureContext) {
-                navigator.clipboard.writeText(texto).then(() => {
-                    botao.classList.add('copied'); SGMToast.show('Copiado para a área de transferência!');
-                    setTimeout(() => botao.classList.remove('copied'), 3000);
-                }).catch(err => {
-                    SGMToast.show('Erro ao copiar.', 'error');
+                navigator.clipboard.writeText(texto).then(showSuccess).catch(() => {
+                    if (!legacyCopy()) manualFallback();
                 });
             } else {
-                const textArea = document.createElement("textarea");
-                textArea.value = texto;
-                textArea.style.position = "fixed";  
-                textArea.style.left = "-999999px"; 
-                textArea.style.top = "-999999px"; 
-                document.body.appendChild(textArea);
-                textArea.focus();
-                textArea.select();
-                try {
-                    document.execCommand('copy');
-                    botao.classList.add('copied'); SGMToast.show('Copiado para a área de transferência!');
-                    setTimeout(() => botao.classList.remove('copied'), 3000);
-                } catch (err) {
-                    SGMToast.show('Erro ao copiar.', 'error');
-                }
-                textArea.remove();
+                if (!legacyCopy()) manualFallback();
             }
         }
 
